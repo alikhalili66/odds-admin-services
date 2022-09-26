@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration monitorInterval="30">
+	<properties>
+		<property name="name">ium</property>
+		<property name="readablePattern">%highlight{%-5p [%-20t] %-20d{yyyyMMdd HHmmss,SSS} %C{1}.%M:%L -| %m%n}{FATAL=yellow, ERROR=red, WARN=Bright Red, INFO=white, DEBUG=green, TRACE=bright green}</property> 
+	</properties>
+	
+	<appenders>
+        
+		<Console name="redirectToConsoleReadable" target="SYSTEM_OUT">
+			<PatternLayout pattern="${readablePattern}"/>
+		</Console>
+		
+	</appenders>
+	<loggers>
+		<!-- ok -->
+		<Logger name="ir.khalili" level="TRACE" additivity="false">
+ 			<appender-ref ref="redirectToConsoleReadable"/>
+ 		</Logger>
+ 		<Logger name="io.netty" level="INFO" additivity="false">
+ 			<appender-ref ref="redirectToConsoleReadable"/>
+ 		</Logger>
+		<!-- ok -->
+		<Logger name="io.vertx" level="ERROR" additivity="false">
+ 			<appender-ref ref="redirectToConsoleReadable"/>
+ 		</Logger>
+		<logger name="com.mchange.v2" level="INFO" additivity="false">
+			<appender-ref ref="redirectToConsoleReadable"/>
+		</logger>
+		 		<!-- ok -->
+		<logger name="org.apache.kafka" level="INFO" additivity="false">
+			<appender-ref ref="redirectToConsoleReadable"/>
+		</logger>
+		<!-- ok -->
+<!-- 		<root level="DEBUG" > -->
+<!-- 			<appender-ref ref="redirectToConsoleReadable"/> -->
+<!-- 		</root> -->
+		
+	</loggers>
+	
+</configuration>

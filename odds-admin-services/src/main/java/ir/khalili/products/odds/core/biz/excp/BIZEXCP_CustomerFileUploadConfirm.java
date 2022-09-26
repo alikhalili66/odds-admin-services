@@ -1,0 +1,39 @@
+package ir.khalili.products.odds.core.biz.excp;
+
+import ir.khalili.products.odds.core.dao.excp.DAOException;
+
+public class BIZEXCP_CustomerFileUploadConfirm extends DAOException {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -217168795149692618L;
+
+	private int resultCode;
+	private String resultMessage;
+
+	public BIZEXCP_CustomerFileUploadConfirm(int resultCode, String resultMessage) {
+		super();
+		this.resultCode = resultCode;
+		this.resultMessage = resultMessage;
+	}
+
+	public int getResultCode() {
+		return resultCode;
+	}
+
+	public void setResultCode(int resultCode) {
+		this.resultCode = resultCode;
+	}
+
+	public String getResultMessage() {
+		return resultMessage;
+	}
+
+	public void setResultMessage(String resultMessage) {
+		this.resultMessage = resultMessage;
+	}
+
+	@Override
+	public Throwable fillInStackTrace() {
+		return null;
+	}  }

@@ -1,0 +1,39 @@
+{
+  "port": 6060,
+  "Access_Control_Allow_Origin": "http://localhost:3000",
+  "dbConfig": {
+    "username": "sch_test",
+    "password": "Test#2022",
+    "host": "185.213.167.156",
+    "serviceName": "pdb1",
+    "port": 1521
+  },
+  "lockin": {
+    "port": 8080,
+    "host": "api.lockin.ir",
+    "APIKEY": "cf012f1e9349bc4fdca0271144d51f885106865fd6f814f333097c95117f27f6bd173146be40e592fbacf433bc13d7c8"
+  },
+  "jwt": {
+    "algorithm": "HS256",
+    "secretKey": "iUM d#v"
+  },
+  "fileManager": {
+    "root": "d:/caspian",
+    "nationalCards": "/nationalcards",
+    "videos": "/videos",
+    "identifications": "/identification",
+    "nationalCardMaxSize": 5000000,
+    "videoMaxSize": 150000000,
+    "identificationMaxSize": 1000000,
+    "nationalCardSampleCounts": 2,
+    "identificationSampleCounts": 4,
+    "videoSampleCounts": 1,
+    "nationalCardAllowedExtension": "image/jpeg,image/png,application/pdf",
+    "IdentificationAllowedExtension": "image/jpeg,image/png,application/pdf",
+    "videoAllowedExtension": "video/mp4"
+  },
+  "sabtahval": {
+    "userName": "caspUser",
+    "password": "casp456"
+  }
+}

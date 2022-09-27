@@ -9,7 +9,6 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.biz.folder.Biz_07_FolderQuestionUnAssign;
-import ir.khalili.products.odds.core.biz.user.Biz_01_UserFetchAll;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 
@@ -40,7 +39,7 @@ public class VRTCL_07_FolderQuestionUnAssign extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_07_FolderQuestionUnAssign.createAccount(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_07_FolderQuestionUnAssign.questionUnAssign(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

@@ -9,7 +9,6 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.biz.competition.Biz_08_CompetitionQuestionUnAssign;
-import ir.khalili.products.odds.core.biz.user.Biz_01_UserFetchAll;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 
@@ -40,7 +39,7 @@ public class VRTCL_08_CompetitionQuestionUnAssign extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_08_CompetitionQuestionUnAssign.createAccount(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_08_CompetitionQuestionUnAssign.questionUnAssign(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

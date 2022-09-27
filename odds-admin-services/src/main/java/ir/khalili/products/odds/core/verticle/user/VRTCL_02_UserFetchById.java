@@ -8,7 +8,6 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.user.Biz_01_UserFetchAll;
 import ir.khalili.products.odds.core.biz.user.Biz_02_UserFetchById;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
@@ -40,7 +39,7 @@ public class VRTCL_02_UserFetchById extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_02_UserFetchById.createAccount(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_02_UserFetchById.fetchById(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

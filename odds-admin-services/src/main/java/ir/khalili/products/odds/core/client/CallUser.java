@@ -32,13 +32,12 @@ public class CallUser extends AbstractVerticle {
 
 
 	public void userFetchAll(WebClient client) {
-		JsonObject joInput = new JsonObject();
 		
 		try {
 			client.post(port, host, "/v1/service/odds/user/fetch/all")
 			.putHeader("API-KEY", CallAuth.API_KEY)
 			.putHeader("Authorization", CallAuth.token)
-			.sendJson(joInput, ar -> {
+			.send(ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());

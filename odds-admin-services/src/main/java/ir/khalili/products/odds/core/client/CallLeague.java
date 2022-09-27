@@ -17,7 +17,7 @@ public class CallLeague extends AbstractVerticle {
 
 	public static void main(String[] args) {
 
-		System.out.println("CallOtp STARTING ......");
+		System.out.println("CallLeague STARTING ......");
 		Vertx vertx = Vertx.vertx();
 		vertx.deployVerticle(new CallLeague());
 	}
@@ -25,26 +25,22 @@ public class CallLeague extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-		customerPostcodeUpdate(client);
-		customerMailUpdate(client);
-		customerCellphoneUpdate(client);
-		customerPhoneUpdate(client);
-		customerPostcodeInquery(client);
+		leagueSave(client);
+		leagueUpdate(client);
+		leagueDelete(client);
+		leagueFetchById(client);
+		leagueFetchAll(client);
 	}
 
-	public void customerPhoneUpdate(WebClient client) {
+	public void leagueSave(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("phone", 2188553432L);
-		joInput.put("code", 123456);
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/nas/customer/update/phone")
+			client.post(port, host, "/v1/service/odds/league/save")
 					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
-					.putHeader("customerSession", "customerSession")
-					.putHeader("agentSession", "agentSession")
 					.sendJson(joInput, ar -> {
 						try {
 							if (ar.succeeded()) {
@@ -66,18 +62,15 @@ public class CallLeague extends AbstractVerticle {
 		}
 	}
 
-	public void customerCellphoneUpdate(WebClient client) {
+	public void leagueUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("cellphone", 9359308163L);
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/nas/customer/update/cellphone")
+			client.post(port, host, "/v1/service/odds/league/update")
 					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
-					.putHeader("customerSession", "customerSession")
-					.putHeader("agentSession", "agentSession")
 					.sendJson(joInput, ar -> {
 						try {
 							if (ar.succeeded()) {
@@ -99,18 +92,15 @@ public class CallLeague extends AbstractVerticle {
 		}
 	}
 
-	public void customerMailUpdate(WebClient client) {
+	public void leagueDelete(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("email", "amir.mail@gmail.com");
-		joInput.put("code", 123456);
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/nas/customer/update/mail").putHeader("API-KEY", CallAuth.API_KEY)
+			client.post(port, host, "/v1/service/odds/league/delete")
+					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
-					.putHeader("customerSession", "customerSession")
-					.putHeader("agentSession", "agentSession")
 					.sendJson(joInput, ar -> {
 						try {
 							if (ar.succeeded()) {
@@ -132,18 +122,15 @@ public class CallLeague extends AbstractVerticle {
 		}
 	}
 
-	public void customerPostcodeUpdate(WebClient client) {
+	public void leagueFetchAll(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("postcode", 3158633519L);
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/nas/customer/update/postcode")
+			client.post(port, host, "/v1/service/odds/league/fetch/all")
 					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
-					.putHeader("customerSession", "customerSession")
-					.putHeader("agentSession", "agentSession")
 					.sendJson(joInput, ar -> {
 						try {
 							if (ar.succeeded()) {
@@ -165,20 +152,16 @@ public class CallLeague extends AbstractVerticle {
 		}
 	}
 
-	public void customerPostcodeInquery(WebClient client) {
+	public void leagueFetchById(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("postcode", 3158633519L);
-//		joInput.put("username", "caspUser"); // optional
-//		joInput.put("password", "casp00123"); // optional
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/nas/customer/inquery/postcode")
+			client.post(port, host, "/v1/service/odds/league/fetch/id")
 					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
-					.putHeader("customerSession", "customerSession")
-					.putHeader("agentSession", "agentSession")
+					
 					.sendJson(joInput, ar -> {
 						try {
 							if (ar.succeeded()) {

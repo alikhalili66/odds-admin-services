@@ -17,7 +17,7 @@ public class CallFolder extends AbstractVerticle {
 
 	public static void main(String[] args) {
 
-		System.out.println("CallCustomer STARTING ......");
+		System.out.println("CallFolder STARTING ......");
 		Vertx vertx = Vertx.vertx();
 		vertx.deployVerticle(new CallFolder());
 	}
@@ -25,10 +25,138 @@ public class CallFolder extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-		customerPasswordRecovery(client);
+		folderSave(client);
+		folderUpdate(client);
+		folderDelete(client);
+		folderFetchById(client);
+		folderFetchAll(client);
+		folderQuestionAssign(client);
+		folderQuestionUnAssign(client);
+		folderQuestionFetch(client);
+		
 	}
 
-	public void customerPasswordRecovery(WebClient client) {
+	public void folderSave(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/folder/save")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void folderUpdate(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/folder/update")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void folderDelete(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/folder/delete")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void folderFetchAll(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/folder/fetch/all")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void folderFetchById(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
 		joInput.put("nationalNumber", "3241378012");
@@ -37,7 +165,7 @@ public class CallFolder extends AbstractVerticle {
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/nas/customer/password/recovery")
+			client.post(port, host, "/v1/service/odds/folder/fetch/id")
 					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
 					.putHeader("agentSession", "agentSession")
@@ -62,5 +190,94 @@ public class CallFolder extends AbstractVerticle {
 		}
 	}
 
+	public void folderQuestionAssign(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/folder/assign/question")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void folderQuestionUnAssign(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/folder/unaasign/question")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void folderQuestionFetch(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/folder/fetch/question")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
 
 }

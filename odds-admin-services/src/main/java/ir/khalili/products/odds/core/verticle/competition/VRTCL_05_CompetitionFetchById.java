@@ -9,7 +9,6 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.biz.competition.Biz_05_CompetitionFetchById;
-import ir.khalili.products.odds.core.biz.user.Biz_01_UserFetchAll;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 
@@ -40,7 +39,7 @@ public class VRTCL_05_CompetitionFetchById extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_05_CompetitionFetchById.createAccount(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_05_CompetitionFetchById.fetchById(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

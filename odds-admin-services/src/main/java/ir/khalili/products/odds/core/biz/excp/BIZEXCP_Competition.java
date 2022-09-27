@@ -2,16 +2,16 @@ package ir.khalili.products.odds.core.biz.excp;
 
 import ir.khalili.products.odds.core.dao.excp.DAOException;
 
-public class BIZEXCP_SendOtp extends DAOException {
+public class BIZEXCP_Competition extends DAOException {
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = -2171645951496957618L;
+	private static final long serialVersionUID = -217168795149692618L;
 
 	private int resultCode;
 	private String resultMessage;
 
-	public BIZEXCP_SendOtp(int resultCode, String resultMessage) {
+	public BIZEXCP_Competition(int resultCode, String resultMessage) {
 		super();
 		this.resultCode = resultCode;
 		this.resultMessage = resultMessage;

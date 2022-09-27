@@ -10,7 +10,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
-import ir.khalili.products.odds.core.validation.AuthInputValidationUtil;
+import ir.khalili.products.odds.core.validation.QuestionInputValidationUtil;
 
 /**
  * @author A.KH
@@ -21,7 +21,7 @@ public class RtMgr_02_QuestionUpdate   {
 	
 	public static void handler(RoutingContext context) {
 		
-		AuthInputValidationUtil.validateAgent(context, validateHandler->{
+		QuestionInputValidationUtil.validateUpdate(context, validateHandler->{
 			
 			if(validateHandler.failed()) {
 

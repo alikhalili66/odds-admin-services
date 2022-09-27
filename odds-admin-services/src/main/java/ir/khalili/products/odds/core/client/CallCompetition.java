@@ -17,7 +17,7 @@ public class CallCompetition extends AbstractVerticle {
 	
 	public static void main(String[] args) {
 
-		System.out.println("CallAgent STARTING ......");
+		System.out.println("CallCompetition STARTING ......");
 		Vertx vertx = Vertx.vertx();
 		vertx.deployVerticle(new CallCompetition());
 	}
@@ -26,22 +26,23 @@ public class CallCompetition extends AbstractVerticle {
 	public void start() throws Exception {
 
 		WebClient client = WebClient.create(vertx);
-//		doSaveAgent(client);
-//		doDeleteAgent(client);
-//		fetchAllAgent(client);
-//		doUpdateAgent(client);
-		fetchAgentById(client);
+		competitionSave(client);
+		competitionUpdate(client);
+		competitionDelete(client);
+		competitionFetchAll(client);
+		competitionFetchById(client);
+		competitionGroupFetch(client);
+		competitionQuestionAssign(client);
+		competitionQuestionUnAssign(client);
+		competitionQuestionFetch(client);
 	}
 
-	public void doUpdateAgent(WebClient client) {
-		JsonObject joUpdateAgent = new JsonObject();
-		joUpdateAgent.put("agentId", 2);
-		joUpdateAgent.put("isActive", "N");
-		joUpdateAgent.put("name", "test2");
+	public void competitionSave(WebClient client) {
+		JsonObject joInput = new JsonObject();
 		
-		System.out.println("joUpdateAgent:" + joUpdateAgent);
+		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/nas/agent/update").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joUpdateAgent, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/save").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -62,10 +63,14 @@ public class CallCompetition extends AbstractVerticle {
 		}
 	}
 	
-	public void fetchAllAgent(WebClient client) {
+	public void competitionUpdate(WebClient client) {
+		
+		JsonObject joInput = new JsonObject();
+		
+		System.out.println("joInput:" + joInput);
 		
 		try {
-			client.post(port, host, "/v1/service/nas/agent/fetch/all").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).send(ar -> {
+			client.post(port, host, "/v1/service/odds/competition/update").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -86,13 +91,12 @@ public class CallCompetition extends AbstractVerticle {
 		}
 	}
 	
-	public void fetchAgentById(WebClient client) {
-		JsonObject joFetchAgentById = new JsonObject();
-		joFetchAgentById.put("agentId", 2);
+	public void competitionDelete(WebClient client) {
+		JsonObject joInput = new JsonObject();
 		
-		System.out.println("joFetchAgentById:" + joFetchAgentById);
+		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/nas/agent/fetch/id").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joFetchAgentById, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/delete").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -114,13 +118,12 @@ public class CallCompetition extends AbstractVerticle {
 	}
 	
 	
-	public void doDeleteAgent(WebClient client) {
-		JsonObject joDelete = new JsonObject();
-		joDelete.put("agentId", 2);
+	public void competitionFetchAll(WebClient client) {
+		JsonObject joInput = new JsonObject();
 		
-		System.out.println("doDeleteAgent:" + joDelete);
+		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/nas/agent/delete").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joDelete, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/fetch/all").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -143,17 +146,12 @@ public class CallCompetition extends AbstractVerticle {
 	
 
 	
-	public void doSaveAgent(WebClient client) {
-		JsonObject joSaveAgent = new JsonObject();
-		joSaveAgent.put("name", "تاپ");
-		joSaveAgent.put("symbol", "APPPPPPP2");
-		joSaveAgent.put("isActive", "N");
-		joSaveAgent.put("username", "Agent1234");
-		joSaveAgent.put("password", "AgentPass");
+	public void competitionFetchById(WebClient client) {
+		JsonObject joInput = new JsonObject();
 		
-		System.out.println("joSaveAgent:" + joSaveAgent);
+		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/nas/agent/save").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joSaveAgent, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/fetch/id").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -174,5 +172,108 @@ public class CallCompetition extends AbstractVerticle {
 		}
 	}
 
+	public void competitionGroupFetch(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		
+		System.out.println("joInput:" + joInput);
+		try {
+			client.post(port, host, "/v1/service/odds/competition/fetch/group").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void competitionQuestionAssign(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		
+		System.out.println("joInput:" + joInput);
+		try {
+			client.post(port, host, "/v1/service/odds/competition/assign/question").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void competitionQuestionUnAssign(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		
+		System.out.println("joInput:" + joInput);
+		try {
+			client.post(port, host, "/v1/service/odds/competition/unassign/question").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void competitionQuestionFetch(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		
+		System.out.println("joInput:" + joInput);
+		try {
+			client.post(port, host, "/v1/service/odds/competition/fetch/question").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
 
 }

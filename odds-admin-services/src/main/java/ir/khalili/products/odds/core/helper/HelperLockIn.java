@@ -10,7 +10,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.WebClient;
 import ir.khalili.products.odds.core.EntryPoint;
-import ir.khalili.products.odds.core.biz.excp.BIZEXCP_LockIn;
+import ir.khalili.products.odds.core.biz.excp.BIZEXCP_Group;
 import ir.khalili.products.odds.core.enums.AccessLockIn;
 import ir.khalili.products.odds.core.enums.UserType;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
@@ -51,7 +51,7 @@ public class HelperLockIn {
                     promise.complete(result.getJsonObject("info"));
                 } else {
                     logger.error(resHandler.result().bodyAsJsonObject());
-                    promise.fail(new BIZEXCP_LockIn(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
+                    promise.fail(new BIZEXCP_Group(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
                 }
             } else {
                 logger.error(resHandler.cause());
@@ -81,7 +81,7 @@ public class HelperLockIn {
                     promise.complete(result.getJsonObject("info"));
                 } else {
                     logger.error(resHandler.result().bodyAsJsonObject());
-                    promise.fail(new BIZEXCP_LockIn(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
+                    promise.fail(new BIZEXCP_Group(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
                 }
             } else {
                 logger.error(resHandler.cause());
@@ -191,7 +191,7 @@ public class HelperLockIn {
                     promise.complete(result.getJsonObject("info"));
                 } else {
                     logger.error(resHandler.result().bodyAsJsonObject());
-                    promise.fail(new BIZEXCP_LockIn(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
+                    promise.fail(new BIZEXCP_Group(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
                 }
             } else {
                 logger.error(resHandler.cause());
@@ -220,7 +220,7 @@ public class HelperLockIn {
                     promise.complete();
                 } else {
                     logger.error(resHandler.result().bodyAsJsonObject());
-                    promise.fail(new BIZEXCP_LockIn(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
+                    promise.fail(new BIZEXCP_Group(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
                 }
             } else {
                 logger.error(resHandler.cause());
@@ -250,7 +250,7 @@ public class HelperLockIn {
                     promise.complete();
                 } else {
                     logger.error(resHandler.result().bodyAsJsonObject());
-                    promise.fail(new BIZEXCP_LockIn(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
+                    promise.fail(new BIZEXCP_Group(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
                 }
             } else {
                 logger.error(resHandler.cause());
@@ -277,7 +277,7 @@ public class HelperLockIn {
                     promise.complete();
                 } else {
                     logger.error(resHandler.result().bodyAsJsonObject());
-                    promise.fail(new BIZEXCP_LockIn(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
+                    promise.fail(new BIZEXCP_Group(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
                 }
             } else {
                 logger.error(resHandler.cause());

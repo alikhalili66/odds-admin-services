@@ -17,41 +17,166 @@ public class CallTeam extends AbstractVerticle {
 	
 	public static void main(String[] args) {
 
-		System.out.println("CallSMS STARTING ......");
+		System.out.println("CallTeam STARTING ......");
 		Vertx vertx = Vertx.vertx();
 		vertx.deployVerticle(new CallTeam());
 	}
 
 	@Override
 	public void start() throws Exception {
-
 		WebClient client = WebClient.create(vertx);
-		sendSms(client);
-		
+		teamSave(client);
+		teamUpdate(client);
+		teamDelete(client);
+		teamFetchById(client);
+		teamFetchAll(client);
 	}
-	
-	private void sendSms(WebClient client) {
-		JsonObject joSend = new JsonObject();
-		joSend.put("text", "سلام");
-		joSend.put("cellphone", 9124083504L);
-		
-		System.out.println("joHistory:" + joSend);
-		try {
-			client.post(port, host, "/v1/service/NAS/sms/send").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joSend, ar -> {
-				try {
-					if (ar.succeeded()) {
-						JsonObject response = new JsonObject(ar.result().bodyAsString());
-						System.out.println(Json.encodePrettily(response));
-					} else {
-						System.out.println(ar.cause());
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-				} finally {
 
-					System.exit(0);
-				}
-			});
+	public void teamSave(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/team/save")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void teamUpdate(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/team/update")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void teamDelete(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/team/delete")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void teamFetchAll(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/team/fetch/all")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void teamFetchById(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/team/fetch/id")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(0);

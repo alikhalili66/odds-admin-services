@@ -39,7 +39,7 @@ public class VRTCL_01_FolderSave extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_01_FolderSave.createAccount(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_01_FolderSave.save(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

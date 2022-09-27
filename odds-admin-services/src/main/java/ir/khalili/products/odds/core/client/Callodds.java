@@ -5,7 +5,6 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.WebClient;
-import ir.khalili.products.odds.core.enums.ServiceType;
 
 /**
  * @author A.KH
@@ -33,36 +32,6 @@ public class Callodds extends AbstractVerticle {
 		fetchAllServiceByAgentId(client);
 	}
 
-	public void doUpdateServiceAgent(WebClient client) {
-		
-		JsonObject joInput = new JsonObject();
-		joInput.put("serviceId", ServiceType.CHANGE_CUSTOMER_PHONE.getServiceId());
-		joInput.put("agentId", 2);
-		joInput.put("isActive", "Y");
-		
-		System.out.println("joInput:" + joInput);
-		
-		try {
-			client.post(port, host, "/v1/service/nas/service/agent/update").putHeader("API-KEY", CallAuth.API_KEY).putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
-				try {
-					if (ar.succeeded()) {
-						JsonObject response = new JsonObject(ar.result().bodyAsString());
-						System.out.println(Json.encodePrettily(response));
-					} else {
-						System.out.println(ar.cause());
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-
-					System.exit(0);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
 	
 	
 	public void doUpdateService(WebClient client) {

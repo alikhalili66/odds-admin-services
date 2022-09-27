@@ -17,7 +17,7 @@ public class CallUser extends AbstractVerticle {
 	
 	public static void main(String[] args) {
 
-		System.out.println("CallTask STARTING ......");
+		System.out.println("CallUser STARTING ......");
 		Vertx vertx = Vertx.vertx();
 		vertx.deployVerticle(new CallUser());
 	}
@@ -25,20 +25,75 @@ public class CallUser extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-		fetchCustomerTaskFetchAll(client);
-//		fetchAllTaskByOperatorId(client);
+		userFetchAll(client);
+		userFetchById(client);
+		userFetchOdds(client);
 	}
 
 
-	public void fetchCustomerTaskFetchAll(WebClient client) {
+	public void userFetchAll(WebClient client) {
 		JsonObject joInput = new JsonObject();
 		
 		try {
-			client.post(port, host, "/v1/service/nas/task/customer/fetch")
+			client.post(port, host, "/v1/service/odds/user/fetch/all")
 			.putHeader("API-KEY", CallAuth.API_KEY)
 			.putHeader("Authorization", CallAuth.token)
-			.putHeader("customerSession", "customerSession")
-			.putHeader("agentSession", "agentSession")
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void userFetchById(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		
+		try {
+			client.post(port, host, "/v1/service/odds/user/fetch/id")
+			.putHeader("API-KEY", CallAuth.API_KEY)
+			.putHeader("Authorization", CallAuth.token)
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void userFetchOdds(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		
+		try {
+			client.post(port, host, "/v1/service/odds/user/fetch/odds")
+			.putHeader("API-KEY", CallAuth.API_KEY)
+			.putHeader("Authorization", CallAuth.token)
 			.sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {

@@ -29,15 +29,39 @@ public final class LeagueInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			String name;
+			String symbol;
+			String image;
+			String activeFrom;
+			String activeTo;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            name = inputParameters.getString("name");
+	            symbol = inputParameters.getString("symbol");
+	            image = inputParameters.getString("image");
+	            activeFrom = inputParameters.getString("activeFrom");
+	            activeTo = inputParameters.getString("activeTo");
+
+	            if (null == name || name.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نام معتبر نمی باشد");
+	            }
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
+	            if (null == symbol || symbol.isEmpty()) {
+	            	throw new EXCP_RtMgr_Validation(-603, "فیلد نماد معتبر نمی باشد");
+	            }
+	            
+	            if (null == image || image.isEmpty()) {
+	            	throw new EXCP_RtMgr_Validation(-603, "فیلد تصویر معتبر نمی باشد");
+	            }
+	            
+	            if (null == activeFrom || activeFrom.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
+	            }
+	            
+	            if (null == activeTo || activeTo.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -50,9 +74,13 @@ public final class LeagueInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
+			joResult.put("name", name);
+			joResult.put("symbol", symbol);
+			joResult.put("image", image);
+			joResult.put("activeFrom", activeFrom);
+			joResult.put("activeTo", activeTo);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joSession.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

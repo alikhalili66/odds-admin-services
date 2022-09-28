@@ -93,6 +93,7 @@ public class CallCompetition extends AbstractVerticle {
 	
 	public void competitionDelete(WebClient client) {
 		JsonObject joInput = new JsonObject();
+		joInput.put("competitionId", 1);
 		
 		System.out.println("joInput:" + joInput);
 		try {
@@ -119,11 +120,12 @@ public class CallCompetition extends AbstractVerticle {
 	
 	
 	public void competitionFetchAll(WebClient client) {
-		JsonObject joInput = new JsonObject();
-		
-		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/odds/competition/fetch/all").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+			client
+			.post(port, host, "/v1/service/odds/competition/fetch/all")
+			.putHeader("Authorization", CallAuth.token)
+			.putHeader("API-KEY", CallAuth.API_KEY)
+			.send(ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -148,6 +150,7 @@ public class CallCompetition extends AbstractVerticle {
 	
 	public void competitionFetchById(WebClient client) {
 		JsonObject joInput = new JsonObject();
+		joInput.put("competitionId", 1);
 		
 		System.out.println("joInput:" + joInput);
 		try {

@@ -1,5 +1,8 @@
 package ir.khalili.products.odds.core.dao;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.LogManager;
@@ -15,6 +18,7 @@ import ir.khalili.products.odds.core.excp.dao.DAOEXCP_Internal;
 public class DAO_Competition {
 
     private static final Logger logger = LogManager.getLogger(DAO_Competition.class);
+    private static final DateFormat formatter = new SimpleDateFormat("YYYYMMDD");
     
     public static Future<Boolean> checkCustomerValidTo(SQLConnection sqlConnection, Long customerId, Long serviceId) {
         Promise<Boolean> promise = Promise.promise();
@@ -26,20 +30,35 @@ public class DAO_Competition {
 		Promise<Void> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
-		params.add(message.getInteger("parentId"));
-		params.add(message.getInteger("leagueId"));
-		params.add(message.getInteger("name"));
-		params.add(message.getInteger("userId"));
+		
+		try {
+			params.add(message.getInteger("leagueId"));
+			params.add(message.getInteger("teamId1"));
+			params.add(message.getInteger("teamId2"));
+			params.add(message.getInteger("groupId"));
+			params.add((Date)formatter.parse(message.getString("activeFrom")));
+			params.add((Date)formatter.parse(message.getString("activeTo")));
+			params.add((Date)formatter.parse(message.getString("activeTo")));
+			params.add((Date)formatter.parse(message.getString("activeTo")));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		sqlConnection.updateWithParams(""
-				+ "insert into toppfolder("
-				+ "id,"
-				+ "parent_id,"
-				+ "league_id,"
-				+ "name,"
+				+ "insert into toppcompetition("
+				+ "ID,"
+				+ "LEAGUE_ID,"
+				+ "TEAM1_ID,"
+				+ "TEAM2_ID,"
+				+ "GROUP_ID,"
+				+ "ACTIVEFROM,"
+				+ "ACTIVETO,"
+				+ "ODDSFROM,"
+				+ "ODDSTO,"
 				+ "creationDate,"
 				+ "createdBy_id)"
-				+ "values(soppfolder.nextval,?,?,?,sysdate,?)", params, resultHandler->{
+				+ "values(soppcompetition.nextval,?,?,?,?,?,?,?,?,sysdate,?)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -101,12 +120,14 @@ public class DAO_Competition {
         sqlConnection.query("SELECT "
         		+ "c.id,"
         		+ "c.LEAGUE_ID,"
-        		+ "c.TEAM0_ID,"
         		+ "c.TEAM1_ID,"
+        		+ "c.TEAM2_ID,"
         		+ "c.GROUP_ID,"
+        		+ "c.RESULT,"
         		+ "To_Char(c.ACTIVEFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_FROM,"
         		+ "To_Char(c.ACTIVETO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_TO,"
-        		+ "To_Char(c.ODDSTIME,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_TIME,"
+        		+ "To_Char(c.ODDSFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_FROM,"
+        		+ "To_Char(c.ODDSTO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_TO,"
         		+ "To_Char(c.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppcompetition c WHERE c.dto is null", handler -> {
             if (handler.failed()) {
@@ -133,12 +154,14 @@ public class DAO_Competition {
         sqlConnection.queryWithParams("SELECT "
         		+ "c.id,"
         		+ "c.LEAGUE_ID,"
-        		+ "c.TEAM0_ID,"
         		+ "c.TEAM1_ID,"
+        		+ "c.TEAM2_ID,"
         		+ "c.GROUP_ID,"
+        		+ "c.RESULT,"
         		+ "To_Char(c.ACTIVEFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_FROM,"
         		+ "To_Char(c.ACTIVETO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_TO,"
-        		+ "To_Char(c.ODDSTIME,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_TIME,"
+        		+ "To_Char(c.ODDSFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_FROM,"
+        		+ "To_Char(c.ODDSTO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_TO,"
         		+ "To_Char(c.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppcompetition c WHERE c.id=? and c.dto is null", params, handler -> {
             if (handler.failed()) {

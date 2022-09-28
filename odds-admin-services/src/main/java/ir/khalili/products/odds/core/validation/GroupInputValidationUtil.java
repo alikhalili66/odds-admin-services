@@ -28,15 +28,33 @@ public final class GroupInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			Integer leagueId;
+			String name;
+			String activeFrom;
+			String activeTo;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            leagueId = inputParameters.getInteger("leagueId");
+	            name = inputParameters.getString("name");
+	            activeFrom = inputParameters.getString("activeFrom");
+	            activeTo = inputParameters.getString("activeTo");
+
+	            if (null == name || name.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نام معتبر نمی باشد");
+	            }
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
+	            if (null == leagueId || leagueId < 1) {
+	            	throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
+	            
+	            if (null == activeFrom || activeFrom.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
+	            }
+	            
+	            if (null == activeTo || activeTo.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -49,9 +67,12 @@ public final class GroupInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
+			joResult.put("name", name);
+			joResult.put("leagueId", leagueId);
+			joResult.put("activeFrom", activeFrom);
+			joResult.put("activeTo", activeTo);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joSession.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

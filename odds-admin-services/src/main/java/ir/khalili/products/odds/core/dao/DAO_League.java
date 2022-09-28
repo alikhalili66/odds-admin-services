@@ -1,5 +1,8 @@
 package ir.khalili.products.odds.core.dao;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.LogManager;
@@ -15,6 +18,7 @@ import ir.khalili.products.odds.core.excp.dao.DAOEXCP_Internal;
 public class DAO_League {
 
     private static final Logger logger = LogManager.getLogger(DAO_League.class);
+    private static final DateFormat formatter = new SimpleDateFormat("YYYYMMDD");
     
     public static Future<Boolean> checkCustomerValidTo(SQLConnection sqlConnection, Long customerId, Long serviceId) {
         Promise<Boolean> promise = Promise.promise();
@@ -26,20 +30,29 @@ public class DAO_League {
 		Promise<Void> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
-		params.add(message.getInteger("parentId"));
-		params.add(message.getInteger("leagueId"));
-		params.add(message.getInteger("name"));
-		params.add(message.getInteger("userId"));
+		
+		try {
+			params.add(message.getString("name"));
+			params.add(message.getString("symbol"));
+			params.add(message.getString("image"));
+			params.add((Date)formatter.parse(message.getString("activeFrom")));
+			params.add((Date)formatter.parse(message.getString("activeTo")));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		sqlConnection.updateWithParams(""
-				+ "insert into toppfolder("
-				+ "id,"
-				+ "parent_id,"
-				+ "league_id,"
-				+ "name,"
+				+ "insert into toppleague("
+				+ "ID,"
+				+ "NAME,"
+				+ "SYMBOL,"
+				+ "IMAGE,"
+				+ "ACTIVEFROM,"
+				+ "ACTIVETO,"
 				+ "creationDate,"
 				+ "createdBy_id)"
-				+ "values(soppfolder.nextval,?,?,?,sysdate,?)", params, resultHandler->{
+				+ "values(soppleague.nextval,?,?,?,?,?,sysdate,?)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

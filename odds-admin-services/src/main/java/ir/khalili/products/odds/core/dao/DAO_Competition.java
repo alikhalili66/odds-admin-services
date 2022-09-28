@@ -223,20 +223,30 @@ public class DAO_Competition {
         return promise.future();
     }
     
-    public static Future<JsonObject> fetchQuestion(SQLConnection sqlConnection, Long customerId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<List<JsonObject>> fetchQuestion(SQLConnection sqlConnection, JsonObject message) {
+        Promise<List<JsonObject>> promise = Promise.promise();
         JsonArray params = new JsonArray();
-        params.add(customerId);
-        sqlConnection.queryWithParams("SELECT * FROM tnascustomer WHERE id = ? and dto is null", params, handler -> {
+        params.add(message.getInteger("competitionId"));
+        
+        sqlConnection.queryWithParams(""
+        		+ "select "
+        		+ "cq.QUESTION_ID, "
+        		+ "q.question, "
+        		+ "cq.RESULT, "
+        		+ "q.answers "
+        		+ "from "
+        		+ "toppquestion q, toppcompetitionquestion cq "
+        		+ "where "
+        		+ "cq.COMPETITION_ID=? and q.dto is null", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
 
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "مشتری مورد نظر موجود نمی باشد."));
+                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
-                    logger.trace("updateCustomerLocationInfoSuccessful");
-                    promise.complete(handler.result().getRows().get(0));
+                    logger.trace("CompetitionfetchQuestionSuccessful");
+                    promise.complete(handler.result().getRows());
                 }
             
             }

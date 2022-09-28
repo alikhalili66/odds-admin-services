@@ -20,7 +20,7 @@ public final class TeamInputValidationUtil {
 
 	public static void validateSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -29,15 +29,27 @@ public final class TeamInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			String name;
+			String symbol;
+			String image;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            name = inputParameters.getString("name");
+	            symbol = inputParameters.getString("symbol");
+	            image = inputParameters.getString("image");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	            if (null == name || name.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نام معتبر نمی باشد");
+	            }
+
+	            if (null == symbol || symbol.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نماد معتبر نمی باشد");
+	            }
+
+	            if (null == image || image.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد تصویر معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -50,9 +62,10 @@ public final class TeamInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("name", name);
+			joResult.put("symbol", symbol);
+			joResult.put("image", image);
+			joResult.put("userId", joSession.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -64,7 +77,7 @@ public final class TeamInputValidationUtil {
 	
 	public static void validateUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -81,7 +94,7 @@ public final class TeamInputValidationUtil {
 	            cellphone = inputParameters.getLong("cellphone");
 	            
 	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -108,7 +121,7 @@ public final class TeamInputValidationUtil {
 	
 	public static void validateDelete(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -117,15 +130,15 @@ public final class TeamInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			Integer teamId;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            teamId = inputParameters.getInteger("teamId");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	            if (null == teamId || teamId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه تیم معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -138,9 +151,7 @@ public final class TeamInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("teamId", teamId);
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -152,7 +163,7 @@ public final class TeamInputValidationUtil {
 	
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -161,30 +172,7 @@ public final class TeamInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
-
-	        try {
-	            final JsonObject inputParameters = InputValidationUtil.validate(context);
-
-	            cellphone = inputParameters.getLong("cellphone");
-	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
-	            }
-
-	        } catch (EXCP_RtMgr_Validation e) {
-				resultHandler.handle(Future.failedFuture(e));
-				return;
-			} catch (Exception e) {
-				logger.error("INPUT TYPE VALIDATION FAILED.", e);
-				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
-				return;
-			}
-
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -196,7 +184,7 @@ public final class TeamInputValidationUtil {
 	
 	public static void validateFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -205,15 +193,15 @@ public final class TeamInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			Integer teamId;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            teamId = inputParameters.getInteger("teamId");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	            if (null == teamId || teamId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه تیم معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -226,9 +214,7 @@ public final class TeamInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("teamId", teamId);
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

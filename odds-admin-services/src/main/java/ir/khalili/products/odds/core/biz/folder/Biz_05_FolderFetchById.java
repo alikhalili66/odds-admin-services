@@ -12,30 +12,28 @@ import ir.khalili.products.odds.core.dao.DAO_Folder;
 
 public class Biz_05_FolderFetchById {
 
-    private static final Logger logger = LogManager.getLogger(Biz_05_FolderFetchById.class);
+	private static final Logger logger = LogManager.getLogger(Biz_05_FolderFetchById.class);
 
-    public static void fetchById(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
+	public static void fetchById(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
+		logger.trace("inputMessage:" + message);
 
-        logger.trace("inputMessage:" + message);
+		final Integer folderId = message.getInteger("folderId");
 
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
+		DAO_Folder.fetchById(sqlConnection, folderId).onComplete(result -> {
+			if (result.failed()) {
+				resultHandler.handle(Future.failedFuture(result.cause()));
+				return;
+			}
 
-        DAO_Folder.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
-                return;
-            }
-            
+			logger.trace("FOLDER_FETCH_BY_ID_RESULT : " + result.result());
+
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()
 					.put("resultCode", 1)
 					.put("resultMessage", "عملیات با موفقیت انجام شد.")
-					));
+					.put("info", result.result())));
 
-
-        });
-
-    }
+		});
+	}
 
 }

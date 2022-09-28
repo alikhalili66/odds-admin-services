@@ -20,7 +20,7 @@ public final class QuestionInputValidationUtil {
 
 	public static void validateSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -29,15 +29,39 @@ public final class QuestionInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			Integer leagueId;
+			String question;
+			String answers;
+			String type;
+			Integer minPoint;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            leagueId = inputParameters.getInteger("leagueId");
+	            question = inputParameters.getString("question");
+	            answers = inputParameters.getString("answers");
+	            type = inputParameters.getString("type");
+	            minPoint = inputParameters.getInteger("minPoint");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	            if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
+
+	            if (null == question || question.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد سوال معتبر نمی باشد");
+	            }
+
+	            if (null == answers || answers.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد پاسخ معتبر نمی باشد");
+	            }
+
+	            if (null == type || type.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نوع معتبر نمی باشد");
+	            }
+
+	            if (null == minPoint || minPoint < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد minPoint معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -50,9 +74,12 @@ public final class QuestionInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("leagueId", leagueId);
+			joResult.put("question", question);
+			joResult.put("answers", answers);
+			joResult.put("type", type);
+			joResult.put("minPoint", minPoint);
+			joResult.put("userId", joSession.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -64,7 +91,7 @@ public final class QuestionInputValidationUtil {
 	
 	public static void validateUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -81,7 +108,7 @@ public final class QuestionInputValidationUtil {
 	            cellphone = inputParameters.getLong("cellphone");
 	            
 	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -108,7 +135,7 @@ public final class QuestionInputValidationUtil {
 	
 	public static void validateDelete(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -117,15 +144,15 @@ public final class QuestionInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			Integer questionId;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            questionId = inputParameters.getInteger("questionId");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	            if (null == questionId || questionId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه سوال معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -138,9 +165,7 @@ public final class QuestionInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("questionId", questionId);
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -152,7 +177,7 @@ public final class QuestionInputValidationUtil {
 	
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -161,30 +186,7 @@ public final class QuestionInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
-
-	        try {
-	            final JsonObject inputParameters = InputValidationUtil.validate(context);
-
-	            cellphone = inputParameters.getLong("cellphone");
-	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
-	            }
-
-	        } catch (EXCP_RtMgr_Validation e) {
-				resultHandler.handle(Future.failedFuture(e));
-				return;
-			} catch (Exception e) {
-				logger.error("INPUT TYPE VALIDATION FAILED.", e);
-				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
-				return;
-			}
-
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -196,7 +198,7 @@ public final class QuestionInputValidationUtil {
 	
 	public static void validateFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -205,15 +207,15 @@ public final class QuestionInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			Integer questionId;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            questionId = inputParameters.getInteger("questionId");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	            if (null == questionId || questionId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه سوال معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -226,9 +228,7 @@ public final class QuestionInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("questionId", questionId);
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

@@ -18,19 +18,21 @@ public class Biz_05_CompetitionFetchById {
 
         logger.trace("inputMessage:" + message);
 
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
+        final Integer competitionId = message.getInteger("competitionId");
 
-        DAO_Competition.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
+        DAO_Competition.fetchById(sqlConnection, competitionId).onComplete(result -> {
+            if (result.failed()) {
+                resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }
+            
+            logger.trace("COMPETITION_FETCH_BY_ID_RESULT : " + result.result());
             
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()
 					.put("resultCode", 1)
 					.put("resultMessage", "عملیات با موفقیت انجام شد.")
+					.put("info", result.result())
 					));
 
         });

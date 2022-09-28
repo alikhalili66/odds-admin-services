@@ -16,25 +16,25 @@ public class Biz_02_UserFetchById {
 
     public static void fetchById(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-        logger.trace("inputMessage:" + message);
+		logger.trace("inputMessage:" + message);
 
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
+		final Long userId = message.getLong("userId");
 
-        DAO_User.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
-                return;
-            }
-            
+		DAO_User.fetchById(sqlConnection, userId).onComplete(result -> {
+			if (result.failed()) {
+				resultHandler.handle(Future.failedFuture(result.cause()));
+				return;
+			}
+
+			logger.trace("USER_FETCH_BY_ID_RESULT : " + result.result());
+
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()
 					.put("resultCode", 1)
 					.put("resultMessage", "عملیات با موفقیت انجام شد.")
-					));
+					.put("info", result.result())));
 
-
-        });
+		});
 
     }
 

@@ -20,7 +20,7 @@ public final class LeagueInputValidationUtil {
 
 	public static void validateSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -37,7 +37,7 @@ public final class LeagueInputValidationUtil {
 	            cellphone = inputParameters.getLong("cellphone");
 	            
 	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -64,7 +64,7 @@ public final class LeagueInputValidationUtil {
 	
 	public static void validateUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -81,7 +81,7 @@ public final class LeagueInputValidationUtil {
 	            cellphone = inputParameters.getLong("cellphone");
 	            
 	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -108,7 +108,7 @@ public final class LeagueInputValidationUtil {
 	
 	public static void validateDelete(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -117,15 +117,15 @@ public final class LeagueInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			Integer leagueId;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            leagueId = inputParameters.getInteger("leagueId");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	            if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -138,9 +138,7 @@ public final class LeagueInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("leagueId", leagueId);
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -152,7 +150,7 @@ public final class LeagueInputValidationUtil {
 	
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -161,30 +159,7 @@ public final class LeagueInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
-
-	        try {
-	            final JsonObject inputParameters = InputValidationUtil.validate(context);
-
-	            cellphone = inputParameters.getLong("cellphone");
-	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
-	            }
-
-	        } catch (EXCP_RtMgr_Validation e) {
-				resultHandler.handle(Future.failedFuture(e));
-				return;
-			} catch (Exception e) {
-				logger.error("INPUT TYPE VALIDATION FAILED.", e);
-				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
-				return;
-			}
-
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -196,7 +171,7 @@ public final class LeagueInputValidationUtil {
 	
 	public static void validateFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -205,15 +180,15 @@ public final class LeagueInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			Integer leagueId;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            leagueId = inputParameters.getInteger("leagueId");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن صحیح نمی باشد.");
+	            if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -226,9 +201,7 @@ public final class LeagueInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("leagueId", leagueId);
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

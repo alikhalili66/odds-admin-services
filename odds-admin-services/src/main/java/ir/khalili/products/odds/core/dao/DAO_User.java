@@ -1,5 +1,7 @@
 package ir.khalili.products.odds.core.dao;
 
+import java.util.List;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -19,20 +21,32 @@ public class DAO_User {
         return promise.future();
     }
     
-    public static Future<JsonObject> fetchAll(SQLConnection sqlConnection, Long customerId) {
-        Promise<JsonObject> promise = Promise.promise();
-        JsonArray params = new JsonArray();
-        params.add(customerId);
-        sqlConnection.queryWithParams("SELECT * FROM tnascustomer WHERE id = ? and dto is null", params, handler -> {
+    public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        sqlConnection.query("SELECT "
+        		+ "u.id,"
+        		+ "u.NAME,"
+        		+ "u.LASTNAME,"
+        		+ "u.NIKENAME,"
+        		+ "u.AVATAR,"
+        		+ "u.POINT,"
+        		+ "u.NATIONALNUMBER,"
+        		+ "To_Char(u.BIRTHDATE,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') BIRTHDATE,"
+        		+ "u.PROVINCE,"
+        		+ "u.CITY,"
+        		+ "u.POSTCODE,"
+        		+ "u.ADDRESS,"
+        		+ "To_Char(u.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "  FROM toppuser u", handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
-
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "مشتری مورد نظر موجود نمی باشد."));
+                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
-                    logger.trace("updateCustomerLocationInfoSuccessful");
-                    promise.complete(handler.result().getRows().get(0));
+                    logger.trace("fetchAllUserSuccessful");
+                    promise.complete(handler.result().getRows());
                 }
             
             }
@@ -40,20 +54,34 @@ public class DAO_User {
 
         return promise.future();
     }
-
-    public static Future<JsonObject> fetchById(SQLConnection sqlConnection, Long customerId) {
+    
+    public static Future<JsonObject> fetchById(SQLConnection sqlConnection, Long userId) {
         Promise<JsonObject> promise = Promise.promise();
         JsonArray params = new JsonArray();
-        params.add(customerId);
-        sqlConnection.queryWithParams("SELECT * FROM tnascustomer WHERE id = ? and dto is null", params, handler -> {
+        params.add(userId);
+        
+        sqlConnection.queryWithParams("SELECT "
+        		+ "u.id,"
+        		+ "u.NAME,"
+        		+ "u.LASTNAME,"
+        		+ "u.NIKENAME,"
+        		+ "u.AVATAR,"
+        		+ "u.POINT,"
+        		+ "u.NATIONALNUMBER,"
+        		+ "To_Char(u.BIRTHDATE,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') BIRTHDATE,"
+        		+ "u.PROVINCE,"
+        		+ "u.CITY,"
+        		+ "u.POSTCODE,"
+        		+ "u.ADDRESS,"
+        		+ "To_Char(u.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "  FROM toppuser u where u.id=?", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
-
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "مشتری مورد نظر موجود نمی باشد."));
+                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
-                    logger.trace("updateCustomerLocationInfoSuccessful");
+                    logger.trace("fetchAllUserByIdSuccessful");
                     promise.complete(handler.result().getRows().get(0));
                 }
             

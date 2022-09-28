@@ -72,7 +72,7 @@ public final class InputValidationUtil {
 		return promise.future();
 	}
 
-	public static Future<JsonObject> validateAgentSession(RoutingContext context) {
+	public static Future<JsonObject> validateToken(RoutingContext context) {
 
 		Promise<JsonObject> promise = Promise.promise();
 

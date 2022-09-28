@@ -18,15 +18,16 @@ public class Biz_03_LeagueDelete {
 
         logger.trace("inputMessage:" + message);
 
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
+        final Integer leagueId = message.getInteger("leagueId");
 
-        DAO_League.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
+        DAO_League.delete(sqlConnection, leagueId).onComplete(result -> {
+            if (result.failed()) {
+                resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }
-
+            
+            logger.trace("LEAGUE_DELETE_SUCCESSFULL.");
+            
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()
 					.put("resultCode", 1)

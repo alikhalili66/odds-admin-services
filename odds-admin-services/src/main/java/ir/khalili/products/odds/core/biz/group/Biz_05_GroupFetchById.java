@@ -16,26 +16,25 @@ public class Biz_05_GroupFetchById {
 
     public static void groupFetchById(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-        logger.trace("inputMessage:" + message);
+		logger.trace("inputMessage:" + message);
 
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
+		final Integer groupId = message.getInteger("groupId");
 
-        DAO_Group.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
-                return;
-            }
-            
+		DAO_Group.fetchById(sqlConnection, groupId).onComplete(result -> {
+			if (result.failed()) {
+				resultHandler.handle(Future.failedFuture(result.cause()));
+				return;
+			}
+
+			logger.trace("GROUP_FETCH_BY_ID_RESULT : " + result.result());
+
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()
 					.put("resultCode", 1)
 					.put("resultMessage", "عملیات با موفقیت انجام شد.")
-					));
+					.put("info", result.result())));
 
-
-        });
-
+		});
     }
 
 }

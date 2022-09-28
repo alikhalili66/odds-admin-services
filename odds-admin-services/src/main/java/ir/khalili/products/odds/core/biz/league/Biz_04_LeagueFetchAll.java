@@ -16,24 +16,21 @@ public class Biz_04_LeagueFetchAll {
 
     public static void fetchAll(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-        logger.trace("inputMessage:" + message);
-
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
-
-        DAO_League.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
+        DAO_League.fetchAll(sqlConnection).onComplete(result -> {
+            if (result.failed()) {
+                resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }
-
+            
+            logger.trace("COMPETITION_FETCH_ALL_RESULT : " + result.result());
+            
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()
 					.put("resultCode", 1)
 					.put("resultMessage", "عملیات با موفقیت انجام شد.")
+					.put("info", result.result())
 					));
 
-			
         });
 
     }

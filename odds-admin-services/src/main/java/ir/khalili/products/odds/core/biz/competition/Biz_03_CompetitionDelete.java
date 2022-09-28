@@ -19,14 +19,15 @@ public class Biz_03_CompetitionDelete {
 
         logger.trace("inputMessage:" + message);
 
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
+        final Integer competitionId = message.getInteger("competitionId");
 
-        DAO_Competition.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
+        DAO_Competition.delete(sqlConnection, competitionId).onComplete(result -> {
+            if (result.failed()) {
+                resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }
+            
+            logger.trace("COMPETITION_DELETE_SUCCESSFULL.");
             
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()

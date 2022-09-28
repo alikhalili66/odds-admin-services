@@ -8,6 +8,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
+import ir.khalili.products.odds.core.dao.DAO_League;
 import ir.khalili.products.odds.core.dao.DAO_Question;
 
 public class Biz_03_QuestionDelete {
@@ -18,22 +19,22 @@ public class Biz_03_QuestionDelete {
 
         logger.trace("inputMessage:" + message);
 
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
+        final Integer questionId = message.getInteger("questionId");
 
-        DAO_Question.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
+        DAO_Question.delete(sqlConnection, questionId).onComplete(result -> {
+            if (result.failed()) {
+                resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }
-
+            
+            logger.trace("QUESTION_DELETE_SUCCESSFULL.");
+            
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()
 					.put("resultCode", 1)
 					.put("resultMessage", "عملیات با موفقیت انجام شد.")
 					));
 
-			
         });
 
     }

@@ -9,6 +9,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Competition;
+import ir.khalili.products.odds.core.dao.DAO_Folder;
 
 public class Biz_01_CompetitionSave {
 
@@ -18,12 +19,9 @@ public class Biz_01_CompetitionSave {
 
         logger.trace("inputMessage:" + message);
 
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
-
-        DAO_Competition.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
+        DAO_Competition.save(sqlConnection, message).onComplete(handler -> {
+            if (handler.failed()) {
+                resultHandler.handle(Future.failedFuture(handler.cause()));
                 return;
             }
             
@@ -34,7 +32,6 @@ public class Biz_01_CompetitionSave {
 					));
 
         });
-
     }
 
 }

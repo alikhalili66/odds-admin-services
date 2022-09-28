@@ -37,10 +37,10 @@ public final class AuthInputValidationUtil {
 			password = inputParameters.getString("password");
 
 			if (null == username || username.isEmpty() || username.length() > 100) {
-				throw new EXCP_RtMgr_Validation(-601, "نام کاربری صحیح نمی باشد.");
+				throw new EXCP_RtMgr_Validation(-601, "نام کاربری معتبر نمی باشد.");
 			}
 			if (null == password || password.isEmpty() || password.length() > 100) {
-				throw new EXCP_RtMgr_Validation(-602, "رمز عبور صحیح نمی باشد.");
+				throw new EXCP_RtMgr_Validation(-602, "رمز عبور معتبر نمی باشد.");
 			}
 
 		} catch (EXCP_RtMgr_Validation e) {
@@ -65,7 +65,7 @@ public final class AuthInputValidationUtil {
 
 	public static void validateCustomer(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateAgentSession(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -85,10 +85,10 @@ public final class AuthInputValidationUtil {
 				password = inputParameters.getString("password");
 
 				if (null == username || username.isEmpty() || username.length() > 100) {
-					throw new EXCP_RtMgr_Validation(-601, "نام کاربری صحیح نمی باشد.");
+					throw new EXCP_RtMgr_Validation(-601, "نام کاربری معتبر نمی باشد.");
 				}
 				if (null == password || password.isEmpty() || password.length() > 100) {
-					throw new EXCP_RtMgr_Validation(-602, "رمز عبور صحیح نمی باشد.");
+					throw new EXCP_RtMgr_Validation(-602, "رمز عبور معتبر نمی باشد.");
 				}
 
 			} catch (EXCP_RtMgr_Validation e) {

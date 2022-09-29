@@ -37,6 +37,7 @@ public final class CompetitionInputValidationUtil {
 			String activeTo;
 			String oddsFrom;
 			String oddsTo;
+			String competitionDate;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
@@ -49,6 +50,7 @@ public final class CompetitionInputValidationUtil {
 	            activeTo = inputParameters.getString("activeTo");
 	            oddsFrom = inputParameters.getString("oddsFrom");
 	            oddsTo = inputParameters.getString("oddsTo");
+	            competitionDate = inputParameters.getString("competitionDate");
 	            
 	            if (null == leagueId || leagueId < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
@@ -81,6 +83,10 @@ public final class CompetitionInputValidationUtil {
 	            if (null == oddsTo || oddsTo.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'پایان پیش بینی' معتبر نمی باشد");
 	            }
+
+	            if (null == competitionDate || competitionDate.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'تاریخ رقابت' معتبر نمی باشد");
+	            }
 	            
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
@@ -100,6 +106,7 @@ public final class CompetitionInputValidationUtil {
 			joResult.put("activeTo", activeTo);
 			joResult.put("oddsFrom", oddsFrom);
 			joResult.put("oddsTo", oddsTo);
+			joResult.put("competitionDate", competitionDate);
 
 			joResult.put("userId", joSession.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -122,17 +129,71 @@ public final class CompetitionInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			Integer competitionId;
+			Integer leagueId;
+			Integer teamId1;
+			Integer teamId2;
+			Integer groupId;
+			String activeFrom;
+			String activeTo;
+			String oddsFrom;
+			String oddsTo;
+			String competitionDate;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            competitionId = inputParameters.getInteger("competitionId");
+	            leagueId = inputParameters.getInteger("leagueId");
+	            teamId1 = inputParameters.getInteger("teamId1");
+	            teamId2 = inputParameters.getInteger("teamId2");
+	            groupId = inputParameters.getInteger("groupId");
+	            activeFrom = inputParameters.getString("activeFrom");
+	            activeTo = inputParameters.getString("activeTo");
+	            oddsFrom = inputParameters.getString("oddsFrom");
+	            oddsTo = inputParameters.getString("oddsTo");
+	            competitionDate = inputParameters.getString("competitionDate");
+
+	            if (null == competitionId || competitionId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه رقابت معتبر نمی باشد");
+	            }
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
+	            if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
 	            }
 
+	            if (null == teamId1 || teamId1 < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه تیم اول معتبر نمی باشد");
+	            }
+	            
+	            if (null == teamId2 || teamId2 < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه تیم دوم معتبر نمی باشد");
+	            }
+	            
+	            if (null == groupId || groupId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه گروه معتبر نمی باشد");
+	            }
+	            
+	            if (null == activeFrom || activeFrom.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
+	            }
+	            
+	            if (null == activeTo || activeTo.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
+	            }
+	            
+	            if (null == oddsFrom || oddsFrom.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'شروع پیش بینی' معتبر نمی باشد");
+	            }
+	            
+	            if (null == oddsTo || oddsTo.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'پایان پیش بینی' معتبر نمی باشد");
+	            }
+
+	            if (null == competitionDate || competitionDate.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'تاریخ رقابت' معتبر نمی باشد");
+	            }
+	            
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
 				return;
@@ -143,9 +204,18 @@ public final class CompetitionInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
+			joResult.put("competitionId", competitionId);
+			joResult.put("leagueId", leagueId);
+			joResult.put("teamId1", teamId1);
+			joResult.put("teamId2", teamId2);
+			joResult.put("groupId", groupId);
+			joResult.put("activeFrom", activeFrom);
+			joResult.put("activeTo", activeTo);
+			joResult.put("oddsFrom", oddsFrom);
+			joResult.put("oddsTo", oddsTo);
+			joResult.put("competitionDate", competitionDate);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joSession.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

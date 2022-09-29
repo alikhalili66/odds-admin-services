@@ -29,6 +29,7 @@ public final class TeamInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
+			Integer leagueId;
 			String name;
 			String symbol;
 			String image;
@@ -36,9 +37,14 @@ public final class TeamInputValidationUtil {
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
+	            leagueId = inputParameters.getInteger("leagueId");
 	            name = inputParameters.getString("name");
 	            symbol = inputParameters.getString("symbol");
 	            image = inputParameters.getString("image");
+
+	            if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
 	            
 	            if (null == name || name.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد نام معتبر نمی باشد");
@@ -62,6 +68,7 @@ public final class TeamInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
+			joResult.put("leagueId", leagueId);
 			joResult.put("name", name);
 			joResult.put("symbol", symbol);
 			joResult.put("image", image);
@@ -86,15 +93,39 @@ public final class TeamInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			Integer teamId;
+			Integer leagueId;
+			String name;
+			String symbol;
+			String image;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            teamId = inputParameters.getInteger("teamId");
+	            leagueId = inputParameters.getInteger("leagueId");
+	            name = inputParameters.getString("name");
+	            symbol = inputParameters.getString("symbol");
+	            image = inputParameters.getString("image");
+
+	            if (null == teamId || teamId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه تیم معتبر نمی باشد");
+	            }
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
+	            if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
+	            
+	            if (null == name || name.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نام معتبر نمی باشد");
+	            }
+
+	            if (null == symbol || symbol.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نماد معتبر نمی باشد");
+	            }
+
+	            if (null == image || image.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد تصویر معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -107,9 +138,12 @@ public final class TeamInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("teamId", teamId);
+			joResult.put("leagueId", leagueId);
+			joResult.put("name", name);
+			joResult.put("symbol", symbol);
+			joResult.put("image", image);
+			joResult.put("userId", joSession.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

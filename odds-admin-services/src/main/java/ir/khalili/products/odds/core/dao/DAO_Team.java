@@ -26,6 +26,7 @@ public class DAO_Team {
 		Promise<Void> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
+		params.add(message.getString("leagueId"));
 		params.add(message.getString("name"));
 		params.add(message.getString("symbol"));
 		params.add(message.getString("image"));
@@ -34,12 +35,13 @@ public class DAO_Team {
 		sqlConnection.updateWithParams(""
 				+ "insert into toppteam("
 				+ "id,"
+				+ "league_id,"
 				+ "name,"
 				+ "symbol,"
 				+ "image,"
 				+ "creationDate,"
 				+ "createdBy_id)"
-				+ "values(soppteam.nextval,?,?,?,sysdate,?)", params, resultHandler->{
+				+ "values(soppteam.nextval,?,?,?,?,sysdate,?)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -53,27 +55,37 @@ public class DAO_Team {
 		
 		return promise.future();
 	}
-    public static Future<JsonObject> update(SQLConnection sqlConnection, Long customerId) {
-        Promise<JsonObject> promise = Promise.promise();
-        JsonArray params = new JsonArray();
-        params.add(customerId);
-        sqlConnection.queryWithParams("SELECT * FROM tnascustomer WHERE id = ? and dto is null", params, handler -> {
-            if (handler.failed()) {
-                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
-            } else {
+    public static Future<Void> update(SQLConnection sqlConnection, JsonObject message) {
 
-                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "مشتری مورد نظر موجود نمی باشد."));
-                } else {
-                    logger.trace("updateCustomerLocationInfoSuccessful");
-                    promise.complete(handler.result().getRows().get(0));
-                }
-            
-            }
-        });
-
-        return promise.future();
-    }
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(message.getString("leagueId"));
+		params.add(message.getString("name"));
+		params.add(message.getString("symbol"));
+		params.add(message.getString("image"));
+		params.add(message.getInteger("teamId"));
+		
+		sqlConnection.updateWithParams(""
+				+ "update toppteam t set "
+				+ "t.league_id=?,"
+				+ "t.name=?,"
+				+ "t.symbol=?,"
+				+ "t.image=? "
+				+ " where t.id=?", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("UpdateTeamSuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
     
     public static Future<JsonObject> delete(SQLConnection sqlConnection, Integer teamId) {
         Promise<JsonObject> promise = Promise.promise();

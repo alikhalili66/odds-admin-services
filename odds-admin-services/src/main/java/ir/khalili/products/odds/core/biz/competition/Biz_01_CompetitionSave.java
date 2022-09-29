@@ -9,7 +9,6 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Competition;
-import ir.khalili.products.odds.core.dao.DAO_Folder;
 
 public class Biz_01_CompetitionSave {
 

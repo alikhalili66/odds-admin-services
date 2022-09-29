@@ -34,6 +34,8 @@ public final class LeagueInputValidationUtil {
 			String image;
 			String activeFrom;
 			String activeTo;
+			String oddsFrom;
+			String oddsTo;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
@@ -43,7 +45,9 @@ public final class LeagueInputValidationUtil {
 	            image = inputParameters.getString("image");
 	            activeFrom = inputParameters.getString("activeFrom");
 	            activeTo = inputParameters.getString("activeTo");
-
+	            oddsFrom = inputParameters.getString("oddsFrom");
+	            oddsTo = inputParameters.getString("oddsTo");
+	            
 	            if (null == name || name.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد نام معتبر نمی باشد");
 	            }
@@ -64,6 +68,14 @@ public final class LeagueInputValidationUtil {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
 	            }
 
+	            if (null == oddsFrom || oddsFrom.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'شروع پیش بینی' معتبر نمی باشد");
+	            }
+	            
+	            if (null == oddsTo || oddsTo.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'پایان پیش بینی' معتبر نمی باشد");
+	            }
+
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
 				return;
@@ -79,7 +91,9 @@ public final class LeagueInputValidationUtil {
 			joResult.put("image", image);
 			joResult.put("activeFrom", activeFrom);
 			joResult.put("activeTo", activeTo);
-
+			joResult.put("oddsFrom", oddsFrom);
+			joResult.put("oddsTo", oddsTo);
+			
 			joResult.put("userId", joSession.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
@@ -101,15 +115,57 @@ public final class LeagueInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
+			Integer leagueId;
+			String name;
+			String symbol;
+			String image;
+			String activeFrom;
+			String activeTo;
+			String oddsFrom;
+			String oddsTo;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            leagueId = inputParameters.getInteger("leagueId");
+	            name = inputParameters.getString("name");
+	            symbol = inputParameters.getString("symbol");
+	            image = inputParameters.getString("image");
+	            activeFrom = inputParameters.getString("activeFrom");
+	            activeTo = inputParameters.getString("activeTo");
+	            oddsFrom = inputParameters.getString("oddsFrom");
+	            oddsTo = inputParameters.getString("oddsTo");
+
+	            if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
+	            if (null == name || name.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نام معتبر نمی باشد");
+	            }
+	            
+	            if (null == symbol || symbol.isEmpty()) {
+	            	throw new EXCP_RtMgr_Validation(-603, "فیلد نماد معتبر نمی باشد");
+	            }
+	            
+	            if (null == image || image.isEmpty()) {
+	            	throw new EXCP_RtMgr_Validation(-603, "فیلد تصویر معتبر نمی باشد");
+	            }
+	            
+	            if (null == activeFrom || activeFrom.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
+	            }
+	            
+	            if (null == activeTo || activeTo.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
+	            }
+
+	            if (null == oddsFrom || oddsFrom.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'شروع پیش بینی' معتبر نمی باشد");
+	            }
+	            
+	            if (null == oddsTo || oddsTo.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'پایان پیش بینی' معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -122,9 +178,16 @@ public final class LeagueInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("leagueId", leagueId);
+			joResult.put("name", name);
+			joResult.put("symbol", symbol);
+			joResult.put("image", image);
+			joResult.put("activeFrom", activeFrom);
+			joResult.put("activeTo", activeTo);
+			joResult.put("oddsFrom", oddsFrom);
+			joResult.put("oddsTo", oddsTo);
+			
+			joResult.put("userId", joSession.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

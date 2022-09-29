@@ -18,15 +18,12 @@ public class Biz_02_LeagueUpdate {
 
         logger.trace("inputMessage:" + message);
 
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
-
-        DAO_League.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
+        DAO_League.update(sqlConnection, message).onComplete(handler -> {
+            if (handler.failed()) {
+                resultHandler.handle(Future.failedFuture(handler.cause()));
                 return;
             }
-
+            
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()
 					.put("resultCode", 1)

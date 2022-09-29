@@ -39,7 +39,7 @@ public final class FolderInputValidationUtil {
 	            leagueId = inputParameters.getInteger("leagueId");
 	            name = inputParameters.getString("name");
 	            
-	            if (null == parentId || parentId < 1) {
+	            if (null != parentId && parentId < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه پوشه پدر معتبر نیست");
 	            }
 	            
@@ -86,15 +86,33 @@ public final class FolderInputValidationUtil {
 
 			final JsonObject joSession = handler.result();
 
-			Long cellphone;
-
+			Integer folderId;
+			Integer parentId;
+			Integer leagueId;
+			String name;
+			
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            folderId = inputParameters.getInteger("folderId");
+	            parentId = inputParameters.getInteger("parentId");
+	            leagueId = inputParameters.getInteger("leagueId");
+	            name = inputParameters.getString("name");
+
+	            if (null == folderId || folderId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه پوشه معتبر نیست");
+	            }
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
+	            if (null != parentId && parentId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه پوشه پدر معتبر نیست");
+	            }
+	            
+	            if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
+	            
+	            if (null == name || name.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نام معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -107,9 +125,12 @@ public final class FolderInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
+			joResult.put("folderId", folderId);
+			joResult.put("parentId", parentId);
+			joResult.put("leagueId", leagueId);
+			joResult.put("name", name);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joSession.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

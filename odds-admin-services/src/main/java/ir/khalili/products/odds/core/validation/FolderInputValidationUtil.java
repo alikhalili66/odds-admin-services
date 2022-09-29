@@ -26,7 +26,7 @@ public final class FolderInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer parentId;
 			Integer leagueId;
@@ -65,7 +65,7 @@ public final class FolderInputValidationUtil {
 			joResult.put("leagueId", leagueId);
 			joResult.put("name", name);
 
-			joResult.put("userId", joSession.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -84,7 +84,7 @@ public final class FolderInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer folderId;
 			Integer parentId;
@@ -130,7 +130,7 @@ public final class FolderInputValidationUtil {
 			joResult.put("leagueId", leagueId);
 			joResult.put("name", name);
 
-			joResult.put("userId", joSession.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -149,7 +149,7 @@ public final class FolderInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer folderId;
 
@@ -173,6 +173,7 @@ public final class FolderInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("folderId", folderId);
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -191,9 +192,10 @@ public final class FolderInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			final JsonObject joResult = new JsonObject();
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -212,7 +214,7 @@ public final class FolderInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer folderId;
 
@@ -236,6 +238,7 @@ public final class FolderInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("folderId", folderId);
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -254,7 +257,7 @@ public final class FolderInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Long cellphone;
 
@@ -279,7 +282,7 @@ public final class FolderInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("cellphone", cellphone);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -298,7 +301,7 @@ public final class FolderInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Long cellphone;
 
@@ -323,7 +326,7 @@ public final class FolderInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("cellphone", cellphone);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -342,7 +345,7 @@ public final class FolderInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Long cellphone;
 
@@ -367,7 +370,7 @@ public final class FolderInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("cellphone", cellphone);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

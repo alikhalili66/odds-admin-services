@@ -26,7 +26,7 @@ public final class GroupInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer leagueId;
 			String name;
@@ -72,7 +72,7 @@ public final class GroupInputValidationUtil {
 			joResult.put("activeFrom", activeFrom);
 			joResult.put("activeTo", activeTo);
 
-			joResult.put("userId", joSession.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -91,7 +91,7 @@ public final class GroupInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer groupId;
 			Integer leagueId;
@@ -144,7 +144,7 @@ public final class GroupInputValidationUtil {
 			joResult.put("activeFrom", activeFrom);
 			joResult.put("activeTo", activeTo);
 
-			joResult.put("userId", joSession.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -163,7 +163,7 @@ public final class GroupInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer groupId;
 
@@ -187,6 +187,7 @@ public final class GroupInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("groupId", groupId);
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -205,9 +206,10 @@ public final class GroupInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			final JsonObject joResult = new JsonObject();
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -226,7 +228,7 @@ public final class GroupInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer groupId;
 
@@ -250,6 +252,7 @@ public final class GroupInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("groupId", groupId);
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -268,7 +271,7 @@ public final class GroupInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Long cellphone;
 
@@ -293,7 +296,7 @@ public final class GroupInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("cellphone", cellphone);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -312,7 +315,7 @@ public final class GroupInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Long cellphone;
 
@@ -337,7 +340,7 @@ public final class GroupInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("cellphone", cellphone);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -356,7 +359,7 @@ public final class GroupInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Long cellphone;
 
@@ -381,7 +384,7 @@ public final class GroupInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("cellphone", cellphone);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

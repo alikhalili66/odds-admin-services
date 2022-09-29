@@ -1,7 +1,5 @@
 package ir.khalili.products.odds.core.dao;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.log4j.LogManager;
@@ -18,7 +16,6 @@ import ir.khalili.products.odds.core.utils.CalenderUtil;
 public class DAO_Group {
 
     private static final Logger logger = LogManager.getLogger(DAO_Group.class);
-    private static final DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
     
     public static Future<Boolean> checkCustomerValidTo(SQLConnection sqlConnection, Long customerId, Long serviceId) {
         Promise<Boolean> promise = Promise.promise();

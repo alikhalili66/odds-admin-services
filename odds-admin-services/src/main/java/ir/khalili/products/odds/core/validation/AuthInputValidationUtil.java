@@ -9,6 +9,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
+import ir.khalili.products.odds.core.utils.VerhoeffCheckDigitAlgorithm;
 
 /**
  * @author A.KH
@@ -24,7 +25,7 @@ public final class AuthInputValidationUtil {
 	 * This method to call locally without RoutingContext object and in main method
 	 */
 
-	public static void validateAgent(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+	public static void validateLogin(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
 		String username;
 		String password;
@@ -37,10 +38,10 @@ public final class AuthInputValidationUtil {
 			password = inputParameters.getString("password");
 
 			if (null == username || username.isEmpty() || username.length() > 100) {
-				throw new EXCP_RtMgr_Validation(-601, "نام کاربری معتبر نمی باشد.");
+				throw new EXCP_RtMgr_Validation(-601, "نام کاربری صحیح نمی باشد.");
 			}
 			if (null == password || password.isEmpty() || password.length() > 100) {
-				throw new EXCP_RtMgr_Validation(-602, "رمز عبور معتبر نمی باشد.");
+				throw new EXCP_RtMgr_Validation(-602, "رمز عبور صحیح نمی باشد.");
 			}
 
 		} catch (EXCP_RtMgr_Validation e) {
@@ -56,6 +57,7 @@ public final class AuthInputValidationUtil {
 		final JsonObject joResult = new JsonObject();
 		joResult.put("username", username);
 		joResult.put("password", password);
+		
 		joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 		joResult.put("ip", context.request().remoteAddress().host());
 
@@ -63,59 +65,49 @@ public final class AuthInputValidationUtil {
 
 	}
 
-	public static void validateCustomer(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+	public static void validateOTP(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		Long cellphone;
+		Integer code;
 
-			if (handler.failed()) {
-				resultHandler.handle(Future.failedFuture(handler.cause()));
-				return;
-			}
+		try {
 
-			final JsonObject joSession = handler.result();
-
-			String username;
-			String password;
+			final JsonObject inputParameters = InputValidationUtil.validate(context);
 			
-			try {
+			cellphone = inputParameters.getLong("cellphone");
+			code = inputParameters.getInteger("code");
 
-				final JsonObject inputParameters = InputValidationUtil.validate(context);
-				
-				username = inputParameters.getString("username");
-				password = inputParameters.getString("password");
+			if (null == cellphone || !String.valueOf(cellphone).startsWith("9") || String.valueOf(cellphone).length() != 10) {
+                throw new EXCP_RtMgr_Validation(-1, "شماره تلفن صحیح نمی باشد.");
+            }
+            
+            if (null == code || String.valueOf(code).length() != 6) {
+                throw new EXCP_RtMgr_Validation(-1, "کد صحیح نمی باشد.");
+            }
 
-				if (null == username || username.isEmpty() || username.length() > 100) {
-					throw new EXCP_RtMgr_Validation(-601, "نام کاربری معتبر نمی باشد.");
-				}
-				if (null == password || password.isEmpty() || password.length() > 100) {
-					throw new EXCP_RtMgr_Validation(-602, "رمز عبور معتبر نمی باشد.");
-				}
+            if (!VerhoeffCheckDigitAlgorithm.validateVerhoeff(String.valueOf(code))) {
+                throw new EXCP_RtMgr_Validation(-1, "کد صحیح نمی باشد.");
+            }
 
-			} catch (EXCP_RtMgr_Validation e) {
-				resultHandler.handle(Future.failedFuture(e));
-				return;
-			} catch (Exception e) {
-				logger.error("INPUT TYPE VALIDATION FAILED.", e);
-				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499,
-						"نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
-				return;
-			}
+		} catch (EXCP_RtMgr_Validation e) {
+			resultHandler.handle(Future.failedFuture(e));
+			return;
+		} catch (Exception e) {
+			logger.error("INPUT TYPE VALIDATION FAILED.", e);
+			resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499,
+					"نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+			return;
+		}
 
-			final JsonObject joResult = new JsonObject();
-			joResult.put("username", username);
-			joResult.put("password", password);
-			
-			joResult.put("userId", joSession.getInteger("userId"));
-			joResult.put("agentId", joSession.getInteger("agentId"));
-			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
-			joResult.put("ip", context.request().remoteAddress().host());
+		final JsonObject joResult = new JsonObject();
+		joResult.put("cellphone", cellphone);
+		joResult.put("code", code);
+		
+		joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+		joResult.put("ip", context.request().remoteAddress().host());
 
-			resultHandler.handle(Future.succeededFuture(joResult));
-
-		});
+		resultHandler.handle(Future.succeededFuture(joResult));
 
 	}
-	
-
 	
 }

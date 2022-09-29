@@ -5,7 +5,8 @@ public class AppConstants{
 	public static final String		APP_DS_ODDS													= "APP_DS_ODDS";
 
 	/***********************AUTH****************************/
-
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_AUTH_LOGIN							= "nas.eb.core.srvc.auth.login";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_AUTH_OTP							= "nas.eb.core.srvc.auth.otp";
 	
 	/***********************COMPETITION*********************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_SAVE					= "nas.eb.core.srvc.competition.save";

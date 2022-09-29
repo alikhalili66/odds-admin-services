@@ -27,7 +27,7 @@ public final class TeamInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer leagueId;
 			String name;
@@ -72,7 +72,7 @@ public final class TeamInputValidationUtil {
 			joResult.put("name", name);
 			joResult.put("symbol", symbol);
 			joResult.put("image", image);
-			joResult.put("userId", joSession.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -91,7 +91,7 @@ public final class TeamInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer teamId;
 			Integer leagueId;
@@ -143,7 +143,7 @@ public final class TeamInputValidationUtil {
 			joResult.put("name", name);
 			joResult.put("symbol", symbol);
 			joResult.put("image", image);
-			joResult.put("userId", joSession.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -162,7 +162,7 @@ public final class TeamInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer teamId;
 
@@ -186,6 +186,7 @@ public final class TeamInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("teamId", teamId);
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -204,9 +205,10 @@ public final class TeamInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			final JsonObject joResult = new JsonObject();
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -225,7 +227,7 @@ public final class TeamInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer teamId;
 
@@ -249,6 +251,7 @@ public final class TeamInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("teamId", teamId);
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

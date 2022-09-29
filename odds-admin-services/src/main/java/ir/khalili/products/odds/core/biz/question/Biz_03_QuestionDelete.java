@@ -8,7 +8,6 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.dao.DAO_League;
 import ir.khalili.products.odds.core.dao.DAO_Question;
 
 public class Biz_03_QuestionDelete {

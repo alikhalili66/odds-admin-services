@@ -20,6 +20,8 @@ import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.ResponseTimeHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import ir.khalili.products.odds.core.helper.HelperInitial;
+import ir.khalili.products.odds.core.routemanager.auth.RtMgr_01_AuthLogin;
+import ir.khalili.products.odds.core.routemanager.auth.RtMgr_02_AuthOTP;
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_01_CompetitionSave;
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_02_CompetitionUpdate;
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_03_CompetitionDelete;
@@ -63,6 +65,8 @@ import ir.khalili.products.odds.core.routemanager.team.RtMgr_05_TeamFetchById;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_01_UserFetchAll;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_02_UserFetchById;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_03_UserFetchOdds;
+import ir.khalili.products.odds.core.verticle.auth.VRTCL_01_AuthLogin;
+import ir.khalili.products.odds.core.verticle.auth.VRTCL_02_AuthOTP;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_01_CompetitionSave;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_02_CompetitionUpdate;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_03_CompetitionDelete;
@@ -176,7 +180,9 @@ public class EntryPoint extends AbstractVerticle {
 
     private static void deployVerticle() {
 
-        //AUTH
+		//AUTH
+		vertx.deployVerticle(VRTCL_01_AuthLogin.class.getName());
+		vertx.deployVerticle(VRTCL_02_AuthOTP.class.getName());
 
 
         //COMPETITION
@@ -268,68 +274,70 @@ public class EntryPoint extends AbstractVerticle {
 
 
         //AUTH
-
+		router.post		("/v1/service/odds/auth/login")									.handler(RtMgr_01_AuthLogin 								:: handler);
+		router.post		("/v1/service/odds/auth/otp")									.handler(RtMgr_02_AuthOTP									:: handler);
+		
 
         //COMPETITION
-        router.post		("/v1/service/odds/competition/save")				.handler(RtMgr_01_CompetitionSave							:: handler);
-        router.post		("/v1/service/odds/competition/update")				.handler(RtMgr_02_CompetitionUpdate							:: handler);
-        router.post		("/v1/service/odds/competition/delete")				.handler(RtMgr_03_CompetitionDelete							:: handler);
-        router.post		("/v1/service/odds/competition/fetch/all")				.handler(RtMgr_04_CompetitionFetchAll							:: handler);
-        router.post		("/v1/service/odds/competition/fetch/id")				.handler(RtMgr_05_CompetitionFetchById							:: handler);
-        router.post		("/v1/service/odds/competition/fetch/group")				.handler(RtMgr_06_CompetitionGroupFetch							:: handler);
-        router.post		("/v1/service/odds/competition/assign/question")				.handler(RtMgr_07_CompetitionQuestionAssign							:: handler);
-        router.post		("/v1/service/odds/competition/unassign/question")				.handler(RtMgr_08_CompetitionQuestionUnAssign							:: handler);
-        router.post		("/v1/service/odds/competition/fetch/question")				.handler(RtMgr_09_CompetitionQuestionFetch							:: handler);
+        router.post		("/v1/service/odds/competition/save")							.handler(RtMgr_01_CompetitionSave							:: handler);
+        router.post		("/v1/service/odds/competition/update")							.handler(RtMgr_02_CompetitionUpdate							:: handler);
+        router.post		("/v1/service/odds/competition/delete")							.handler(RtMgr_03_CompetitionDelete							:: handler);
+        router.post		("/v1/service/odds/competition/fetch/all")						.handler(RtMgr_04_CompetitionFetchAll						:: handler);
+        router.post		("/v1/service/odds/competition/fetch/id")						.handler(RtMgr_05_CompetitionFetchById						:: handler);
+        router.post		("/v1/service/odds/competition/fetch/group")					.handler(RtMgr_06_CompetitionGroupFetch						:: handler);
+        router.post		("/v1/service/odds/competition/assign/question")				.handler(RtMgr_07_CompetitionQuestionAssign					:: handler);
+        router.post		("/v1/service/odds/competition/unassign/question")				.handler(RtMgr_08_CompetitionQuestionUnAssign				:: handler);
+        router.post		("/v1/service/odds/competition/fetch/question")					.handler(RtMgr_09_CompetitionQuestionFetch					:: handler);
     	
 		//FOLDER
-        router.post		("/v1/service/odds/folder/save")				.handler(RtMgr_01_FolderSave							:: handler);
-        router.post		("/v1/service/odds/folder/update")				.handler(RtMgr_02_FolderUpdate							:: handler);
-        router.post		("/v1/service/odds/folder/delete")				.handler(RtMgr_03_FolderDelete							:: handler);
-        router.post		("/v1/service/odds/folder/fetch/all")				.handler(RtMgr_04_FolderFetchAll							:: handler);
-        router.post		("/v1/service/odds/folder/fetch/id")				.handler(RtMgr_05_FolderFetchById							:: handler);
-        router.post		("/v1/service/odds/folder/assign/question")				.handler(RtMgr_06_FolderQuestionAssign							:: handler);
-        router.post		("/v1/service/odds/folder/unaasign/question")				.handler(RtMgr_07_FolderQuestionUnAssign							:: handler);
-        router.post		("/v1/service/odds/folder/fetch/question")				.handler(RtMgr_08_FolderQuestionFetch							:: handler);
+        router.post		("/v1/service/odds/folder/save")								.handler(RtMgr_01_FolderSave								:: handler);
+        router.post		("/v1/service/odds/folder/update")								.handler(RtMgr_02_FolderUpdate								:: handler);
+        router.post		("/v1/service/odds/folder/delete")								.handler(RtMgr_03_FolderDelete								:: handler);
+        router.post		("/v1/service/odds/folder/fetch/all")							.handler(RtMgr_04_FolderFetchAll							:: handler);
+        router.post		("/v1/service/odds/folder/fetch/id")							.handler(RtMgr_05_FolderFetchById							:: handler);
+        router.post		("/v1/service/odds/folder/assign/question")						.handler(RtMgr_06_FolderQuestionAssign						:: handler);
+        router.post		("/v1/service/odds/folder/unaasign/question")					.handler(RtMgr_07_FolderQuestionUnAssign					:: handler);
+        router.post		("/v1/service/odds/folder/fetch/question")						.handler(RtMgr_08_FolderQuestionFetch						:: handler);
     	
 		//GROUP
-        router.post		("/v1/service/odds/group/save")				.handler(RtMgr_01_GroupSave							:: handler);
-        router.post		("/v1/service/odds/group/update")				.handler(RtMgr_02_GroupUpdate							:: handler);
-        router.post		("/v1/service/odds/group/delete")				.handler(RtMgr_03_GroupDelete							:: handler);
-        router.post		("/v1/service/odds/group/fetch/all")				.handler(RtMgr_04_GroupFetchAll							:: handler);
-        router.post		("/v1/service/odds/group/fetch/id")				.handler(RtMgr_05_GroupFetchById							:: handler);
-        router.post		("/v1/service/odds/group/assign/team")				.handler(RtMgr_06_GroupTeamAssign							:: handler);
-        router.post		("/v1/service/odds/group/unassign/team")				.handler(RtMgr_07_GroupTeamUnAssign							:: handler);
-        router.post		("/v1/service/odds/group/fetch/team")				.handler(RtMgr_08_GroupTeamFetch							:: handler);
+        router.post		("/v1/service/odds/group/save")									.handler(RtMgr_01_GroupSave									:: handler);
+        router.post		("/v1/service/odds/group/update")								.handler(RtMgr_02_GroupUpdate								:: handler);
+        router.post		("/v1/service/odds/group/delete")								.handler(RtMgr_03_GroupDelete								:: handler);
+        router.post		("/v1/service/odds/group/fetch/all")							.handler(RtMgr_04_GroupFetchAll								:: handler);
+        router.post		("/v1/service/odds/group/fetch/id")								.handler(RtMgr_05_GroupFetchById							:: handler);
+        router.post		("/v1/service/odds/group/assign/team")							.handler(RtMgr_06_GroupTeamAssign							:: handler);
+        router.post		("/v1/service/odds/group/unassign/team")						.handler(RtMgr_07_GroupTeamUnAssign							:: handler);
+        router.post		("/v1/service/odds/group/fetch/team")							.handler(RtMgr_08_GroupTeamFetch							:: handler);
     	
 		//LEAGUE
-        router.post		("/v1/service/odds/league/save")				.handler(RtMgr_01_LeagueSave							:: handler);
-        router.post		("/v1/service/odds/league/update")				.handler(RtMgr_02_LeagueUpdate							:: handler);
-        router.post		("/v1/service/odds/league/delete")				.handler(RtMgr_03_LeagueDelete							:: handler);
-        router.post		("/v1/service/odds/league/fetch/all")				.handler(RtMgr_04_LeagueFetchAll							:: handler);
-        router.post		("/v1/service/odds/league/fetch/id")				.handler(RtMgr_05_LeagueFetchById							:: handler);
+        router.post		("/v1/service/odds/league/save")								.handler(RtMgr_01_LeagueSave								:: handler);
+        router.post		("/v1/service/odds/league/update")								.handler(RtMgr_02_LeagueUpdate								:: handler);
+        router.post		("/v1/service/odds/league/delete")								.handler(RtMgr_03_LeagueDelete								:: handler);
+        router.post		("/v1/service/odds/league/fetch/all")							.handler(RtMgr_04_LeagueFetchAll							:: handler);
+        router.post		("/v1/service/odds/league/fetch/id")							.handler(RtMgr_05_LeagueFetchById							:: handler);
     	
     	//ODDS
     	
     	
     	
     	//QUESTION
-        router.post		("/v1/service/odds/question/save")				.handler(RtMgr_01_QuestionSave							:: handler);
-        router.post		("/v1/service/odds/question/update")				.handler(RtMgr_02_QuestionUpdate							:: handler);
-        router.post		("/v1/service/odds/question/delete")				.handler(RtMgr_03_QuestionDelete							:: handler);
-        router.post		("/v1/service/odds/question/fetch/all")				.handler(RtMgr_04_QuestionFetchAll							:: handler);
-        router.post		("/v1/service/odds/question/fetch/id")				.handler(RtMgr_05_QuestionFetchById							:: handler);
+        router.post		("/v1/service/odds/question/save")								.handler(RtMgr_01_QuestionSave								:: handler);
+        router.post		("/v1/service/odds/question/update")							.handler(RtMgr_02_QuestionUpdate							:: handler);
+        router.post		("/v1/service/odds/question/delete")							.handler(RtMgr_03_QuestionDelete							:: handler);
+        router.post		("/v1/service/odds/question/fetch/all")							.handler(RtMgr_04_QuestionFetchAll							:: handler);
+        router.post		("/v1/service/odds/question/fetch/id")							.handler(RtMgr_05_QuestionFetchById							:: handler);
     	
     	//TEAM
-        router.post		("/v1/service/odds/team/save")				.handler(RtMgr_01_TeamSave							:: handler);
-        router.post		("/v1/service/odds/team/update")				.handler(RtMgr_02_TeamUpdate							:: handler);
-        router.post		("/v1/service/odds/team/delete")				.handler(RtMgr_03_TeamDelete							:: handler);
-        router.post		("/v1/service/odds/team/fetch/all")				.handler(RtMgr_04_TeamFetchAll							:: handler);
-        router.post		("/v1/service/odds/team/fetch/id")				.handler(RtMgr_05_TeamFetchById							:: handler);
+        router.post		("/v1/service/odds/team/save")									.handler(RtMgr_01_TeamSave									:: handler);
+        router.post		("/v1/service/odds/team/update")								.handler(RtMgr_02_TeamUpdate								:: handler);
+        router.post		("/v1/service/odds/team/delete")								.handler(RtMgr_03_TeamDelete								:: handler);
+        router.post		("/v1/service/odds/team/fetch/all")								.handler(RtMgr_04_TeamFetchAll								:: handler);
+        router.post		("/v1/service/odds/team/fetch/id")								.handler(RtMgr_05_TeamFetchById								:: handler);
     	
 		//USER
-        router.post		("/v1/service/odds/user/fetch/all")				.handler(RtMgr_01_UserFetchAll							:: handler);
-        router.post		("/v1/service/odds/user/fetch/id")				.handler(RtMgr_02_UserFetchById							:: handler);
-        router.post		("/v1/service/odds/user/fetch/odds")				.handler(RtMgr_03_UserFetchOdds							:: handler);
+        router.post		("/v1/service/odds/user/fetch/all")								.handler(RtMgr_01_UserFetchAll								:: handler);
+        router.post		("/v1/service/odds/user/fetch/id")								.handler(RtMgr_02_UserFetchById								:: handler);
+        router.post		("/v1/service/odds/user/fetch/odds")							.handler(RtMgr_03_UserFetchOdds								:: handler);
         
 
 

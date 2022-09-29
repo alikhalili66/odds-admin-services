@@ -27,7 +27,7 @@ public final class CompetitionInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer leagueId;
 			Integer teamId1;
@@ -108,7 +108,7 @@ public final class CompetitionInputValidationUtil {
 			joResult.put("oddsTo", oddsTo);
 			joResult.put("competitionDate", competitionDate);
 
-			joResult.put("userId", joSession.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -127,7 +127,7 @@ public final class CompetitionInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer competitionId;
 			Integer leagueId;
@@ -215,7 +215,7 @@ public final class CompetitionInputValidationUtil {
 			joResult.put("oddsTo", oddsTo);
 			joResult.put("competitionDate", competitionDate);
 
-			joResult.put("userId", joSession.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -234,7 +234,7 @@ public final class CompetitionInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer competitionId;
 
@@ -258,6 +258,7 @@ public final class CompetitionInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("competitionId", competitionId);
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -276,8 +277,9 @@ public final class CompetitionInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 			final JsonObject joResult = new JsonObject();
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -296,7 +298,7 @@ public final class CompetitionInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer competitionId;
 
@@ -320,6 +322,7 @@ public final class CompetitionInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("competitionId", competitionId);
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -338,7 +341,7 @@ public final class CompetitionInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Long cellphone;
 
@@ -363,7 +366,7 @@ public final class CompetitionInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("cellphone", cellphone);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -382,7 +385,7 @@ public final class CompetitionInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Long cellphone;
 
@@ -407,7 +410,7 @@ public final class CompetitionInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("cellphone", cellphone);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -426,7 +429,7 @@ public final class CompetitionInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Long cellphone;
 
@@ -451,7 +454,7 @@ public final class CompetitionInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("cellphone", cellphone);
 
-			joResult.put("agentId", joSession.getInteger("agentId"));
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -470,7 +473,7 @@ public final class CompetitionInputValidationUtil {
 				return;
 			}
 
-			final JsonObject joSession = handler.result();
+			final JsonObject joToken = handler.result();
 
 			Integer competitionId;
 
@@ -494,6 +497,7 @@ public final class CompetitionInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("competitionId", competitionId);
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

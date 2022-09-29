@@ -18,7 +18,7 @@ import ir.khalili.products.odds.core.excp.dao.DAOEXCP_Internal;
 public class DAO_Competition {
 
     private static final Logger logger = LogManager.getLogger(DAO_Competition.class);
-    private static final DateFormat formatter = new SimpleDateFormat("YYYYMMDD");
+    private static final DateFormat formatter = new SimpleDateFormat("YYYY/MM/DD");
     
     public static Future<Boolean> checkCustomerValidTo(SQLConnection sqlConnection, Long customerId, Long serviceId) {
         Promise<Boolean> promise = Promise.promise();

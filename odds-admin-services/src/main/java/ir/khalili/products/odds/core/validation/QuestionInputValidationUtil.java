@@ -61,7 +61,7 @@ public final class QuestionInputValidationUtil {
 	            }
 
 	            if (null == minPoint || minPoint < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "فیلد minPoint معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد حداقل امتیاز معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -138,7 +138,7 @@ public final class QuestionInputValidationUtil {
 	            }
 
 	            if (null == minPoint || minPoint < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "فیلد minPoint معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد حداقل امتیاز معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {

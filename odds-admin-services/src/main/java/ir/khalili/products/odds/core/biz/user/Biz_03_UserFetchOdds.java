@@ -16,25 +16,23 @@ public class Biz_03_UserFetchOdds {
 
     public static void fetchOdds(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-        logger.trace("inputMessage:" + message);
+		logger.trace("inputMessage:" + message);
 
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
+		DAO_User.fetchOdds(sqlConnection, message.getInteger("userId")).onComplete(result -> {
+			if (result.failed()) {
+				resultHandler.handle(Future.failedFuture(result.cause()));
+				return;
+			}
 
-        DAO_User.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
-                return;
-            }
+			logger.trace("USER_ODDS_FETCH_RESULT : " + result.result());
 
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()
 					.put("resultCode", 1)
 					.put("resultMessage", "عملیات با موفقیت انجام شد.")
-					));
+					.put("info", result.result())));
 
-			
-        });
+		});
 
     }
 

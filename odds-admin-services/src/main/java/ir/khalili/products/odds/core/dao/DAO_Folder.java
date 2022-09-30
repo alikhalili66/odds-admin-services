@@ -16,11 +16,6 @@ public class DAO_Folder {
 
     private static final Logger logger = LogManager.getLogger(DAO_Folder.class);
     
-    public static Future<Boolean> checkCustomerValidTo(SQLConnection sqlConnection, Long customerId, Long serviceId) {
-        Promise<Boolean> promise = Promise.promise();
-        return promise.future();
-    }
-    
     public static Future<Void> save(SQLConnection sqlConnection, JsonObject message) {
 
 		Promise<Void> promise = Promise.promise();
@@ -157,70 +152,79 @@ public class DAO_Folder {
         return promise.future();
     }
     
-    public static Future<JsonObject> assignQuestion(SQLConnection sqlConnection, Long customerId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<Void> assignQuestion(SQLConnection sqlConnection, JsonObject message) {
+        Promise<Void> promise = Promise.promise();
         JsonArray params = new JsonArray();
-        params.add(customerId);
-        sqlConnection.queryWithParams("SELECT * FROM tnascustomer WHERE id = ? and dto is null", params, handler -> {
-            if (handler.failed()) {
-                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
-            } else {
-
-                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "مشتری مورد نظر موجود نمی باشد."));
-                } else {
-                    logger.trace("updateCustomerLocationInfoSuccessful");
-                    promise.complete(handler.result().getRows().get(0));
-                }
-            
-            }
-        });
-
+        params.add(message.getInteger("folderId"));
+        params.add(message.getInteger("questionId"));
+        
+		sqlConnection.updateWithParams("insert into toppfolderquestion (FOLDER_ID, QUESTION_ID) values(?,?)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("assignQuestionSuccessful");
+			promise.complete();
+			
+		});
         return promise.future();
     }
     
-    public static Future<JsonObject> unAssignQuestion(SQLConnection sqlConnection, Long customerId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<Void> unAssignQuestion(SQLConnection sqlConnection, JsonObject message) {
+        Promise<Void> promise = Promise.promise();
         JsonArray params = new JsonArray();
-        params.add(customerId);
-        sqlConnection.queryWithParams("SELECT * FROM tnascustomer WHERE id = ? and dto is null", params, handler -> {
-            if (handler.failed()) {
-                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
-            } else {
-
-                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "مشتری مورد نظر موجود نمی باشد."));
-                } else {
-                    logger.trace("updateCustomerLocationInfoSuccessful");
-                    promise.complete(handler.result().getRows().get(0));
-                }
-            
-            }
-        });
-
-        return promise.future();
-    }
-    
-    public static Future<JsonObject> fetchQuestion(SQLConnection sqlConnection, Long customerId) {
-        Promise<JsonObject> promise = Promise.promise();
-        JsonArray params = new JsonArray();
-        params.add(customerId);
-        sqlConnection.queryWithParams("SELECT * FROM tnascustomer WHERE id = ? and dto is null", params, handler -> {
-            if (handler.failed()) {
-                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
-            } else {
-
-                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "مشتری مورد نظر موجود نمی باشد."));
-                } else {
-                    logger.trace("updateCustomerLocationInfoSuccessful");
-                    promise.complete(handler.result().getRows().get(0));
-                }
-            
-            }
-        });
-
-        return promise.future();
+        params.add(message.getInteger("folderId"));
+        params.add(message.getInteger("questionId"));
+        
+        sqlConnection.updateWithParams("delete from toppfolderquestion where FOLDER_ID=? and QUESTION_ID=?", params, handler -> {
+			if(handler.failed()) {
+				logger.error("Unable to get accessQueryResult:", handler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("unAssignQuestionSuccessful");
+			promise.complete();
+			
+		});
+		return promise.future();
     }
         
+    
+    public static Future<List<JsonObject>> fetchQuestion(SQLConnection sqlConnection, JsonObject message) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(message.getInteger("folderId"));
+        
+        sqlConnection.queryWithParams(""
+        		+ "select "
+        		+ "q.id,"
+        		+ "q.league_id,"
+        		+ "q.question,"
+        		+ "q.type,"
+        		+ "q.minpoint,"
+        		+ "q.answers "
+        		+ "from "
+        		+ "toppquestion q, toppfolderquestion fq "
+        		+ "where "
+        		+ "fq.FOLDER_ID=? and fq.QUESTION_ID=q.id and q.dto is null", params, handler -> {
+            if (handler.failed()) {
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                } else {
+                    logger.trace("FolderfetchQuestionSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+            
 }

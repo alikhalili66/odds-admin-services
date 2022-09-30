@@ -16,11 +16,6 @@ public class DAO_Question {
 
     private static final Logger logger = LogManager.getLogger(DAO_Question.class);
     
-    public static Future<Boolean> checkCustomerValidTo(SQLConnection sqlConnection, Long customerId, Long serviceId) {
-        Promise<Boolean> promise = Promise.promise();
-        return promise.future();
-    }
-    
     public static Future<Void> save(SQLConnection sqlConnection, JsonObject message) {
 
 		Promise<Void> promise = Promise.promise();

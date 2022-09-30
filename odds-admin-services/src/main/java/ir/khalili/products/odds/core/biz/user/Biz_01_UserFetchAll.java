@@ -22,7 +22,7 @@ public class Biz_01_UserFetchAll {
                 return;
             }
             
-            logger.trace("COMPETITION_FETCH_ALL_RESULT : " + result.result());
+            logger.trace("USER_FETCH_ALL_RESULT : " + result.result());
             
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()

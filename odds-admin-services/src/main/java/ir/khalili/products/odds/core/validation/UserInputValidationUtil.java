@@ -51,14 +51,14 @@ public final class UserInputValidationUtil {
 
 			final JsonObject joToken = handler.result();
 
-			Integer id;
+			Integer userId;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            id = inputParameters.getInteger("id");
+	            userId = inputParameters.getInteger("userId");
 	            
-	            if (null == id || id < 1) {
+	            if (null == userId || userId < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر معتبر نمی باشد");
 	            }
 
@@ -72,7 +72,7 @@ public final class UserInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("id", id);
+			joResult.put("userId", userId);
 			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
@@ -94,15 +94,15 @@ public final class UserInputValidationUtil {
 
 			final JsonObject joToken = handler.result();
 
-			Long cellphone;
+			Integer userId;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            userId = inputParameters.getInteger("userId");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
+	            if (null == userId || userId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -115,8 +115,7 @@ public final class UserInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
+			joResult.put("userId", userId);
 			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());

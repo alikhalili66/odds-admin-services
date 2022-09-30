@@ -259,17 +259,23 @@ public final class FolderInputValidationUtil {
 
 			final JsonObject joToken = handler.result();
 
-			Long cellphone;
+			Integer folderId;
+			Integer questionId;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            folderId = inputParameters.getInteger("folderId");
+	            questionId = inputParameters.getInteger("questionId");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
+	            if (null == folderId || folderId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه پوشه معتبر نمی باشد");
 	            }
 
+	            if (null == questionId || questionId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه سوال معتبر نمی باشد");
+	            }
+	            
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
 				return;
@@ -280,7 +286,8 @@ public final class FolderInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
+			joResult.put("folderId", folderId);
+			joResult.put("questionId", questionId);
 
 			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -303,17 +310,23 @@ public final class FolderInputValidationUtil {
 
 			final JsonObject joToken = handler.result();
 
-			Long cellphone;
+			Integer folderId;
+			Integer questionId;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            folderId = inputParameters.getInteger("folderId");
+	            questionId = inputParameters.getInteger("questionId");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
+	            if (null == folderId || folderId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه پوشه معتبر نمی باشد");
 	            }
 
+	            if (null == questionId || questionId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه سوال معتبر نمی باشد");
+	            }
+	            
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
 				return;
@@ -324,7 +337,8 @@ public final class FolderInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
+			joResult.put("folderId", folderId);
+			joResult.put("questionId", questionId);
 
 			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -347,15 +361,15 @@ public final class FolderInputValidationUtil {
 
 			final JsonObject joToken = handler.result();
 
-			Long cellphone;
+			Integer folderId;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            cellphone = inputParameters.getLong("cellphone");
+	            folderId = inputParameters.getInteger("folderId");
 	            
-	            if (null == cellphone || cellphone < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شماره تلفن معتبر نمی باشد.");
+	            if (null == folderId || folderId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه پوشه صحیح نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -368,8 +382,7 @@ public final class FolderInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("cellphone", cellphone);
-
+			joResult.put("folderId", folderId);
 			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());

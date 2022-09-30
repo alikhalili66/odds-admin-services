@@ -18,12 +18,9 @@ public class Biz_06_CompetitionGroupFetch {
 
         logger.trace("inputMessage:" + message);
 
-        final Long customerId = message.getLong("customerId");
-        final Long serviceId = message.getLong("serviceId");
-
-        DAO_Competition.checkCustomerValidTo(sqlConnection, customerId, serviceId).onComplete(resultSet -> {
-            if (resultSet.failed()) {
-                resultHandler.handle(Future.failedFuture(resultSet.cause()));
+        DAO_Competition.fetchGroup(sqlConnection, message).onComplete(handler -> {
+            if (handler.failed()) {
+                resultHandler.handle(Future.failedFuture(handler.cause()));
                 return;
             }
             
@@ -31,10 +28,10 @@ public class Biz_06_CompetitionGroupFetch {
 					new JsonObject()
 					.put("resultCode", 1)
 					.put("resultMessage", "عملیات با موفقیت انجام شد.")
+					.put("info", handler.result())
 					));
 
         });
-
     }
 
 }

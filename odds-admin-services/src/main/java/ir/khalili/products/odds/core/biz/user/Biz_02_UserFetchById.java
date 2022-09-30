@@ -18,9 +18,7 @@ public class Biz_02_UserFetchById {
 
 		logger.trace("inputMessage:" + message);
 
-		final Long id = message.getLong("id");
-
-		DAO_User.fetchById(sqlConnection, id).onComplete(result -> {
+		DAO_User.fetchById(sqlConnection, message.getInteger("userId")).onComplete(result -> {
 			if (result.failed()) {
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;

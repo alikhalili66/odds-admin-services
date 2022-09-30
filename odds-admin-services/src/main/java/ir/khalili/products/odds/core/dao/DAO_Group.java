@@ -17,11 +17,6 @@ public class DAO_Group {
 
     private static final Logger logger = LogManager.getLogger(DAO_Group.class);
     
-    public static Future<Boolean> checkCustomerValidTo(SQLConnection sqlConnection, Long customerId, Long serviceId) {
-        Promise<Boolean> promise = Promise.promise();
-        return promise.future();
-    }
-    
     public static Future<Void> save(SQLConnection sqlConnection, JsonObject message) {
 
 		Promise<Void> promise = Promise.promise();
@@ -174,70 +169,80 @@ public class DAO_Group {
         return promise.future();
     }
     
-    public static Future<JsonObject> assignTeam(SQLConnection sqlConnection, Long customerId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<Void> assignQuestion(SQLConnection sqlConnection, JsonObject message) {
+        Promise<Void> promise = Promise.promise();
         JsonArray params = new JsonArray();
-        params.add(customerId);
-        sqlConnection.queryWithParams("SELECT * FROM tnascustomer WHERE id = ? and dto is null", params, handler -> {
-            if (handler.failed()) {
-                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
-            } else {
-
-                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "مشتری مورد نظر موجود نمی باشد."));
-                } else {
-                    logger.trace("updateCustomerLocationInfoSuccessful");
-                    promise.complete(handler.result().getRows().get(0));
-                }
-            
-            }
-        });
-
+        params.add(message.getInteger("teamId"));
+        params.add(message.getInteger("groupId"));
+        
+		sqlConnection.updateWithParams("insert into toppteamgroup (TEAM_ID, GROUP_ID) values(?,?)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("assignQuestionSuccessful");
+			promise.complete();
+			
+		});
         return promise.future();
     }
     
-    public static Future<JsonObject> unAssignTeam(SQLConnection sqlConnection, Long customerId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<Void> unAssignQuestion(SQLConnection sqlConnection, JsonObject message) {
+        Promise<Void> promise = Promise.promise();
         JsonArray params = new JsonArray();
-        params.add(customerId);
-        sqlConnection.queryWithParams("SELECT * FROM tnascustomer WHERE id = ? and dto is null", params, handler -> {
-            if (handler.failed()) {
-                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
-            } else {
-
-                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "مشتری مورد نظر موجود نمی باشد."));
-                } else {
-                    logger.trace("updateCustomerLocationInfoSuccessful");
-                    promise.complete(handler.result().getRows().get(0));
-                }
-            
-            }
-        });
-
-        return promise.future();
+        params.add(message.getInteger("teamId"));
+        params.add(message.getInteger("groupId"));
+        
+        sqlConnection.updateWithParams("delete from toppteamgroup where TEAM_ID=? and GROUP_ID=?", params, handler -> {
+			if(handler.failed()) {
+				logger.error("Unable to get accessQueryResult:", handler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("unAssignQuestionSuccessful");
+			promise.complete();
+			
+		});
+		return promise.future();
     }
+     
     
-    public static Future<JsonObject> fetchTeam(SQLConnection sqlConnection, Long customerId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<List<JsonObject>> fetchTeam(SQLConnection sqlConnection, JsonObject message) {
+
+        Promise<List<JsonObject>> promise = Promise.promise();
         JsonArray params = new JsonArray();
-        params.add(customerId);
-        sqlConnection.queryWithParams("SELECT * FROM tnascustomer WHERE id = ? and dto is null", params, handler -> {
+        params.add(message.getInteger("groupId"));
+        
+        sqlConnection.queryWithParams(""
+        		+ "select "
+        		+ "t.id,"
+        		+ "t.league_id,"
+        		+ "t.name,"
+        		+ "t.symbol,"
+        		+ "t.image "
+        		+ "from "
+        		+ "toppTeam t, toppteamgroup tg "
+        		+ "where "
+        		+ "tg.group_ID=? and tg.team_ID=t.id and t.dto is null", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
 
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "مشتری مورد نظر موجود نمی باشد."));
+                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
-                    logger.trace("updateCustomerLocationInfoSuccessful");
-                    promise.complete(handler.result().getRows().get(0));
+                    logger.trace("TeamfetchQuestionSuccessful");
+                    promise.complete(handler.result().getRows());
                 }
             
             }
         });
 
         return promise.future();
+    
     }
         
 }

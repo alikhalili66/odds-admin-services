@@ -27,19 +27,23 @@ public class CallGroup extends AbstractVerticle {
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 		groupSave(client);
-		groupUpdate(client);
-		groupDelete(client);
-		groupFetchById(client);
-		groupFetchAll(client);
-		groupTeamAssign(client);
-		groupTeamUnAssign(client);
-		groupTeamFetch(client);
-		
+//		groupUpdate(client);
+//		groupDelete(client);
+//		groupFetchAll(client);
+//		groupFetchById(client);
+//		groupTeamAssign(client);
+//		groupTeamUnAssign(client);
+//		groupTeamFetch(client);
 	}
 
 	public void groupSave(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("leagueId", 1);
+		joInput.put("name", "گروه د");
+		joInput.put("activeFrom", "2022/10/01");
+		joInput.put("activeTo", "2022/10/10");
+		
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -70,6 +74,11 @@ public class CallGroup extends AbstractVerticle {
 	public void groupUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("groupId", 1);
+		joInput.put("leagueId", 1);
+		joInput.put("name", "گروه ث");
+		joInput.put("activeFrom", "2022/10/01");
+		joInput.put("activeTo", "2022/10/10");
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -100,6 +109,7 @@ public class CallGroup extends AbstractVerticle {
 	public void groupDelete(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("groupId", 1);
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -160,6 +170,7 @@ public class CallGroup extends AbstractVerticle {
 	public void groupFetchById(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("groupId", 1);
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -191,6 +202,9 @@ public class CallGroup extends AbstractVerticle {
 	public void groupTeamAssign(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("groupId", 1);
+		joInput.put("teamId", 1);
+		
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -221,6 +235,9 @@ public class CallGroup extends AbstractVerticle {
 	public void groupTeamUnAssign(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("groupId", 1);
+		joInput.put("teamId", 1);
+		
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -251,6 +268,7 @@ public class CallGroup extends AbstractVerticle {
 	public void groupTeamFetch(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("groupId", 1);
 		System.out.println("joInput:" + joInput);
 
 		try {

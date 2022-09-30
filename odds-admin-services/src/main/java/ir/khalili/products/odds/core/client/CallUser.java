@@ -26,8 +26,8 @@ public class CallUser extends AbstractVerticle {
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 		userFetchAll(client);
-		userFetchById(client);
-		userFetchOdds(client);
+//		userFetchById(client);
+//		userFetchOdds(client);
 	}
 
 
@@ -60,7 +60,7 @@ public class CallUser extends AbstractVerticle {
 
 	public void userFetchById(WebClient client) {
 		JsonObject joInput = new JsonObject();
-		
+		joInput.put("userId", 1);
 		try {
 			client.post(port, host, "/v1/service/odds/user/fetch/id")
 			.putHeader("API-KEY", CallAuth.API_KEY)
@@ -88,6 +88,7 @@ public class CallUser extends AbstractVerticle {
 
 	public void userFetchOdds(WebClient client) {
 		JsonObject joInput = new JsonObject();
+		joInput.put("userId", 1);
 		
 		try {
 			client.post(port, host, "/v1/service/odds/user/fetch/odds")

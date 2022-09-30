@@ -73,7 +73,6 @@ public final class UserInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("userId", userId);
-			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -116,7 +115,6 @@ public final class UserInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("userId", userId);
-			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

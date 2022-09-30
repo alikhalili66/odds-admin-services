@@ -17,17 +17,6 @@ public class CalenderUtil {
 	private static SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 	private static DateFormat dfShort = DateFormat.getDateInstance(DateFormat.SHORT, new ULocale("fa_IR@calendar=persian"));
 	private static Calendar calendar = Calendar.getInstance(new ULocale("fa_IR@calendar=persian"));
-	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
-	
-	public static Date toDate(String strDate) {
-		Date date = null;
-		try {
-			date = dateFormatter.parse(strDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return date;
-	}
 	
 	public static int getPersianYearMonth() {
 		

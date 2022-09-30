@@ -26,15 +26,23 @@ public class CallLeague extends AbstractVerticle {
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 		leagueSave(client);
-		leagueUpdate(client);
-		leagueDelete(client);
-		leagueFetchById(client);
-		leagueFetchAll(client);
+//		leagueUpdate(client);
+//		leagueDelete(client);
+//		leagueFetchAll(client);
+//		leagueFetchById(client);
 	}
 
 	public void leagueSave(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("name", "لیگ برتر");
+		joInput.put("symbol", "Bartar");
+		joInput.put("image", "path");
+		joInput.put("activeFrom", "2022/10/01");
+		joInput.put("activeTo", "2022/10/10");
+		joInput.put("oddsFrom", "2022/10/10");
+		joInput.put("oddsTo", "2022/10/10");
+		
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -65,6 +73,15 @@ public class CallLeague extends AbstractVerticle {
 	public void leagueUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("leagueId", 1);
+		joInput.put("name", "لیگ برترر");
+		joInput.put("symbol", "Bartar");
+		joInput.put("image", "path");
+		joInput.put("activeFrom", "2022/10/01");
+		joInput.put("activeTo", "2022/10/10");
+		joInput.put("oddsFrom", "2022/10/10");
+		joInput.put("oddsTo", "2022/10/10");
+		
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -95,6 +112,7 @@ public class CallLeague extends AbstractVerticle {
 	public void leagueDelete(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("leagueId", 1);
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -155,6 +173,7 @@ public class CallLeague extends AbstractVerticle {
 	public void leagueFetchById(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("leagueId", 1);
 		System.out.println("joInput:" + joInput);
 
 		try {

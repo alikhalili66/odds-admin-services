@@ -11,7 +11,6 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.excp.dao.DAOEXCP_Internal;
-import ir.khalili.products.odds.core.utils.CalenderUtil;
 
 public class DAO_Competition {
 
@@ -23,21 +22,16 @@ public class DAO_Competition {
 		
 		JsonArray params = new JsonArray();
 		
-		try {
-			params.add(message.getInteger("leagueId"));
-			params.add(message.getInteger("teamId1"));
-			params.add(message.getInteger("teamId2"));
-			params.add(message.getInteger("groupId"));
-			params.add(CalenderUtil.toDate(message.getString("activeFrom")));
-			params.add(CalenderUtil.toDate(message.getString("activeTo")));
-			params.add(CalenderUtil.toDate(message.getString("oddsFrom")));
-			params.add(CalenderUtil.toDate(message.getString("oddsTo")));
-			params.add(CalenderUtil.toDate(message.getString("competitionDate")));
-			params.add(message.getInteger("userId"));
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		params.add(message.getInteger("leagueId"));
+		params.add(message.getInteger("teamId1"));
+		params.add(message.getInteger("teamId2"));
+		params.add(message.getInteger("groupId"));
+		params.add(message.getString("activeFrom"));
+		params.add(message.getString("activeTo"));
+		params.add(message.getString("oddsFrom"));
+		params.add(message.getString("oddsTo"));
+		params.add(message.getString("competitionDate"));
+		params.add(message.getInteger("userId"));
 		
 		sqlConnection.updateWithParams(""
 				+ "insert into toppcompetition("
@@ -53,7 +47,19 @@ public class DAO_Competition {
 				+ "COMPETITIONDATE,"
 				+ "CREATIONDATE,"
 				+ "createdBy_id)"
-				+ "values(soppcompetition.nextval,?,?,?,?,?,?,?,?,?,sysdate,?)", params, resultHandler->{
+				+ "values("
+				+ "soppcompetition.nextval,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "TO_DATE(?,'YYYY/MM/DD'),"
+				+ "TO_DATE(?,'YYYY/MM/DD'),"
+				+ "TO_DATE(?,'YYYY/MM/DD'),"
+				+ "TO_DATE(?,'YYYY/MM/DD'),"
+				+ "TO_DATE(?,'YYYY/MM/DD'),"
+				+ "sysdate,"
+				+ "?)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -74,21 +80,16 @@ public class DAO_Competition {
 		
 		JsonArray params = new JsonArray();
 		
-		try {
-			params.add(message.getInteger("leagueId"));
-			params.add(message.getInteger("teamId1"));
-			params.add(message.getInteger("teamId2"));
-			params.add(message.getInteger("groupId"));
-			params.add(CalenderUtil.toDate(message.getString("activeFrom")));
-			params.add(CalenderUtil.toDate(message.getString("activeTo")));
-			params.add(CalenderUtil.toDate(message.getString("oddsFrom")));
-			params.add(CalenderUtil.toDate(message.getString("oddsTo")));
-			params.add(CalenderUtil.toDate(message.getString("competitionDate")));
-			params.add(message.getInteger("competitionId"));
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		params.add(message.getInteger("leagueId"));
+		params.add(message.getInteger("teamId1"));
+		params.add(message.getInteger("teamId2"));
+		params.add(message.getInteger("groupId"));
+		params.add(message.getString("activeFrom"));
+		params.add(message.getString("activeTo"));
+		params.add(message.getString("oddsFrom"));
+		params.add(message.getString("oddsTo"));
+		params.add(message.getString("competitionDate"));
+		params.add(message.getInteger("competitionId"));
 		
 		sqlConnection.updateWithParams(""
 				+ "update toppcompetition c set "
@@ -96,11 +97,11 @@ public class DAO_Competition {
 				+ "c.TEAM1_ID=?,"
 				+ "c.TEAM2_ID=?,"
 				+ "c.GROUP_ID=?,"
-				+ "c.ACTIVEFROM=?,"
-				+ "c.ACTIVETO=?,"
-				+ "c.ODDSFROM=?,"
-				+ "c.ODDSTO=?,"
-				+ "c.COMPETITIONDATE=? "
+				+ "c.ACTIVEFROM=TO_DATE(?,'YYYY/MM/DD'),"
+				+ "c.ACTIVETO=TO_DATE(?,'YYYY/MM/DD'),"
+				+ "c.ODDSFROM=TO_DATE(?,'YYYY/MM/DD'),"
+				+ "c.ODDSTO=TO_DATE(?,'YYYY/MM/DD'),"
+				+ "c.COMPETITIONDATE=TO_DATE(?,'YYYY/MM/DD') "
 				+ " where c.id=?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());

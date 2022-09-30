@@ -23,7 +23,7 @@ public class DAO_Folder {
 		JsonArray params = new JsonArray();
 		params.add(message.getInteger("parentId"));
 		params.add(message.getInteger("leagueId"));
-		params.add(message.getInteger("name"));
+		params.add(message.getString("name"));
 		params.add(message.getInteger("userId"));
 		
 		sqlConnection.updateWithParams(""
@@ -56,7 +56,7 @@ public class DAO_Folder {
 		JsonArray params = new JsonArray();
 		params.add(message.getInteger("parentId"));
 		params.add(message.getInteger("leagueId"));
-		params.add(message.getInteger("name"));
+		params.add(message.getString("name"));
 		params.add(message.getInteger("folderId"));
 		
 		sqlConnection.updateWithParams(""

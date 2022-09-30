@@ -26,19 +26,22 @@ public class CallFolder extends AbstractVerticle {
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 		folderSave(client);
-		folderUpdate(client);
-		folderDelete(client);
-		folderFetchById(client);
-		folderFetchAll(client);
-		folderQuestionAssign(client);
-		folderQuestionUnAssign(client);
-		folderQuestionFetch(client);
-		
+//		folderUpdate(client);
+//		folderDelete(client);
+//		folderFetchAll(client);
+//		folderFetchById(client);
+//		folderQuestionAssign(client);
+//		folderQuestionUnAssign(client);
+//		folderQuestionFetch(client);
 	}
 
 	public void folderSave(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("parentId", null);
+		joInput.put("leagueId",1);
+		joInput.put("name","پوشه سوم");
+		
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -69,6 +72,10 @@ public class CallFolder extends AbstractVerticle {
 	public void folderUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("folderId", 3);
+		joInput.put("parentId", null);
+		joInput.put("leagueId",2);
+		joInput.put("name","پوشه چهارم");
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -99,6 +106,7 @@ public class CallFolder extends AbstractVerticle {
 	public void folderDelete(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("folderId", 3);
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -159,9 +167,7 @@ public class CallFolder extends AbstractVerticle {
 	public void folderFetchById(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("nationalNumber", "3241378012");
-		joInput.put("cellphone", 9359308163L); 
-		joInput.put("code", 123456); 
+		joInput.put("folderId", 3);
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -193,6 +199,9 @@ public class CallFolder extends AbstractVerticle {
 	public void folderQuestionAssign(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("folderId", 3);
+		joInput.put("questionId", 1);
+		
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -223,6 +232,8 @@ public class CallFolder extends AbstractVerticle {
 	public void folderQuestionUnAssign(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("folderId", 3);
+		joInput.put("questionId", 1);
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -253,6 +264,7 @@ public class CallFolder extends AbstractVerticle {
 	public void folderQuestionFetch(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("folderId", 3);
 		System.out.println("joInput:" + joInput);
 
 		try {

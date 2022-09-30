@@ -36,8 +36,8 @@ public final class GroupInputValidationUtil {
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            leagueId = inputParameters.getInteger("leagueId");
 	            name = inputParameters.getString("name");
+	            leagueId = inputParameters.getInteger("leagueId");
 	            activeFrom = inputParameters.getString("activeFrom");
 	            activeTo = inputParameters.getString("activeTo");
 

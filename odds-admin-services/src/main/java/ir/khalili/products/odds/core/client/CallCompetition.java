@@ -27,18 +27,28 @@ public class CallCompetition extends AbstractVerticle {
 
 		WebClient client = WebClient.create(vertx);
 		competitionSave(client);
-		competitionUpdate(client);
-		competitionDelete(client);
-		competitionFetchAll(client);
-		competitionFetchById(client);
-		competitionGroupFetch(client);
-		competitionQuestionAssign(client);
-		competitionQuestionUnAssign(client);
-		competitionQuestionFetch(client);
+//		competitionUpdate(client);
+//		competitionDelete(client);
+//		competitionFetchAll(client);
+//		competitionFetchById(client);
+//		competitionGroupFetch(client);
+//		competitionQuestionAssign(client);
+//		competitionQuestionUnAssign(client);
+//		competitionQuestionFetch(client);
 	}
 
 	public void competitionSave(WebClient client) {
 		JsonObject joInput = new JsonObject();
+		
+		joInput.put("leagueId", 1);
+		joInput.put("teamId1",1);
+		joInput.put("teamId2",2);
+		joInput.put("groupId",1);
+		joInput.put("activeFrom", "2022/09/30");
+		joInput.put("activeTo", "2022/09/30");
+		joInput.put("oddsFrom", "2022/10/01");
+		joInput.put("oddsTo", "2022/10/01");
+		joInput.put("competitionDate", "2022/10/05");
 		
 		System.out.println("joInput:" + joInput);
 		try {
@@ -66,6 +76,16 @@ public class CallCompetition extends AbstractVerticle {
 	public void competitionUpdate(WebClient client) {
 		
 		JsonObject joInput = new JsonObject();
+		joInput.put("competitionId", 1);
+		joInput.put("leagueId", 1);
+		joInput.put("teamId1",1);
+		joInput.put("teamId2",2);
+		joInput.put("groupId",1);
+		joInput.put("activeFrom", "2022/09/30");
+		joInput.put("activeTo", "2022/09/30");
+		joInput.put("oddsFrom", "2022/10/01");
+		joInput.put("oddsTo", "2022/10/01");
+		joInput.put("competitionDate", "2023/10/05");
 		
 		System.out.println("joInput:" + joInput);
 		
@@ -177,6 +197,7 @@ public class CallCompetition extends AbstractVerticle {
 
 	public void competitionGroupFetch(WebClient client) {
 		JsonObject joInput = new JsonObject();
+		joInput.put("competitionId", 1);
 		
 		System.out.println("joInput:" + joInput);
 		try {
@@ -204,6 +225,9 @@ public class CallCompetition extends AbstractVerticle {
 	public void competitionQuestionAssign(WebClient client) {
 		JsonObject joInput = new JsonObject();
 		
+		joInput.put("competitionId", 1);
+		joInput.put("questionId", 1);
+		
 		System.out.println("joInput:" + joInput);
 		try {
 			client.post(port, host, "/v1/service/odds/competition/assign/question").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
@@ -229,6 +253,8 @@ public class CallCompetition extends AbstractVerticle {
 
 	public void competitionQuestionUnAssign(WebClient client) {
 		JsonObject joInput = new JsonObject();
+		joInput.put("competitionId", 1);
+		joInput.put("questionId", 1);
 		
 		System.out.println("joInput:" + joInput);
 		try {
@@ -255,7 +281,8 @@ public class CallCompetition extends AbstractVerticle {
 
 	public void competitionQuestionFetch(WebClient client) {
 		JsonObject joInput = new JsonObject();
-		
+		joInput.put("competitionId", 1);
+
 		System.out.println("joInput:" + joInput);
 		try {
 			client.post(port, host, "/v1/service/odds/competition/fetch/question").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {

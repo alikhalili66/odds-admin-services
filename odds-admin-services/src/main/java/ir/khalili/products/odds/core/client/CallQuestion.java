@@ -19,22 +19,28 @@ public class CallQuestion extends AbstractVerticle{
 
 		System.out.println("CallQuestion STARTING ......");
 		Vertx vertx = Vertx.vertx();
-		vertx.deployVerticle(new CallLeague());
+		vertx.deployVerticle(new CallQuestion());
 	}
 
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 		questionSave(client);
-		questionUpdate(client);
-		questionDelete(client);
-		questionFetchById(client);
-		questionFetchAll(client);
+//		questionUpdate(client);
+//		questionDelete(client);
+//		questionFetchAll(client);
+//		questionFetchById(client);
 	}
 
 	public void questionSave(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("leagueId", 2);
+		joInput.put("question", "کدام کشور میتواند");
+		joInput.put("answers", "کشور اتیوپی");
+		joInput.put("type", "H");
+		joInput.put("minPoint", 40);
+		
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -65,6 +71,12 @@ public class CallQuestion extends AbstractVerticle{
 	public void questionUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("questionId", 4);
+		joInput.put("leagueId", 2);
+		joInput.put("question", "کدام کشور میتواند");
+		joInput.put("answers", "کشور ایران");
+		joInput.put("type", "H");
+		joInput.put("minPoint", 40);
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -95,6 +107,7 @@ public class CallQuestion extends AbstractVerticle{
 	public void questionDelete(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("questionId", 4);
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -155,6 +168,7 @@ public class CallQuestion extends AbstractVerticle{
 	public void questionFetchById(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("questionId", 1);
 		System.out.println("joInput:" + joInput);
 
 		try {

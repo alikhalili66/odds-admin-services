@@ -26,15 +26,20 @@ public class CallTeam extends AbstractVerticle {
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 		teamSave(client);
-		teamUpdate(client);
-		teamDelete(client);
-		teamFetchById(client);
-		teamFetchAll(client);
+//		teamUpdate(client);
+//		teamDelete(client);
+//		teamFetchAll(client);
+//		teamFetchById(client);
 	}
 
 	public void teamSave(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("leagueId", 2);
+		joInput.put("name", "اکوادور");
+		joInput.put("symbol", "E");
+		joInput.put("image", "path");
+		
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -65,6 +70,12 @@ public class CallTeam extends AbstractVerticle {
 	public void teamUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("teamId", 3);
+		joInput.put("leagueId", 2);
+		joInput.put("name", "اکوادور");
+		joInput.put("symbol", "اکواد");
+		joInput.put("image", "path");
+
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -95,6 +106,7 @@ public class CallTeam extends AbstractVerticle {
 	public void teamDelete(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("teamId", 3);
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -155,6 +167,7 @@ public class CallTeam extends AbstractVerticle {
 	public void teamFetchById(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("teamId", 2);
 		System.out.println("joInput:" + joInput);
 
 		try {

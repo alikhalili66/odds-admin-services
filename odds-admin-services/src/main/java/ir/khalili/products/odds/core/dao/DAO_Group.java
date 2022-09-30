@@ -11,7 +11,6 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.excp.dao.DAOEXCP_Internal;
-import ir.khalili.products.odds.core.utils.CalenderUtil;
 
 public class DAO_Group {
 
@@ -23,15 +22,11 @@ public class DAO_Group {
 		
 		JsonArray params = new JsonArray();
 		
-		try {
-			params.add(message.getInteger("leagueId"));
-			params.add(message.getString("name"));
-			params.add(CalenderUtil.toDate(message.getString("activeFrom")));
-			params.add(CalenderUtil.toDate(message.getString("activeTo")));
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		params.add(message.getInteger("leagueId"));
+		params.add(message.getString("name"));
+		params.add(message.getString("activeFrom"));
+		params.add(message.getString("activeTo"));
+		params.add(message.getInteger("userId"));
 		
 		sqlConnection.updateWithParams(""
 				+ "insert into toppgroup("
@@ -42,7 +37,7 @@ public class DAO_Group {
 				+ "ACTIVETO,"
 				+ "creationDate,"
 				+ "createdBy_id)"
-				+ "values(soppgroup.nextval,?,?,?,?,sysdate,?)", params, resultHandler->{
+				+ "values(soppgroup.nextval,?,?,TO_DATE(?,'YYYY/MM/DD'),TO_DATE(?,'YYYY/MM/DD'),sysdate,?)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -62,23 +57,18 @@ public class DAO_Group {
 		
 		JsonArray params = new JsonArray();
 		
-		try {
-			params.add(message.getInteger("leagueId"));
-			params.add(message.getString("name"));
-			params.add(CalenderUtil.toDate(message.getString("activeFrom")));
-			params.add(CalenderUtil.toDate(message.getString("activeTo")));
-			params.add(message.getInteger("groupId"));
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		params.add(message.getInteger("leagueId"));
+		params.add(message.getString("name"));
+		params.add(message.getString("activeFrom"));
+		params.add(message.getString("activeTo"));
+		params.add(message.getInteger("groupId"));
 		
 		sqlConnection.updateWithParams(""
 				+ "update toppgroup g set "
 				+ "LEAGUE_ID=?,"
 				+ "NAME=?,"
-				+ "ACTIVEFROM=?,"
-				+ "ACTIVETO=? "
+				+ "ACTIVEFROM=TO_DATE(?,'YYYY/MM/DD'),"
+				+ "ACTIVETO=TO_DATE(?,'YYYY/MM/DD') "
 				+ " where g.id=?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());

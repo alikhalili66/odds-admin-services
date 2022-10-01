@@ -29,12 +29,12 @@ public class DAO_User {
         		+ "u.POINT,"
         		+ "u.AMOUNT,"
         		+ "u.NATIONALNUMBER,"
-        		+ "To_Char(u.BIRTHDATE,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') BIRTH_DATE,"
+        		+ "To_Char(u.BIRTHDATE,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') BIRTH_DATE,"
         		+ "u.PROVINCE,"
         		+ "u.CITY,"
         		+ "u.POSTCODE,"
         		+ "u.ADDRESS,"
-        		+ "To_Char(u.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date "
+        		+ "To_Char(u.creationdate,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') creation_date "
         		+ "  FROM toppuser u", handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -66,12 +66,12 @@ public class DAO_User {
         		+ "u.POINT,"
         		+ "u.AMOUNT,"
         		+ "u.NATIONALNUMBER,"
-        		+ "To_Char(u.BIRTHDATE,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') BIRTH_DATE,"
+        		+ "To_Char(u.BIRTHDATE,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') BIRTH_DATE,"
         		+ "u.PROVINCE,"
         		+ "u.CITY,"
         		+ "u.POSTCODE,"
         		+ "u.ADDRESS,"
-        		+ "To_Char(u.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date "
+        		+ "To_Char(u.creationdate,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') creation_date "
         		+ "  FROM toppuser u where u.id=?", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

@@ -392,12 +392,14 @@ public final class CompetitionInputValidationUtil {
 
 			Integer competitionId;
 			Integer questionId;
+			Integer norder;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
 	            competitionId = inputParameters.getInteger("competitionId");
 	            questionId = inputParameters.getInteger("questionId");
+	            norder = inputParameters.getInteger("norder");
 	            
 	            if (null == competitionId || competitionId < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
@@ -405,6 +407,10 @@ public final class CompetitionInputValidationUtil {
 
 	            if (null == questionId || questionId < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه سوال معتبر نمی باشد");
+	            }
+
+	            if (null == norder || norder < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "ترتیب سوال معتبر نمی باشد");
 	            }
 	            
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -419,6 +425,7 @@ public final class CompetitionInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("competitionId", competitionId);
 			joResult.put("questionId", questionId);
+			joResult.put("norder", norder);
 
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));

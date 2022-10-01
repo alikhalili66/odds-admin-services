@@ -30,14 +30,14 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionSave(client);
 //		competitionUpdate(client);
 //		competitionDelete(client);
-//		competitionFetchAll(client);
+		competitionFetchAll(client);
 //		competitionFetchById(client);
 //		competitionGroupFetch(client);
 //		competitionQuestionAssign(client);
 //		competitionQuestionUnAssign(client);
 //		competitionQuestionFetch(client);
 //		competitionResultRegister(client);
-		questionResultRegister(client);
+//		questionResultRegister(client);
 	}
 
 	public void competitionSave(WebClient client) {
@@ -230,6 +230,7 @@ public class CallCompetition extends AbstractVerticle {
 		
 		joInput.put("competitionId", 1);
 		joInput.put("questionId", 1);
+		joInput.put("norder", 1);
 		
 		System.out.println("joInput:" + joInput);
 		try {

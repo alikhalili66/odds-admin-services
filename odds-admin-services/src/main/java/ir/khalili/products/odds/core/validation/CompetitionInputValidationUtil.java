@@ -1,11 +1,14 @@
 package ir.khalili.products.odds.core.validation;
 
+import java.util.Iterator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
@@ -85,7 +88,7 @@ public final class CompetitionInputValidationUtil {
 	            }
 
 	            if (null == competitionDate || competitionDate.isEmpty()) {
-	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'تاریخ رقابت' معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'تاریخ مسابقه' معتبر نمی باشد");
 	            }
 	            
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -155,7 +158,7 @@ public final class CompetitionInputValidationUtil {
 	            competitionDate = inputParameters.getString("competitionDate");
 
 	            if (null == competitionId || competitionId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه رقابت معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
 	            }
 	            
 	            if (null == leagueId || leagueId < 1) {
@@ -191,7 +194,7 @@ public final class CompetitionInputValidationUtil {
 	            }
 
 	            if (null == competitionDate || competitionDate.isEmpty()) {
-	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'تاریخ رقابت' معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'تاریخ مسابقه' معتبر نمی باشد");
 	            }
 	            
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -244,7 +247,7 @@ public final class CompetitionInputValidationUtil {
 	            competitionId = inputParameters.getInteger("competitionId");
 	            
 	            if (null == competitionId || competitionId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه رقابت معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -308,7 +311,7 @@ public final class CompetitionInputValidationUtil {
 	            competitionId = inputParameters.getInteger("competitionId");
 	            
 	            if (null == competitionId || competitionId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه رقابت معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -351,7 +354,7 @@ public final class CompetitionInputValidationUtil {
 	            competitionId = inputParameters.getInteger("competitionId");
 	            
 	            if (null == competitionId || competitionId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه رقابت معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -397,7 +400,7 @@ public final class CompetitionInputValidationUtil {
 	            questionId = inputParameters.getInteger("questionId");
 	            
 	            if (null == competitionId || competitionId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه رقابت معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
 	            }
 
 	            if (null == questionId || questionId < 1) {
@@ -448,7 +451,7 @@ public final class CompetitionInputValidationUtil {
 	            questionId = inputParameters.getInteger("questionId");
 	            
 	            if (null == competitionId || competitionId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه رقابت معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
 	            }
 
 	            if (null == questionId || questionId < 1) {
@@ -497,7 +500,7 @@ public final class CompetitionInputValidationUtil {
 	            competitionId = inputParameters.getInteger("competitionId");
 	            
 	            if (null == competitionId || competitionId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه رقابت معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -522,5 +525,125 @@ public final class CompetitionInputValidationUtil {
 
     }
 	
+	public static void validateResultRegister(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
+
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+
+			final JsonObject joToken = handler.result();
+
+			Integer competitionId;
+			String result;
+
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            competitionId = inputParameters.getInteger("competitionId");
+	            result = inputParameters.getString("result");
+
+	            if (null == competitionId || competitionId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
+	            }
+	            
+	            if (null == result || result.isEmpty() || result.length() > 5) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نتیجه معتبر نمی باشد");
+	            }
+	            
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+
+			final JsonObject joResult = new JsonObject();
+			joResult.put("competitionId", competitionId);
+			joResult.put("result", result);
+
+			joResult.put("userId", joToken.getInteger("id"));
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
+
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+		});
+
+    }
+
+	public static void validateQuestionResultRegister(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
+
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+
+			final JsonObject joToken = handler.result();
+
+			Integer competitionId = null;
+			JsonArray results = new JsonArray();
+			
+			try {
+
+				final JsonObject inputParameters = InputValidationUtil.validate(context);
+				
+				competitionId = inputParameters.getInteger("competitionId");
+				results = inputParameters.getJsonArray("results");
+				
+				if (null == competitionId || competitionId < 1) {
+					throw new EXCP_RtMgr_Validation(-602, "شناسه مسابقه معتبر نمی باشد.");
+				}
+				
+				if (results == null || results.isEmpty() || results.size()==0) {
+					throw new EXCP_RtMgr_Validation(-602, "لیست پاسخ سوالات معتبر نمی باشد");
+				}
+				
+				for (Iterator<Object> iterator = results.iterator(); iterator.hasNext();) {
+					JsonObject joResult = (JsonObject) iterator.next();
+					if (!joResult.containsKey("questionId") ||
+						joResult.getInteger("questionId") < 1 ||
+						!joResult.containsKey("result") ||
+						joResult.getString("result") == null ||
+						joResult.getString("result").isEmpty() ||
+						joResult.getString("result").length() == 0 ||
+						joResult.getString("result").length() > 10) {
+						
+						throw new EXCP_RtMgr_Validation(-602, "لیست پاسخ سوالات معتبر نمی باشد");
+					}
+				}
+				
+				
+			} catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499,
+						"نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+			
+			final JsonObject joResult = new JsonObject();
+			
+			joResult.put("competitionId", competitionId);
+			joResult.put("results", results);
+
+			joResult.put("userId", joToken.getInteger("id"));
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
+
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+		});
+
+    }
+
 	
 }

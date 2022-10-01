@@ -1,6 +1,7 @@
 package ir.khalili.products.odds.core.dao;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.LogManager;
@@ -54,11 +55,11 @@ public class DAO_Competition {
 				+ "?,"
 				+ "?,"
 				+ "?,"
-				+ "TO_DATE(?,'YYYY/MM/DD'),"
-				+ "TO_DATE(?,'YYYY/MM/DD'),"
-				+ "TO_DATE(?,'YYYY/MM/DD'),"
-				+ "TO_DATE(?,'YYYY/MM/DD'),"
-				+ "TO_DATE(?,'YYYY/MM/DD'),"
+				+ "TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
 				+ "sysdate,"
 				+ "?)", params, resultHandler->{
 			if(resultHandler.failed()) {
@@ -98,11 +99,11 @@ public class DAO_Competition {
 				+ "c.TEAM1_ID=?,"
 				+ "c.TEAM2_ID=?,"
 				+ "c.GROUP_ID=?,"
-				+ "c.ACTIVEFROM=TO_DATE(?,'YYYY/MM/DD'),"
-				+ "c.ACTIVETO=TO_DATE(?,'YYYY/MM/DD'),"
-				+ "c.ODDSFROM=TO_DATE(?,'YYYY/MM/DD'),"
-				+ "c.ODDSTO=TO_DATE(?,'YYYY/MM/DD'),"
-				+ "c.COMPETITIONDATE=TO_DATE(?,'YYYY/MM/DD') "
+				+ "c.ACTIVEFROM=TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "c.ACTIVETO=TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "c.ODDSFROM=TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "c.ODDSTO=TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "c.COMPETITIONDATE=TO_DATE(?,'YYYY/MM/DD HH:MI:SS') "
 				+ " where c.id=?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
@@ -147,12 +148,12 @@ public class DAO_Competition {
         		+ "c.TEAM2_ID,"
         		+ "c.GROUP_ID,"
         		+ "c.RESULT,"
-        		+ "To_Char(c.ACTIVEFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_FROM,"
-        		+ "To_Char(c.ACTIVETO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_TO,"
-        		+ "To_Char(c.ODDSFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_FROM,"
-        		+ "To_Char(c.ODDSTO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_TO,"
-        		+ "To_Char(c.COMPETITIONDATE,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') COMPETITION_DATE,"
-        		+ "To_Char(c.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "To_Char(c.ACTIVEFROM,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_FROM,"
+        		+ "To_Char(c.ACTIVETO,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_TO,"
+        		+ "To_Char(c.ODDSFROM,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ODDS_FROM,"
+        		+ "To_Char(c.ODDSTO,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ODDS_TO,"
+        		+ "To_Char(c.COMPETITIONDATE,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') COMPETITION_DATE,"
+        		+ "To_Char(c.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppcompetition c WHERE c.dto is null", handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -182,12 +183,12 @@ public class DAO_Competition {
         		+ "c.TEAM2_ID,"
         		+ "c.GROUP_ID,"
         		+ "c.RESULT,"
-        		+ "To_Char(c.ACTIVEFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_FROM,"
-        		+ "To_Char(c.ACTIVETO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_TO,"
-        		+ "To_Char(c.ODDSFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_FROM,"
-        		+ "To_Char(c.ODDSTO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_TO,"
-        		+ "To_Char(c.COMPETITIONDATE,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') COMPETITION_DATE,"
-        		+ "To_Char(c.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "To_Char(c.ACTIVEFROM,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_FROM,"
+        		+ "To_Char(c.ACTIVETO,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_TO,"
+        		+ "To_Char(c.ODDSFROM,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ODDS_FROM,"
+        		+ "To_Char(c.ODDSTO,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ODDS_TO,"
+        		+ "To_Char(c.COMPETITIONDATE,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') COMPETITION_DATE,"
+        		+ "To_Char(c.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppcompetition c WHERE c.id=? and c.dto is null", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -292,12 +293,12 @@ public class DAO_Competition {
         		+ "c.TEAM2_ID,"
         		+ "c.GROUP_ID,"
         		+ "c.RESULT,"
-        		+ "To_Char(c.ACTIVEFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_FROM,"
-        		+ "To_Char(c.ACTIVETO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_TO,"
-        		+ "To_Char(c.ODDSFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_FROM,"
-        		+ "To_Char(c.ODDSTO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_TO,"
-        		+ "To_Char(c.COMPETITIONDATE,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') COMPETITION_DATE,"
-        		+ "To_Char(c.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "To_Char(c.ACTIVEFROM,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_FROM,"
+        		+ "To_Char(c.ACTIVETO,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_TO,"
+        		+ "To_Char(c.ODDSFROM,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ODDS_FROM,"
+        		+ "To_Char(c.ODDSTO,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ODDS_TO,"
+        		+ "To_Char(c.COMPETITIONDATE,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') COMPETITION_DATE,"
+        		+ "To_Char(c.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppcompetition c WHERE c.GROUP_ID = ? and c.dto is null", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -314,5 +315,57 @@ public class DAO_Competition {
 
         return promise.future();
     }
+    
+    public static Future<Void> resultRegister(SQLConnection sqlConnection, JsonObject message) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		
+		params.add(message.getString("result"));
+		params.add(message.getInteger("competitionId"));
+		
+		sqlConnection.updateWithParams(""
+				+ "update toppcompetition c set "
+				+ "c.result=? "
+				+ " where c.id=?", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("UpdateCompetitionResultSuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+    
+	public static Future<Void> questionResultRegister(SQLConnection sqlConnection, JsonObject message) {
+		
+		Promise<Void> promise = Promise.promise();
+		
+		List<JsonArray> params = new ArrayList<>();
+		
+		for (Iterator<Object> iterator = message.getJsonArray("results").iterator(); iterator.hasNext();) {
+			JsonObject joResult = (JsonObject) iterator.next();
+			params.add(new JsonArray().add(joResult.getString("result")).add(message.getInteger("competitionId")).add(joResult.getInteger("questionId")));
+		}
+		
+		sqlConnection.batchWithParams("update toppcompetitionquestion cq set cq.result=? where cq.COMPETITION_ID=? and cq.QUESTION_ID=?", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			logger.trace("QuestionResultRegisterSuccessful");
+			promise.complete();
+			
+		});
+		return promise.future();
+	}
+	
     
 }

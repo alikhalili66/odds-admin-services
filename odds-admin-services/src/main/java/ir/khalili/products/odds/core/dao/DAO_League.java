@@ -49,10 +49,10 @@ public class DAO_League {
 				+ "?,"
 				+ "?,"
 				+ "?,"
-				+ "TO_DATE(?,'YYYY/MM/DD'),"
-				+ "TO_DATE(?,'YYYY/MM/DD'),"
-				+ "TO_DATE(?,'YYYY/MM/DD'),"
-				+ "TO_DATE(?,'YYYY/MM/DD'),"
+				+ "TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
 				+ "sysdate,"
 				+ "?)", params, resultHandler->{
 			if(resultHandler.failed()) {
@@ -89,10 +89,10 @@ public class DAO_League {
 				+ "l.NAME=?,"
 				+ "l.SYMBOL=?,"
 				+ "l.IMAGE=?,"
-				+ "l.ACTIVEFROM=TO_DATE(?,'YYYY/MM/DD'),"
-				+ "l.ACTIVETO=TO_DATE(?,'YYYY/MM/DD'),"
-				+ "l.oddsfrom=TO_DATE(?,'YYYY/MM/DD'),"
-				+ "l.oddsTo=TO_DATE(?,'YYYY/MM/DD') "
+				+ "l.ACTIVEFROM=TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "l.ACTIVETO=TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "l.oddsfrom=TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "l.oddsTo=TO_DATE(?,'YYYY/MM/DD HH:MI:SS') "
 				+ " where l.id=? ", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
@@ -135,9 +135,9 @@ public class DAO_League {
         		+ "l.NAME,"
         		+ "l.SYMBOL,"
         		+ "l.IMAGE,"
-        		+ "To_Char(l.ACTIVEFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_FROM,"
-        		+ "To_Char(l.ACTIVETO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_TO,"
-        		+ "To_Char(l.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "To_Char(l.ACTIVEFROM,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_FROM,"
+        		+ "To_Char(l.ACTIVETO,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_TO,"
+        		+ "To_Char(l.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppleague l WHERE l.dto is null", handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -165,9 +165,9 @@ public class DAO_League {
         		+ "l.NAME,"
         		+ "l.SYMBOL,"
         		+ "l.IMAGE,"
-        		+ "To_Char(l.ACTIVEFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_FROM,"
-        		+ "To_Char(l.ACTIVETO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_TO,"
-        		+ "To_Char(l.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "To_Char(l.ACTIVEFROM,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_FROM,"
+        		+ "To_Char(l.ACTIVETO,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_TO,"
+        		+ "To_Char(l.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppleague l WHERE l.id=? and l.dto is null", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

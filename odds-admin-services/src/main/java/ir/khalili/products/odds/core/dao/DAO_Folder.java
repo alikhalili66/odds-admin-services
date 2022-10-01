@@ -108,7 +108,7 @@ public class DAO_Folder {
         		+ "f.PARENT_ID,"
         		+ "f.LEAGUE_ID,"
         		+ "f.NAME,"
-        		+ "To_Char(f.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "To_Char(f.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppfolder f WHERE f.dto is null CONNECT BY PRIOR f.id = f.parent_id", handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -136,7 +136,7 @@ public class DAO_Folder {
         		+ "f.PARENT_ID,"
         		+ "f.LEAGUE_ID,"
         		+ "f.NAME,"
-        		+ "To_Char(f.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "To_Char(f.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppfolder f WHERE f.id=? and f.dto is null CONNECT BY PRIOR f.id = f.parent_id", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

@@ -9,42 +9,40 @@ import io.vertx.ext.web.client.WebClient;
 /**
  * @author A.KH
  */
-public class CallTeam extends AbstractVerticle {
+public class CallConfig extends AbstractVerticle {
 
 	private static final int port = 9090;
-	private static final String host  ="127.0.0.1";
+	private static final String host = "127.0.0.1";
 //	private static final String host  ="185.213.167.156";
-	
+
 	public static void main(String[] args) {
 
-		System.out.println("CallTeam STARTING ......");
+		System.out.println("CallLeague STARTING ......");
 		Vertx vertx = Vertx.vertx();
-		vertx.deployVerticle(new CallTeam());
+		vertx.deployVerticle(new CallConfig());
 	}
 
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-//		teamSave(client);
-//		teamUpdate(client);
-//		teamDelete(client);
-//		teamFetchAll(client);
-//		teamFetchById(client);
-		teamImageUpdate(client);
+//		leagueUpdate(client);
+//		leagueFetchAll(client);
+//		leagueFetchById(client);
+		leagueFetchBySymbol(client);
 	}
 
-	public void teamSave(WebClient client) {
+	public void leagueUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("leagueId", 2);
-		joInput.put("name", "اکوادور");
-		joInput.put("symbol", "E");
-		joInput.put("image", "path");
+		joInput.put("configId", 1);
+		joInput.put("name", "قوانین");
+		joInput.put("symbol", "S");
+		joInput.put("value", "امتیازهاا از بین نمی روند");
 		
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/odds/team/save")
+			client.post(port, host, "/v1/service/odds/config/update")
 					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
@@ -68,21 +66,13 @@ public class CallTeam extends AbstractVerticle {
 		}
 	}
 
-	public void teamUpdate(WebClient client) {
-
-		JsonObject joInput = new JsonObject();
-		joInput.put("teamId", 3);
-		joInput.put("leagueId", 2);
-		joInput.put("name", "اکوادور");
-		joInput.put("symbol", "اکواد");
-
-		System.out.println("joInput:" + joInput);
+	public void leagueFetchAll(WebClient client) {
 
 		try {
-			client.post(port, host, "/v1/service/odds/team/update")
+			client.post(port, host, "/v1/service/odds/config/all/fetch")
 					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
-					.sendJson(joInput, ar -> {
+					.send(ar -> {
 						try {
 							if (ar.succeeded()) {
 								JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -103,75 +93,14 @@ public class CallTeam extends AbstractVerticle {
 		}
 	}
 
-	public void teamDelete(WebClient client) {
+	public void leagueFetchById(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("teamId", 3);
+		joInput.put("configId", 1);
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/odds/team/delete")
-					.putHeader("API-KEY", CallAuth.API_KEY)
-					.putHeader("Authorization", CallAuth.token)
-					.sendJson(joInput, ar -> {
-						try {
-							if (ar.succeeded()) {
-								JsonObject response = new JsonObject(ar.result().bodyAsString());
-								System.out.println(Json.encodePrettily(response));
-							} else {
-								System.out.println(ar.cause());
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						} finally {
-
-							System.exit(0);
-						}
-					});
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
-
-	public void teamFetchAll(WebClient client) {
-
-		JsonObject joInput = new JsonObject();
-		System.out.println("joInput:" + joInput);
-
-		try {
-			client.post(port, host, "/v1/service/odds/team/all/fetch")
-					.putHeader("API-KEY", CallAuth.API_KEY)
-					.putHeader("Authorization", CallAuth.token)
-					.sendJson(joInput, ar -> {
-						try {
-							if (ar.succeeded()) {
-								JsonObject response = new JsonObject(ar.result().bodyAsString());
-								System.out.println(Json.encodePrettily(response));
-							} else {
-								System.out.println(ar.cause());
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						} finally {
-
-							System.exit(0);
-						}
-					});
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
-
-	public void teamFetchById(WebClient client) {
-
-		JsonObject joInput = new JsonObject();
-		joInput.put("teamId", 2);
-		System.out.println("joInput:" + joInput);
-
-		try {
-			client.post(port, host, "/v1/service/odds/team/id/fetch")
+			client.post(port, host, "/v1/service/odds/config/id/fetch")
 					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
 					
@@ -196,18 +125,17 @@ public class CallTeam extends AbstractVerticle {
 		}
 	}
 
-	public void teamImageUpdate(WebClient client) {
+	public void leagueFetchBySymbol(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("teamId", 3);
-		joInput.put("image", "path2");
-
+		joInput.put("symbol", "S");
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/odds/team/image/update")
+			client.post(port, host, "/v1/service/odds/config/symbol/fetch")
 					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
+					
 					.sendJson(joInput, ar -> {
 						try {
 							if (ar.succeeded()) {

@@ -1,4 +1,4 @@
-package ir.khalili.products.odds.core.biz.league;
+package ir.khalili.products.odds.core.biz.config;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -8,21 +8,21 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.dao.DAO_League;
+import ir.khalili.products.odds.core.dao.DAO_Config;
 
-public class Biz_04_LeagueFetchAll {
+public class Biz_02_ConfigFetchAll {
 
-    private static final Logger logger = LogManager.getLogger(Biz_04_LeagueFetchAll.class);
+    private static final Logger logger = LogManager.getLogger(Biz_02_ConfigFetchAll.class);
 
     public static void fetchAll(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-        DAO_League.fetchAll(sqlConnection).onComplete(result -> {
+    	DAO_Config.fetchAll(sqlConnection).onComplete(result -> {
             if (result.failed()) {
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }
             
-            logger.trace("LEAGUE_FETCH_ALL_RESULT : " + result.result());
+            logger.trace("CONFIG_FETCH_ALL_RESULT : " + result.result());
             
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()

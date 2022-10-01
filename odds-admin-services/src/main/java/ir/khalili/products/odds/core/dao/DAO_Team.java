@@ -60,15 +60,13 @@ public class DAO_Team {
 		params.add(message.getString("leagueId"));
 		params.add(message.getString("name"));
 		params.add(message.getString("symbol"));
-		params.add(message.getString("image"));
 		params.add(message.getInteger("teamId"));
 		
 		sqlConnection.updateWithParams(""
 				+ "update toppteam t set "
 				+ "t.league_id=?,"
 				+ "t.name=?,"
-				+ "t.symbol=?,"
-				+ "t.image=? "
+				+ "t.symbol=?"
 				+ " where t.id=?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
@@ -77,6 +75,32 @@ public class DAO_Team {
 			}
 			
 			logger.trace("UpdateTeamSuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+    
+    public static Future<Void> updateImage(SQLConnection sqlConnection, JsonObject message) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(message.getString("image"));
+		params.add(message.getInteger("teamId"));
+		
+		sqlConnection.updateWithParams(""
+				+ "update toppteam t set "
+				+ "t.IMAGE=? "
+				+ " where t.id=?", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("UpdateImageTeamSuccessful");
 			promise.complete();
 			
 		});
@@ -112,7 +136,7 @@ public class DAO_Team {
         		+ "t.SYMBOL,"
         		+ "t.IMAGE,"
         		+ "t.LEAGUE_ID,"
-        		+ "To_Char(t.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "To_Char(t.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppteam t WHERE t.dto is null", handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -141,7 +165,7 @@ public class DAO_Team {
         		+ "t.SYMBOL,"
         		+ "t.IMAGE,"
         		+ "t.LEAGUE_ID,"
-        		+ "To_Char(t.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "To_Char(t.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppteam t WHERE t.id=? and t.dto is null", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

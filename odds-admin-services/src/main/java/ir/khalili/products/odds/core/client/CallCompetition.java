@@ -3,6 +3,7 @@ package ir.khalili.products.odds.core.client;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.WebClient;
 
@@ -31,10 +32,12 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionDelete(client);
 //		competitionFetchAll(client);
 //		competitionFetchById(client);
-		competitionGroupFetch(client);
+//		competitionGroupFetch(client);
 //		competitionQuestionAssign(client);
 //		competitionQuestionUnAssign(client);
 //		competitionQuestionFetch(client);
+//		competitionResultRegister(client);
+		questionResultRegister(client);
 	}
 
 	public void competitionSave(WebClient client) {
@@ -306,4 +309,69 @@ public class CallCompetition extends AbstractVerticle {
 		}
 	}
 
+	public void competitionResultRegister(WebClient client) {
+		
+		JsonObject joInput = new JsonObject();
+		joInput.put("competitionId", 10);
+		joInput.put("result", "OK");
+		
+		System.out.println("joInput:" + joInput);
+		
+		try {
+			client.post(port, host, "/v1/service/odds/competition/result/register").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void questionResultRegister(WebClient client) {
+		
+		JsonArray jaResults = new JsonArray();
+		jaResults.add(new JsonObject().put("questionId", 1).put("result", "گزینه اول"));
+		jaResults.add(new JsonObject().put("questionId", 2).put("result", "گزینه دوم"));
+		
+		JsonObject joInput = new JsonObject();
+		joInput.put("competitionId", 1);
+		joInput.put("results", jaResults);		
+		
+		System.out.println("joInput:" + joInput);
+		
+		try {
+			client.post(port, host, "/v1/service/odds/competition/question/result/register").putHeader("API-KEY", CallAuth.API_KEY).putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	
 }

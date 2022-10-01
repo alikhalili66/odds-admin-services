@@ -17,6 +17,8 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_QUESTION_ASSIGN			= "nas.eb.core.srvc.competition.question.assign";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_QUESTION_UNASSIGN		= "nas.eb.core.srvc.competition.question.unassign";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_QUESTION_FETCH			= "nas.eb.core.srvc.competition.question.fetch";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_RESULT_REGISTER			= "nas.eb.core.srvc.competition.result.register";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_QUESTION_RESULT_REGISTER= "nas.eb.core.srvc.competition.question.result.register";
 	
 	/***********************FOLDER**************************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_FOLDER_SAVE							= "nas.eb.core.srvc.folder.save";
@@ -61,12 +63,18 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_DELETE							= "nas.eb.core.srvc.team.delete";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_ALL_FETCH						= "nas.eb.core.srvc.team.all.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_ID_FETCH						= "nas.eb.core.srvc.team.id.fetch";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_IMAGE_UPDATE					= "nas.eb.core.srvc.team.image.update";
 	
 	/***********************USER****************************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_ALL_FETCH						= "nas.eb.core.srvc.user.all.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_ID_FETCH						= "nas.eb.core.srvc.user.id.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_ODDS_FETCH						= "nas.eb.core.srvc.user.odds.fetch";
 	
+	/***********************CONFIG****************************/
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_CONFIG_UPDATE						= "nas.eb.core.srvc.config.update";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_CONFIG_ALL_FETCH					= "nas.eb.core.srvc.config.all.fetch";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_CONFIG_ID_FETCH						= "nas.eb.core.srvc.config.id.fetch";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_CONFIG_SYMBOL_FETCH					= "nas.eb.core.srvc.config.symbol.fetch";
 	
 	
 }

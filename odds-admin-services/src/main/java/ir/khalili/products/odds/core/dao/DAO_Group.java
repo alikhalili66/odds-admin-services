@@ -38,7 +38,7 @@ public class DAO_Group {
 				+ "ACTIVETO,"
 				+ "creationDate,"
 				+ "createdBy_id)"
-				+ "values(soppgroup.nextval,?,?,TO_DATE(?,'YYYY/MM/DD'),TO_DATE(?,'YYYY/MM/DD'),sysdate,?)", params, resultHandler->{
+				+ "values(soppgroup.nextval,?,?,TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),sysdate,?)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -69,8 +69,8 @@ public class DAO_Group {
 				+ "update toppgroup g set "
 				+ "LEAGUE_ID=?,"
 				+ "NAME=?,"
-				+ "ACTIVEFROM=TO_DATE(?,'YYYY/MM/DD'),"
-				+ "ACTIVETO=TO_DATE(?,'YYYY/MM/DD') "
+				+ "ACTIVEFROM=TO_DATE(?,'YYYY/MM/DD HH:MI:SS'),"
+				+ "ACTIVETO=TO_DATE(?,'YYYY/MM/DD HH:MI:SS') "
 				+ " where g.id=?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
@@ -112,9 +112,9 @@ public class DAO_Group {
         		+ "g.id,"
         		+ "g.LEAGUE_ID,"
         		+ "g.NAME,"
-        		+ "To_Char(g.ACTIVEFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_FROM,"
-        		+ "To_Char(g.ACTIVETO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_TO,"
-        		+ "To_Char(g.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "To_Char(g.ACTIVEFROM,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_FROM,"
+        		+ "To_Char(g.ACTIVETO,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_TO,"
+        		+ "To_Char(g.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppgroup g WHERE g.dto is null", handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -141,9 +141,9 @@ public class DAO_Group {
         		+ "g.id,"
         		+ "g.LEAGUE_ID,"
         		+ "g.NAME,"
-        		+ "To_Char(g.ACTIVEFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_FROM,"
-        		+ "To_Char(g.ACTIVETO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_TO,"
-        		+ "To_Char(g.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "To_Char(g.ACTIVEFROM,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_FROM,"
+        		+ "To_Char(g.ACTIVETO,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') ACTIVE_TO,"
+        		+ "To_Char(g.creationdate,'YYYY/MM/DD HH:MI:SS','nls_calendar=persian') creation_date"
         		+ "  FROM toppgroup g WHERE g.id=? and g.dto is null", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

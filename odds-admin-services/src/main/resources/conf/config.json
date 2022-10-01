@@ -1,5 +1,5 @@
 {
-  "port": 6060,
+  "port": 9090,
   "Access_Control_Allow_Origin": "http://localhost:3000",
   "dbConfig": {
     "username": "sch_test",

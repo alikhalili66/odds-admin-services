@@ -1,6 +1,5 @@
 package ir.khalili.products.odds.core.utils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

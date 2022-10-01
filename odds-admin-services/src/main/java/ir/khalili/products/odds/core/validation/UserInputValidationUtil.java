@@ -51,14 +51,14 @@ public final class UserInputValidationUtil {
 
 			final JsonObject joToken = handler.result();
 
-			Integer userId;
+			Integer id;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            userId = inputParameters.getInteger("userId");
+	            id = inputParameters.getInteger("id");
 	            
-	            if (null == userId || userId < 1) {
+	            if (null == id || id < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر معتبر نمی باشد");
 	            }
 
@@ -72,7 +72,8 @@ public final class UserInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("userId", userId);
+			joResult.put("id", id);
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -93,14 +94,14 @@ public final class UserInputValidationUtil {
 
 			final JsonObject joToken = handler.result();
 
-			Integer userId;
+			Integer id;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            userId = inputParameters.getInteger("userId");
+	            id = inputParameters.getInteger("id");
 	            
-	            if (null == userId || userId < 1) {
+	            if (null == id || id < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر معتبر نمی باشد");
 	            }
 
@@ -114,7 +115,8 @@ public final class UserInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("userId", userId);
+			joResult.put("id", id);
+			joResult.put("userId", joToken.getInteger("userId"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

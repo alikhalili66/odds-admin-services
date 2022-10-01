@@ -11,7 +11,7 @@ import io.vertx.ext.web.client.WebClient;
  */
 public class CallAuth extends AbstractVerticle {
 
-	private static final int port = 6060;
+	private static final int port = 9090;
 	private static final String host  ="127.0.0.1";
 	
 	public static String token = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjY4MSwiZXhwIjoxNjYyNjMyOTM3LCJpcCI6IjE3Mi43MC4yNTEuMjAzIiwicHJvamVjdElkIjozMjEsInR5cGUiOiJTIiwiaXNDaGFuZ2VQYXNzIjpmYWxzZSwiaWF0IjoxNjYyNTQ2NTM3fQ.V8cgqrZPpzekS08DRskfZ2FK1JkIpqpgj1MD0pj6dRQ";

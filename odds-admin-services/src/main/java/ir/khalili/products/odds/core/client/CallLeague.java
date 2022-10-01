@@ -11,7 +11,7 @@ import io.vertx.ext.web.client.WebClient;
  */
 public class CallLeague extends AbstractVerticle {
 
-	private static final int port = 6060;
+	private static final int port = 9090;
 	private static final String host = "127.0.0.1";
 //	private static final String host  ="185.213.167.156";
 
@@ -146,7 +146,7 @@ public class CallLeague extends AbstractVerticle {
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/odds/league/fetch/all")
+			client.post(port, host, "/v1/service/odds/league/all/fetch")
 					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
@@ -177,7 +177,7 @@ public class CallLeague extends AbstractVerticle {
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/odds/league/fetch/id")
+			client.post(port, host, "/v1/service/odds/league/id/fetch")
 					.putHeader("API-KEY", CallAuth.API_KEY)
 					.putHeader("Authorization", CallAuth.token)
 					

@@ -11,7 +11,7 @@ import io.vertx.ext.web.client.WebClient;
  */
 public class CallUser extends AbstractVerticle {
 
-	private static final int port = 6060;
+	private static final int port = 9090;
 	private static final String host  ="127.0.0.1";
 //	private static final String host  ="185.213.167.156";
 	
@@ -34,7 +34,7 @@ public class CallUser extends AbstractVerticle {
 	public void userFetchAll(WebClient client) {
 		
 		try {
-			client.post(port, host, "/v1/service/odds/user/fetch/all")
+			client.post(port, host, "/v1/service/odds/user/all/fetch")
 			.putHeader("API-KEY", CallAuth.API_KEY)
 			.putHeader("Authorization", CallAuth.token)
 			.send(ar -> {
@@ -62,7 +62,7 @@ public class CallUser extends AbstractVerticle {
 		JsonObject joInput = new JsonObject();
 		joInput.put("userId", 1);
 		try {
-			client.post(port, host, "/v1/service/odds/user/fetch/id")
+			client.post(port, host, "/v1/service/odds/user/id/fetch")
 			.putHeader("API-KEY", CallAuth.API_KEY)
 			.putHeader("Authorization", CallAuth.token)
 			.sendJson(joInput, ar -> {

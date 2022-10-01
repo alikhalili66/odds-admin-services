@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ir.khalili.products.odds.core</groupId>
 	<artifactId>odds-admin-services</artifactId>
-	<version>BD20220910_0_0_0_0_0_2-fat</version>
+	<version>BD20221001_0_0_0_0_0_1-fat</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,7 +30,7 @@
 			<artifactId>rt</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -203,6 +203,16 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
@@ -277,7 +287,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>ir.restak.products.irc.core.EntryPoint</mainClass>
+					<mainClass>ir.khalili.products.odds.core.EntryPoint</mainClass>
 				</configuration>
 			</plugin>
 

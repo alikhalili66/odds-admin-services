@@ -27,7 +27,6 @@ import ir.khalili.products.odds.core.routemanager.competition.RtMgr_02_Competiti
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_03_CompetitionDelete;
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_04_CompetitionFetchAll;
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_05_CompetitionFetchById;
-import ir.khalili.products.odds.core.routemanager.competition.RtMgr_06_CompetitionGroupFetch;
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_07_CompetitionQuestionAssign;
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_08_CompetitionQuestionUnAssign;
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_09_CompetitionQuestionFetch;
@@ -44,6 +43,7 @@ import ir.khalili.products.odds.core.routemanager.group.RtMgr_02_GroupUpdate;
 import ir.khalili.products.odds.core.routemanager.group.RtMgr_03_GroupDelete;
 import ir.khalili.products.odds.core.routemanager.group.RtMgr_04_GroupFetchAll;
 import ir.khalili.products.odds.core.routemanager.group.RtMgr_05_GroupFetchById;
+import ir.khalili.products.odds.core.routemanager.group.RtMgr_09_GroupCompetitionFetch;
 import ir.khalili.products.odds.core.routemanager.group.RtMgr_06_GroupTeamAssign;
 import ir.khalili.products.odds.core.routemanager.group.RtMgr_07_GroupTeamUnAssign;
 import ir.khalili.products.odds.core.routemanager.group.RtMgr_08_GroupTeamFetch;
@@ -72,7 +72,6 @@ import ir.khalili.products.odds.core.verticle.competition.VRTCL_02_CompetitionUp
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_03_CompetitionDelete;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_04_CompetitionFetchAll;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_05_CompetitionFetchById;
-import ir.khalili.products.odds.core.verticle.competition.VRTCL_06_CompetitionGroupFetch;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_07_CompetitionQuestionAssign;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_08_CompetitionQuestionUnAssign;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_09_CompetitionQuestionFetch;
@@ -89,6 +88,7 @@ import ir.khalili.products.odds.core.verticle.group.VRTCL_02_GroupUpdate;
 import ir.khalili.products.odds.core.verticle.group.VRTCL_03_GroupDelete;
 import ir.khalili.products.odds.core.verticle.group.VRTCL_04_GroupFetchAll;
 import ir.khalili.products.odds.core.verticle.group.VRTCL_05_GroupFetchById;
+import ir.khalili.products.odds.core.verticle.group.VRTCL_09_GroupCompetitionFetch;
 import ir.khalili.products.odds.core.verticle.group.VRTCL_06_GroupTeamAssign;
 import ir.khalili.products.odds.core.verticle.group.VRTCL_07_GroupTeamUnAssign;
 import ir.khalili.products.odds.core.verticle.group.VRTCL_08_GroupTeamFetch;
@@ -191,7 +191,6 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_03_CompetitionDelete.class.getName());
     	vertx.deployVerticle(VRTCL_04_CompetitionFetchAll.class.getName());
     	vertx.deployVerticle(VRTCL_05_CompetitionFetchById.class.getName());
-    	vertx.deployVerticle(VRTCL_06_CompetitionGroupFetch.class.getName());
     	vertx.deployVerticle(VRTCL_07_CompetitionQuestionAssign.class.getName());
     	vertx.deployVerticle(VRTCL_08_CompetitionQuestionUnAssign.class.getName());
     	vertx.deployVerticle(VRTCL_09_CompetitionQuestionFetch.class.getName());
@@ -217,7 +216,7 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_06_GroupTeamAssign.class.getName());
     	vertx.deployVerticle(VRTCL_07_GroupTeamUnAssign.class.getName());
     	vertx.deployVerticle(VRTCL_08_GroupTeamFetch.class.getName());
-    	
+    	vertx.deployVerticle(VRTCL_09_GroupCompetitionFetch.class.getName());
     	
 		//LEAGUE
     	vertx.deployVerticle(VRTCL_01_LeagueSave.class.getName());
@@ -284,7 +283,6 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/competition/delete")							.handler(RtMgr_03_CompetitionDelete							:: handler);
         router.post		("/v1/service/odds/competition/all/fetch")						.handler(RtMgr_04_CompetitionFetchAll						:: handler);
         router.post		("/v1/service/odds/competition/id/fetch")						.handler(RtMgr_05_CompetitionFetchById						:: handler);
-        router.post		("/v1/service/odds/competition/group/fetch")					.handler(RtMgr_06_CompetitionGroupFetch						:: handler);
         router.post		("/v1/service/odds/competition/question/assign")				.handler(RtMgr_07_CompetitionQuestionAssign					:: handler);
         router.post		("/v1/service/odds/competition/question/unassign")				.handler(RtMgr_08_CompetitionQuestionUnAssign				:: handler);
         router.post		("/v1/service/odds/competition/question/fetch")					.handler(RtMgr_09_CompetitionQuestionFetch					:: handler);
@@ -308,7 +306,8 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/group/team/assign")							.handler(RtMgr_06_GroupTeamAssign							:: handler);
         router.post		("/v1/service/odds/group/team/unassign")						.handler(RtMgr_07_GroupTeamUnAssign							:: handler);
         router.post		("/v1/service/odds/group/team/fetch")							.handler(RtMgr_08_GroupTeamFetch							:: handler);
-    	
+        router.post		("/v1/service/odds/group/competition/fetch")					.handler(RtMgr_09_GroupCompetitionFetch						:: handler);
+
 		//LEAGUE
         router.post		("/v1/service/odds/league/save")								.handler(RtMgr_01_LeagueSave								:: handler);
         router.post		("/v1/service/odds/league/update")								.handler(RtMgr_02_LeagueUpdate								:: handler);

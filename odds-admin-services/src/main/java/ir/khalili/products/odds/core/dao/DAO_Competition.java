@@ -1,5 +1,6 @@
 package ir.khalili.products.odds.core.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.LogManager;
@@ -157,7 +158,7 @@ public class DAO_Competition {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchAllCompetitionSuccessful");
                     promise.complete(handler.result().getRows());
@@ -195,35 +196,6 @@ public class DAO_Competition {
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
                     logger.trace("fetchAllCompetitionByIdSuccessful");
-                    promise.complete(handler.result().getRows().get(0));
-                }
-            
-            }
-        });
-
-        return promise.future();
-    }
-    
-    public static Future<JsonObject> fetchGroup(SQLConnection sqlConnection, JsonObject message) {
-        Promise<JsonObject> promise = Promise.promise();
-        JsonArray params = new JsonArray();
-        params.add(message.getInteger("competitionId"));
-        
-        sqlConnection.queryWithParams("select "
-        		+ "g.id, "
-        		+ "g.name, "
-        		+ "To_Char(g.ACTIVEFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_FROM,"
-        		+ "To_Char(g.ACTIVETO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_TO "
-        		+ "from toppgroup g "
-        		+ "where g.dto is null and g.id = (select c.group_id from toppcompetition c where c.id=? and c.dto is null)", params, handler -> {
-            if (handler.failed()) {
-                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
-            } else {
-
-                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
-                } else {
-                    logger.trace("CompetitionFetchGroupSuccessful:: RESULT: " + handler.result().getRows().get(0));
                     promise.complete(handler.result().getRows().get(0));
                 }
             
@@ -295,9 +267,45 @@ public class DAO_Competition {
             } else {
 
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("CompetitionfetchQuestionSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<List<JsonObject>> fetchCompetitionByGroupId(SQLConnection sqlConnection, int groupId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        JsonArray params = new JsonArray();
+        params.add(groupId);
+        
+        sqlConnection.queryWithParams("SELECT "
+        		+ "c.id,"
+        		+ "c.LEAGUE_ID,"
+        		+ "c.TEAM1_ID,"
+        		+ "c.TEAM2_ID,"
+        		+ "c.GROUP_ID,"
+        		+ "c.RESULT,"
+        		+ "To_Char(c.ACTIVEFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_FROM,"
+        		+ "To_Char(c.ACTIVETO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ACTIVE_TO,"
+        		+ "To_Char(c.ODDSFROM,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_FROM,"
+        		+ "To_Char(c.ODDSTO,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') ODDS_TO,"
+        		+ "To_Char(c.COMPETITIONDATE,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') COMPETITION_DATE,"
+        		+ "To_Char(c.creationdate,'yyyy/mm/dd HH:MM:SS','nls_calendar=persian') creation_date"
+        		+ "  FROM toppcompetition c WHERE c.GROUP_ID = ? and c.dto is null", params, handler -> {
+            if (handler.failed()) {
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                    promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchAllCompetitionSuccessful");
                     promise.complete(handler.result().getRows());
                 }
             

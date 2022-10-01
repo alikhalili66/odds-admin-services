@@ -14,7 +14,6 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_DELETE					= "nas.eb.core.srvc.competition.delete";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_ALL_FETCH				= "nas.eb.core.srvc.competition.all.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_ID_FETCH				= "nas.eb.core.srvc.competition.id.fetch";
-	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_GROUP_FETCH				= "nas.eb.core.srvc.competition.group.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_QUESTION_ASSIGN			= "nas.eb.core.srvc.competition.question.assign";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_QUESTION_UNASSIGN		= "nas.eb.core.srvc.competition.question.unassign";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_QUESTION_FETCH			= "nas.eb.core.srvc.competition.question.fetch";
@@ -38,6 +37,7 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_GROUP_TEAM_ASSIGN					= "nas.eb.core.srvc.group.team.assign";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_GROUP_TEAM_UNASSIGN					= "nas.eb.core.srvc.group.team.unassign";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_GROUP_TEAM_FETCH					= "nas.eb.core.srvc.group.team.fetch";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_GROUP_COMPETITION_FETCH				= "nas.eb.core.srvc.group.competition.fetch";
 	
 	/***********************LEAGUE**************************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_LEAGUE_SAVE							= "nas.eb.core.srvc.league.save";

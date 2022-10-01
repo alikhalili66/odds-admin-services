@@ -1,4 +1,4 @@
-package ir.khalili.products.odds.core.verticle.competition;
+package ir.khalili.products.odds.core.verticle.group;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -8,12 +8,12 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.competition.Biz_06_CompetitionGroupFetch;
+import ir.khalili.products.odds.core.biz.group.Biz_06_CompetitionGroupFetch;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 
-public class VRTCL_06_CompetitionGroupFetch extends AbstractVerticle {
-	private Logger logger = LogManager.getLogger(VRTCL_06_CompetitionGroupFetch.class);
+public class VRTCL_09_GroupCompetitionFetch extends AbstractVerticle {
+	private Logger logger = LogManager.getLogger(VRTCL_09_GroupCompetitionFetch.class);
 	
 	@Override
     public void start(Promise<Void> startPromise) throws Exception {
@@ -24,9 +24,9 @@ public class VRTCL_06_CompetitionGroupFetch extends AbstractVerticle {
     	try {
     		JDBCClient ircJDBC = JDBCClient.createShared(vertx, Configuration.getDataBaseConfig(),AppConstants.APP_DS_ODDS);
     		
-        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_GROUP_FETCH, message -> {
+        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_GROUP_COMPETITION_FETCH, message -> {
         		
-        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_GROUP_FETCH+" recieved with message:"+((JsonObject)(message.body())));
+        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_GROUP_COMPETITION_FETCH+" recieved with message:"+((JsonObject)(message.body())));
     				
         		ircJDBC.getConnection(connection -> {
 					
@@ -58,7 +58,7 @@ public class VRTCL_06_CompetitionGroupFetch extends AbstractVerticle {
 		    		});
 				});
         	});
-        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_GROUP_FETCH+" ready to reply.");
+        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_GROUP_COMPETITION_FETCH+" ready to reply.");
         	startPromise.complete();
 		} catch (Exception e) {
 			logger.error("EXCEPTION DETECTED STARTING",e);

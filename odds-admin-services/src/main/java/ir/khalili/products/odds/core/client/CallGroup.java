@@ -34,6 +34,7 @@ public class CallGroup extends AbstractVerticle {
 //		groupTeamAssign(client);
 //		groupTeamUnAssign(client);
 //		groupTeamFetch(client);
+//		groupCompetitionFetch(client);
 	}
 
 	public void groupSave(WebClient client) {
@@ -296,5 +297,34 @@ public class CallGroup extends AbstractVerticle {
 		}
 	}
 
+	public void groupCompetitionFetch(WebClient client) {
 
+		JsonObject joInput = new JsonObject();
+		joInput.put("groupId", 1);
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/group/competition/fetch")
+					.putHeader("API-KEY", CallAuth.API_KEY)
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
 }

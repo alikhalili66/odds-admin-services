@@ -26,12 +26,12 @@ public class CallCompetition extends AbstractVerticle {
 	public void start() throws Exception {
 
 		WebClient client = WebClient.create(vertx);
-		competitionSave(client);
+//		competitionSave(client);
 //		competitionUpdate(client);
 //		competitionDelete(client);
 //		competitionFetchAll(client);
 //		competitionFetchById(client);
-//		competitionGroupFetch(client);
+		competitionGroupFetch(client);
 //		competitionQuestionAssign(client);
 //		competitionQuestionUnAssign(client);
 //		competitionQuestionFetch(client);
@@ -201,7 +201,7 @@ public class CallCompetition extends AbstractVerticle {
 		
 		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/odds/competition/fetch/group").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/group/fetch").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());

@@ -1,4 +1,4 @@
-package ir.khalili.products.odds.core.biz.competition;
+package ir.khalili.products.odds.core.biz.group;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -18,7 +18,7 @@ public class Biz_06_CompetitionGroupFetch {
 
         logger.trace("inputMessage:" + message);
 
-        DAO_Competition.fetchGroup(sqlConnection, message).onComplete(handler -> {
+        DAO_Competition.fetchCompetitionByGroupId(sqlConnection, message.getInteger("groupId")).onComplete(handler -> {
             if (handler.failed()) {
                 resultHandler.handle(Future.failedFuture(handler.cause()));
                 return;

@@ -1,4 +1,4 @@
-package ir.khalili.products.odds.core.routemanager.competition;
+package ir.khalili.products.odds.core.routemanager.group;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -10,18 +10,18 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
-import ir.khalili.products.odds.core.validation.CompetitionInputValidationUtil;
+import ir.khalili.products.odds.core.validation.GroupInputValidationUtil;
 
 /**
  * @author A.KH
  */
-public class RtMgr_06_CompetitionGroupFetch   {
+public class RtMgr_09_GroupCompetitionFetch   {
 	
-	private static								Logger 			logger 								= LogManager.getLogger(RtMgr_06_CompetitionGroupFetch.class);
+	private static								Logger 			logger 								= LogManager.getLogger(RtMgr_09_GroupCompetitionFetch.class);
 	
 	public static void handler(RoutingContext context) {
 		
-		CompetitionInputValidationUtil.validateGroupFetch(context, validateHandler->{
+		GroupInputValidationUtil.validateCompetitionFetch(context, validateHandler->{
 			
 			if(validateHandler.failed()) {
 
@@ -34,7 +34,7 @@ public class RtMgr_06_CompetitionGroupFetch   {
     		
 			}
 			
-			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_GROUP_FETCH, validateHandler.result(),replyHandler->{
+			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_GROUP_COMPETITION_FETCH, validateHandler.result(),replyHandler->{
 				
 				if (replyHandler.succeeded()) {
 					logger.trace("jobs done:"+replyHandler.result().body());

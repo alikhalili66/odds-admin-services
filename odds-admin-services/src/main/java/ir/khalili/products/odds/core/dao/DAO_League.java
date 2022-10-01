@@ -1,5 +1,6 @@
 package ir.khalili.products.odds.core.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.LogManager;
@@ -67,6 +68,7 @@ public class DAO_League {
 		
 		return promise.future();
 	}
+  
     public static Future<Void> update(SQLConnection sqlConnection, JsonObject message) {
 
 		Promise<Void> promise = Promise.promise();
@@ -141,7 +143,7 @@ public class DAO_League {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchAllLeagueSuccessful");
                     promise.complete(handler.result().getRows());

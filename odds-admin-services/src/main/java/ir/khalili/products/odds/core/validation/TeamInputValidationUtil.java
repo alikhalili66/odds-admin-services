@@ -72,7 +72,7 @@ public final class TeamInputValidationUtil {
 			joResult.put("name", name);
 			joResult.put("symbol", symbol);
 			joResult.put("image", image);
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -143,7 +143,7 @@ public final class TeamInputValidationUtil {
 			joResult.put("name", name);
 			joResult.put("symbol", symbol);
 			joResult.put("image", image);
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -186,7 +186,7 @@ public final class TeamInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("teamId", teamId);
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -208,7 +208,7 @@ public final class TeamInputValidationUtil {
 			final JsonObject joToken = handler.result();
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -251,7 +251,7 @@ public final class TeamInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("teamId", teamId);
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

@@ -1,5 +1,6 @@
 package ir.khalili.products.odds.core.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.LogManager;
@@ -39,7 +40,7 @@ public class DAO_User {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchAllUserSuccessful");
                     promise.complete(handler.result().getRows());
@@ -117,7 +118,7 @@ public class DAO_User {
             } else {
 
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchOddsSuccessful");
                     promise.complete(handler.result().getRows());

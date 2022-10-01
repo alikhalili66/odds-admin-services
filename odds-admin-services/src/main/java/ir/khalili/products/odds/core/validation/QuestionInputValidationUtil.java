@@ -60,7 +60,7 @@ public final class QuestionInputValidationUtil {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد نوع معتبر نمی باشد");
 	            }
 
-	            if (null == minPoint || minPoint < 1) {
+	            if (null == minPoint || minPoint < 0) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد حداقل امتیاز معتبر نمی باشد");
 	            }
 
@@ -79,7 +79,7 @@ public final class QuestionInputValidationUtil {
 			joResult.put("answers", answers);
 			joResult.put("type", type);
 			joResult.put("minPoint", minPoint);
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -137,7 +137,7 @@ public final class QuestionInputValidationUtil {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد نوع معتبر نمی باشد");
 	            }
 
-	            if (null == minPoint || minPoint < 1) {
+	            if (null == minPoint || minPoint < 0) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد حداقل امتیاز معتبر نمی باشد");
 	            }
 
@@ -158,7 +158,7 @@ public final class QuestionInputValidationUtil {
 			joResult.put("type", type);
 			joResult.put("minPoint", minPoint);
 			
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -201,7 +201,7 @@ public final class QuestionInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("questionId", questionId);
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -223,7 +223,7 @@ public final class QuestionInputValidationUtil {
 			final JsonObject joToken = handler.result();
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -266,7 +266,7 @@ public final class QuestionInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("questionId", questionId);
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

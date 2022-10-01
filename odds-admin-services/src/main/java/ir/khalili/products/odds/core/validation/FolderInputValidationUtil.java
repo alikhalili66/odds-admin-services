@@ -65,7 +65,7 @@ public final class FolderInputValidationUtil {
 			joResult.put("leagueId", leagueId);
 			joResult.put("name", name);
 
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -130,7 +130,7 @@ public final class FolderInputValidationUtil {
 			joResult.put("leagueId", leagueId);
 			joResult.put("name", name);
 
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -173,7 +173,7 @@ public final class FolderInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("folderId", folderId);
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -195,7 +195,7 @@ public final class FolderInputValidationUtil {
 			final JsonObject joToken = handler.result();
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -238,7 +238,7 @@ public final class FolderInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("folderId", folderId);
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -289,7 +289,7 @@ public final class FolderInputValidationUtil {
 			joResult.put("folderId", folderId);
 			joResult.put("questionId", questionId);
 
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -340,7 +340,7 @@ public final class FolderInputValidationUtil {
 			joResult.put("folderId", folderId);
 			joResult.put("questionId", questionId);
 
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 
@@ -383,7 +383,7 @@ public final class FolderInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("folderId", folderId);
-			joResult.put("userId", joToken.getInteger("userId"));
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

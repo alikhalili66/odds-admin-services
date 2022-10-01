@@ -8,7 +8,6 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.excp.BIZEXCP_Auth;
 import ir.khalili.products.odds.core.helper.HelperLockIn;
 
 public class Biz_01_AuthLogin {
@@ -32,10 +31,10 @@ public class Biz_01_AuthLogin {
 			
 			JsonObject joLogin = lockinHandler.result();
 			
-			if(!joLogin.getString("type").matches("A")) {
-				resultHandler.handle(Future.failedFuture(new BIZEXCP_Auth(-1, "نوع کاربر صحیح نمی باشد.")));
-				return;
-			}
+//			if(!joLogin.getString("type").matches("A")) {
+//				resultHandler.handle(Future.failedFuture(new BIZEXCP_Auth(-1, "نوع کاربر صحیح نمی باشد.")));
+//				return;
+//			}
 			
 			JsonObject joInfo = new JsonObject();
 			joInfo.put("token", joLogin.getString("token"));

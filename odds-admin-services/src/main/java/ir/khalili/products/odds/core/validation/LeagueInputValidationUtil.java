@@ -60,19 +60,19 @@ public final class LeagueInputValidationUtil {
 	            	throw new EXCP_RtMgr_Validation(-603, "فیلد تصویر معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeFrom || activeFrom.isEmpty()) {
+	            if (null == activeFrom || activeFrom.isEmpty() || !activeFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeTo || activeTo.isEmpty()) {
+	            if (null == activeTo || activeTo.isEmpty() || !activeTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
 	            }
-
-	            if (null == oddsFrom || oddsFrom.isEmpty()) {
+	            
+	            if (null == oddsFrom || oddsFrom.isEmpty() || !oddsFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'شروع پیش بینی' معتبر نمی باشد");
 	            }
 	            
-	            if (null == oddsTo || oddsTo.isEmpty()) {
+	            if (null == oddsTo || oddsTo.isEmpty() || !oddsTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'پایان پیش بینی' معتبر نمی باشد");
 	            }
 
@@ -152,19 +152,19 @@ public final class LeagueInputValidationUtil {
 	            	throw new EXCP_RtMgr_Validation(-603, "فیلد تصویر معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeFrom || activeFrom.isEmpty()) {
+	            if (null == activeFrom || activeFrom.isEmpty() || !activeFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeTo || activeTo.isEmpty()) {
+	            if (null == activeTo || activeTo.isEmpty() || !activeTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
 	            }
-
-	            if (null == oddsFrom || oddsFrom.isEmpty()) {
+	            
+	            if (null == oddsFrom || oddsFrom.isEmpty() || !oddsFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'شروع پیش بینی' معتبر نمی باشد");
 	            }
 	            
-	            if (null == oddsTo || oddsTo.isEmpty()) {
+	            if (null == oddsTo || oddsTo.isEmpty() || !oddsTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'پایان پیش بینی' معتبر نمی باشد");
 	            }
 

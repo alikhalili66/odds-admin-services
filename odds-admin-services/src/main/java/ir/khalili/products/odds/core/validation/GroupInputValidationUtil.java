@@ -49,11 +49,11 @@ public final class GroupInputValidationUtil {
 	            	throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeFrom || activeFrom.isEmpty()) {
+	            if (null == activeFrom || activeFrom.isEmpty() || !activeFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeTo || activeTo.isEmpty()) {
+	            if (null == activeTo || activeTo.isEmpty() || !activeTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
 	            }
 
@@ -120,11 +120,11 @@ public final class GroupInputValidationUtil {
 	            	throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeFrom || activeFrom.isEmpty()) {
+	            if (null == activeFrom || activeFrom.isEmpty() || !activeFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeTo || activeTo.isEmpty()) {
+	            if (null == activeTo || activeTo.isEmpty() || !activeTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
 	            }
 

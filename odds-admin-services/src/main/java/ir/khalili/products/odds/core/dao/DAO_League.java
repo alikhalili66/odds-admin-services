@@ -49,10 +49,10 @@ public class DAO_League {
 				+ "?,"
 				+ "?,"
 				+ "?,"
-				+ "TO_DATE(?,'YYYY/MM/DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "TO_DATE(?,'YYYY/MM/DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "TO_DATE(?,'YYYY/MM/DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "TO_DATE(?,'YYYY/MM/DD\"T\"HH24:MI:SS\"Z\"'),"
+				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
+				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
+				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
+				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
 				+ "sysdate,"
 				+ "?)", params, resultHandler->{
 			if(resultHandler.failed()) {
@@ -89,10 +89,10 @@ public class DAO_League {
 				+ "l.NAME=?,"
 				+ "l.SYMBOL=?,"
 				+ "l.IMAGE=?,"
-				+ "l.ACTIVEFROM=TO_DATE(?,'YYYY/MM/DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "l.ACTIVETO=TO_DATE(?,'YYYY/MM/DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "l.oddsfrom=TO_DATE(?,'YYYY/MM/DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "l.oddsTo=TO_DATE(?,'YYYY/MM/DD\"T\"HH24:MI:SS\"Z\"') "
+				+ "l.ACTIVEFROM=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
+				+ "l.ACTIVETO=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
+				+ "l.oddsfrom=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
+				+ "l.oddsTo=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') "
 				+ " where l.id=? ", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
@@ -135,9 +135,9 @@ public class DAO_League {
         		+ "l.NAME,"
         		+ "l.SYMBOL,"
         		+ "l.IMAGE,"
-        		+ "To_Char(l.ACTIVEFROM,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(l.ACTIVETO,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(l.creationdate,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') creation_date"
+        		+ "To_Char(l.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
+        		+ "To_Char(l.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
+        		+ "To_Char(l.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppleague l WHERE l.dto is null", handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -165,9 +165,9 @@ public class DAO_League {
         		+ "l.NAME,"
         		+ "l.SYMBOL,"
         		+ "l.IMAGE,"
-        		+ "To_Char(l.ACTIVEFROM,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(l.ACTIVETO,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(l.creationdate,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') creation_date"
+        		+ "To_Char(l.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
+        		+ "To_Char(l.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
+        		+ "To_Char(l.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppleague l WHERE l.id=? and l.dto is null", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

@@ -43,7 +43,7 @@ public class CallConfig extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/config/update")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {
@@ -70,7 +70,7 @@ public class CallConfig extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/config/all/fetch")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.send(ar -> {
 						try {
@@ -101,7 +101,7 @@ public class CallConfig extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/config/id/fetch")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					
 					.sendJson(joInput, ar -> {
@@ -133,7 +133,7 @@ public class CallConfig extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/config/symbol/fetch")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					
 					.sendJson(joInput, ar -> {

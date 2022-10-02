@@ -46,7 +46,7 @@ public class CallFolder extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/folder/save")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {
@@ -80,7 +80,7 @@ public class CallFolder extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/folder/update")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {
@@ -111,7 +111,7 @@ public class CallFolder extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/folder/delete")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {
@@ -141,7 +141,7 @@ public class CallFolder extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/folder/all/fetch")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {
@@ -172,7 +172,7 @@ public class CallFolder extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/folder/id/fetch")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.putHeader("agentSession", "agentSession")
 					.sendJson(joInput, ar -> {
@@ -206,7 +206,7 @@ public class CallFolder extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/folder/assign/question")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {
@@ -238,7 +238,7 @@ public class CallFolder extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/folder/unaasign/question")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {
@@ -269,7 +269,7 @@ public class CallFolder extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/folder/fetch/question")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {

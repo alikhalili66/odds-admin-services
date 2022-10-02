@@ -55,7 +55,7 @@ public class CallCompetition extends AbstractVerticle {
 		
 		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/odds/competition/save").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/save").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -93,7 +93,7 @@ public class CallCompetition extends AbstractVerticle {
 		System.out.println("joInput:" + joInput);
 		
 		try {
-			client.post(port, host, "/v1/service/odds/competition/update").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/update").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -120,7 +120,7 @@ public class CallCompetition extends AbstractVerticle {
 		
 		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/odds/competition/delete").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/delete").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -147,7 +147,7 @@ public class CallCompetition extends AbstractVerticle {
 			client
 			.post(port, host, "/v1/service/odds/competition/all/fetch")
 			.putHeader("Authorization", CallAuth.token)
-			.putHeader("API-KEY", CallAuth.API_KEY)
+			
 			.send(ar -> {
 				try {
 					if (ar.succeeded()) {
@@ -177,7 +177,7 @@ public class CallCompetition extends AbstractVerticle {
 		
 		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/odds/competition/id/fetch").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/id/fetch").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -204,7 +204,7 @@ public class CallCompetition extends AbstractVerticle {
 		
 		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/odds/competition/group/fetch").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/group/fetch").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -234,7 +234,7 @@ public class CallCompetition extends AbstractVerticle {
 		
 		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/odds/competition/assign/question").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/assign/question").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -262,7 +262,7 @@ public class CallCompetition extends AbstractVerticle {
 		
 		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/odds/competition/unassign/question").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/unassign/question").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -289,7 +289,7 @@ public class CallCompetition extends AbstractVerticle {
 
 		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/odds/competition/fetch/question").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/fetch/question").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -319,7 +319,7 @@ public class CallCompetition extends AbstractVerticle {
 		System.out.println("joInput:" + joInput);
 		
 		try {
-			client.post(port, host, "/v1/service/odds/competition/result/register").putHeader("Authorization", CallAuth.token).putHeader("API-KEY", CallAuth.API_KEY).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/result/register").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -353,7 +353,7 @@ public class CallCompetition extends AbstractVerticle {
 		System.out.println("joInput:" + joInput);
 		
 		try {
-			client.post(port, host, "/v1/service/odds/competition/question/result/register").putHeader("API-KEY", CallAuth.API_KEY).putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/question/result/register").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());

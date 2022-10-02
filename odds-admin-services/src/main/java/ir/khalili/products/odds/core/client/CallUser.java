@@ -35,7 +35,7 @@ public class CallUser extends AbstractVerticle {
 		
 		try {
 			client.post(port, host, "/v1/service/odds/user/all/fetch")
-			.putHeader("API-KEY", CallAuth.API_KEY)
+			
 			.putHeader("Authorization", CallAuth.token)
 			.send(ar -> {
 				try {
@@ -63,7 +63,7 @@ public class CallUser extends AbstractVerticle {
 		joInput.put("userId", 1);
 		try {
 			client.post(port, host, "/v1/service/odds/user/id/fetch")
-			.putHeader("API-KEY", CallAuth.API_KEY)
+			
 			.putHeader("Authorization", CallAuth.token)
 			.sendJson(joInput, ar -> {
 				try {
@@ -92,7 +92,7 @@ public class CallUser extends AbstractVerticle {
 		
 		try {
 			client.post(port, host, "/v1/service/odds/user/fetch/odds")
-			.putHeader("API-KEY", CallAuth.API_KEY)
+			
 			.putHeader("Authorization", CallAuth.token)
 			.sendJson(joInput, ar -> {
 				try {

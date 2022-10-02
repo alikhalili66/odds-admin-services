@@ -35,7 +35,7 @@ public class Callodds extends AbstractVerticle {
 
 		try {
 			client.post(port, host, "/v1/service/odds/question/all/fetch")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {

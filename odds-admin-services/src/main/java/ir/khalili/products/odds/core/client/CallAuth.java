@@ -14,8 +14,7 @@ public class CallAuth extends AbstractVerticle {
 	private static final int port = 9090;
 	private static final String host  ="127.0.0.1";
 	
-	public static String token = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjY4MSwiZXhwIjoxNjY0NjkyNzg0LCJpcCI6IjE3Mi43MC4yNDIuMTMyIiwicHJvamVjdElkIjozMjEsInR5cGUiOiJTIiwiaXNDaGFuZ2VQYXNzIjpmYWxzZSwiaWF0IjoxNjY0NjA2Mzg0fQ.XJ3BmhqUhy5v2FfktHCP1chVcxgM-B0WmgllYIfp6RM";
-	public static String API_KEY = "cf012f1e9349bc4fdca0271144d51f885106865fd6f814f333097c95117f27f6bd173146be40e592fbacf433bc13d7c8";//NAS
+	public static String token = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjY4MSwiZXhwIjoxNjY0NzgwNDAzLCJpcCI6IjE3Mi43MC4yNDIuMzAiLCJwcm9qZWN0SWQiOjMyMSwidHlwZSI6IlMiLCJpc0NoYW5nZVBhc3MiOmZhbHNlLCJpYXQiOjE2NjQ2OTQwMDN9.MXy9N_BXKD52YvSoPZFUCzCCNKdHJ4M9ut9GwW5VLKs";
 
 	public static void main(String[] args) {
 
@@ -49,10 +48,10 @@ public class CallAuth extends AbstractVerticle {
 		
 		System.out.println("joCheckAccess:" + joOTP);
 		try {
-//			client.post(port, host, "/v1/service/odds/auth/agent").putHeader("API-KEY", CallAuth.API_KEY).sendJson(joAgent, ar -> {
-//			client.post(port, host, "/v1/service/odds/auth/customer").putHeader("API-KEY", CallAuth.API_KEY).sendJson(joCustomer, ar -> {
-			client.post(port, host, "/v1/service/odds/auth/login").putHeader("API-KEY", CallAuth.API_KEY).sendJson(joLogin, ar -> {
-//			client.post(port, host, "/v1/service/odds/auth/otp").putHeader("API-KEY", CallAuth.API_KEY).sendJson(joOTP, ar -> {
+//			client.post(port, host, "/v1/service/odds/auth/agent").sendJson(joAgent, ar -> {
+//			client.post(port, host, "/v1/service/odds/auth/customer").sendJson(joCustomer, ar -> {
+			client.post(port, host, "/v1/service/odds/auth/login").sendJson(joLogin, ar -> {
+//			client.post(port, host, "/v1/service/odds/auth/otp").sendJson(joOTP, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());

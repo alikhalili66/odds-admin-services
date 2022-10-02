@@ -45,7 +45,7 @@ public class CallQuestion extends AbstractVerticle{
 
 		try {
 			client.post(port, host, "/v1/service/odds/question/save")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {
@@ -81,7 +81,7 @@ public class CallQuestion extends AbstractVerticle{
 
 		try {
 			client.post(port, host, "/v1/service/odds/question/update")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {
@@ -112,7 +112,7 @@ public class CallQuestion extends AbstractVerticle{
 
 		try {
 			client.post(port, host, "/v1/service/odds/question/delete")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {
@@ -142,7 +142,7 @@ public class CallQuestion extends AbstractVerticle{
 
 		try {
 			client.post(port, host, "/v1/service/odds/question/all/fetch")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
 						try {
@@ -173,7 +173,7 @@ public class CallQuestion extends AbstractVerticle{
 
 		try {
 			client.post(port, host, "/v1/service/odds/question/id/fetch")
-					.putHeader("API-KEY", CallAuth.API_KEY)
+					
 					.putHeader("Authorization", CallAuth.token)
 					
 					.sendJson(joInput, ar -> {

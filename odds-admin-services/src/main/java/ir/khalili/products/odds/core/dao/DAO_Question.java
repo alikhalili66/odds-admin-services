@@ -117,7 +117,7 @@ public class DAO_Question {
         		+ "q.ANSWERS,"
         		+ "q.TYPE,"
         		+ "q.MINPOINT,"
-        		+ "To_Char(q.creationdate,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') creation_date"
+        		+ "To_Char(q.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppquestion q WHERE q.dto is null", handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -147,7 +147,7 @@ public class DAO_Question {
         		+ "q.ANSWERS,"
         		+ "q.TYPE,"
         		+ "q.MINPOINT,"
-        		+ "To_Char(q.creationdate,'YYYY/MM/DD\"T\"HH24:MI:SS.ss\"Z\"') creation_date"
+        		+ "To_Char(q.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppquestion q WHERE q.id=? and q.dto is null", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

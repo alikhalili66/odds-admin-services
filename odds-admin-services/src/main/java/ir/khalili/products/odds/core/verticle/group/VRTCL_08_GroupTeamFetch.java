@@ -39,7 +39,7 @@ public class VRTCL_08_GroupTeamFetch extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_08_GroupTeamFetch.groupTeamFetch(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_08_GroupTeamFetch.groupTeamFetch(vertx, sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

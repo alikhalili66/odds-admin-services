@@ -6,30 +6,45 @@ import org.apache.log4j.Logger;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Team;
+import ir.khalili.products.odds.core.helper.HelperImage;
 
 public class Biz_06_TeamImageUpdate {
 
     private static final Logger logger = LogManager.getLogger(Biz_06_TeamImageUpdate.class);
 
-    public static void updateImage(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
+    public static void updateImage(Vertx vertx, SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
         logger.trace("inputMessage:" + message);
 
-        DAO_Team.updateImage(sqlConnection, message).onComplete(handler -> {
-            if (handler.failed()) {
-                resultHandler.handle(Future.failedFuture(handler.cause()));
-                return;
-            }
-            
-			resultHandler.handle(Future.succeededFuture(
-					new JsonObject()
-					.put("resultCode", 1)
-					.put("resultMessage", "عملیات با موفقیت انجام شد.")
-					));
-
+        DAO_Team.fetchById(sqlConnection, message.getInteger("teamId")).onComplete(handler0 -> {
+        	if (handler0.failed()) {
+        		resultHandler.handle(Future.failedFuture(handler0.cause()));
+        		return;
+        	}
+        	HelperImage.saveImage(vertx, message.getString("image"), handler0.result().getString("NAME")).onComplete(result -> {
+        		if (result.failed()) {
+        			resultHandler.handle(Future.failedFuture(result.cause()));
+        			return;
+        		}
+        		message.put("image", result.result());
+        		DAO_Team.updateImage(sqlConnection, message).onComplete(handler -> {
+        			if (handler.failed()) {
+        				resultHandler.handle(Future.failedFuture(handler.cause()));
+        				return;
+        			}
+        			
+        			resultHandler.handle(Future.succeededFuture(
+        					new JsonObject()
+        					.put("resultCode", 1)
+        					.put("resultMessage", "عملیات با موفقیت انجام شد.")
+        					));
+        			
+        		});
+        	});
         });
     }
 

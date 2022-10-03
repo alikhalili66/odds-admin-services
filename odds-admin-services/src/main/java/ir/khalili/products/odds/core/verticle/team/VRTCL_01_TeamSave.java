@@ -39,7 +39,7 @@ public class VRTCL_01_TeamSave extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_01_TeamSave.save(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_01_TeamSave.save(vertx, sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

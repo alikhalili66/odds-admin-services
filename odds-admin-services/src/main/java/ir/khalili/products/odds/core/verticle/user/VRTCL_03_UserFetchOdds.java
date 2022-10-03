@@ -39,7 +39,7 @@ public class VRTCL_03_UserFetchOdds extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_03_UserFetchOdds.fetchOdds(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_03_UserFetchOdds.fetchOdds(vertx, sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

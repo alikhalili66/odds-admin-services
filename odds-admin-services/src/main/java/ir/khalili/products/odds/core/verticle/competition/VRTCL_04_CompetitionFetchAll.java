@@ -39,7 +39,7 @@ public class VRTCL_04_CompetitionFetchAll extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_04_CompetitionFetchAll.fetchAll(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_04_CompetitionFetchAll.fetchAll(vertx, sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

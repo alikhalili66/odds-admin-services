@@ -39,7 +39,7 @@ public class VRTCL_06_TeamImageUpdate extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_06_TeamImageUpdate.updateImage(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_06_TeamImageUpdate.updateImage(vertx, sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

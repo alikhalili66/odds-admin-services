@@ -18,19 +18,7 @@
     "secretKey": "iUM d#v"
   },
   "fileManager": {
-    "root": "d:/caspian",
-    "nationalCards": "/nationalcards",
-    "videos": "/videos",
-    "identifications": "/identification",
-    "nationalCardMaxSize": 5000000,
-    "videoMaxSize": 150000000,
-    "identificationMaxSize": 1000000,
-    "nationalCardSampleCounts": 2,
-    "identificationSampleCounts": 4,
-    "videoSampleCounts": 1,
-    "nationalCardAllowedExtension": "image/jpeg,image/png,application/pdf",
-    "IdentificationAllowedExtension": "image/jpeg,image/png,application/pdf",
-    "videoAllowedExtension": "video/mp4"
+    "root": "d:/odds"
   },
   "sabtahval": {
     "userName": "caspUser",

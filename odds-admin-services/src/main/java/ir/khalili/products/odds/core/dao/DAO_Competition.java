@@ -263,7 +263,9 @@ public class DAO_Competition {
         		+ "q.question,"
         		+ "q.type,"
         		+ "q.minpoint,"
-        		+ "q.answers "
+        		+ "q.answers, "
+        		+ "cq.norder, "
+        		+ "cq.result "
         		+ "from "
         		+ "toppquestion q, toppcompetitionquestion cq "
         		+ "where "
@@ -290,12 +292,16 @@ public class DAO_Competition {
         
         JsonArray params = new JsonArray();
         params.add(groupId);
-        
+        //TODO
         sqlConnection.queryWithParams("SELECT "
         		+ "c.id,"
         		+ "c.LEAGUE_ID,"
         		+ "c.TEAM1_ID,"
+        		+ "(select name from toppteam t where t.id=c.TEAM1_ID) TEAM1_name,"
+        		+ "(select image from toppteam t where t.id=c.TEAM1_ID) TEAM1_image,"
         		+ "c.TEAM2_ID,"
+        		+ "(select name from toppteam t where t.id=c.TEAM2_ID) TEAM2_name,"
+        		+ "(select image from toppteam t where t.id=c.TEAM2_ID) TEAM2_image,"
         		+ "c.GROUP_ID,"
         		+ "c.RESULT,"
         		+ "To_Char(c.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"

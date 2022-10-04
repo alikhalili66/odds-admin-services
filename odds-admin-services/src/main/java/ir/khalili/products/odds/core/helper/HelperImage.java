@@ -16,6 +16,7 @@ import ir.khalili.products.odds.core.EntryPoint;
 
 public class HelperImage {
 
+	@SuppressWarnings("unchecked")
 	public static Future<List<JsonObject>> getImage(Vertx vertx, List<JsonObject> competitionList) {
 		
 		Promise<List<JsonObject>> promise = Promise.promise();

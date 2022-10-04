@@ -8,7 +8,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.group.Biz_06_CompetitionGroupFetch;
+import ir.khalili.products.odds.core.biz.group.Biz_09_GroupCompetitionFetch;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 
@@ -39,7 +39,7 @@ public class VRTCL_09_GroupCompetitionFetch extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_06_CompetitionGroupFetch.groupFetch(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_09_GroupCompetitionFetch.groupFetch(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

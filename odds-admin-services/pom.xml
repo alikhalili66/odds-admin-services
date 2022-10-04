@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ir.khalili.products.odds.core</groupId>
 	<artifactId>odds-admin-services</artifactId>
-	<version>BD20221002_0_0_0_0_0_1-fat</version>
+	<version>BD20221004_0_0_0_0_0_1-fat</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

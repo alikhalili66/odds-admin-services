@@ -10,9 +10,9 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Competition;
 
-public class Biz_06_CompetitionGroupFetch {
+public class Biz_09_GroupCompetitionFetch {
 
-    private static final Logger logger = LogManager.getLogger(Biz_06_CompetitionGroupFetch.class);
+    private static final Logger logger = LogManager.getLogger(Biz_09_GroupCompetitionFetch.class);
 
     public static void groupFetch(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 

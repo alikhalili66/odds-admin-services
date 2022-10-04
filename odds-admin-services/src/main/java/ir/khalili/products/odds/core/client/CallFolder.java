@@ -25,10 +25,10 @@ public class CallFolder extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-		folderSave(client);
+//		folderSave(client);
 //		folderUpdate(client);
 //		folderDelete(client);
-//		folderFetchAll(client);
+		folderFetchAll(client);
 //		folderFetchById(client);
 //		folderQuestionAssign(client);
 //		folderQuestionUnAssign(client);
@@ -137,6 +137,8 @@ public class CallFolder extends AbstractVerticle {
 	public void folderFetchAll(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("leagueId", 1);
+		
 		System.out.println("joInput:" + joInput);
 
 		try {

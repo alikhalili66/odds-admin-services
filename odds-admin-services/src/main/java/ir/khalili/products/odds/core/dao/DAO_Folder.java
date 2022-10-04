@@ -100,16 +100,18 @@ public class DAO_Folder {
 		return promise.future();
     }
     
-    public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection) {
+    public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection, JsonObject message) {
         Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(message.getInteger("leagueId"));
         
-        sqlConnection.query("SELECT "
+        sqlConnection.queryWithParams("SELECT "
         		+ "f.id,"
         		+ "f.PARENT_ID,"
         		+ "f.LEAGUE_ID,"
         		+ "f.NAME,"
         		+ "To_Char(f.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
-        		+ "  FROM toppfolder f WHERE f.dto is null CONNECT BY PRIOR f.id = f.parent_id", handler -> {
+        		+ "  FROM toppfolder f WHERE f.LEAGUE_ID=nvl(?, f.LEAGUE_ID) and f.dto is null CONNECT BY PRIOR f.id = f.parent_id", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {

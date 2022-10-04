@@ -16,7 +16,7 @@ public class Biz_04_FolderFetchAll {
 
     public static void fetchAll(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-        DAO_Folder.fetchAll(sqlConnection).onComplete(result -> {
+        DAO_Folder.fetchAll(sqlConnection, message).onComplete(result -> {
             if (result.failed()) {
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;

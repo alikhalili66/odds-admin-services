@@ -127,17 +127,19 @@ public class DAO_Team {
 		return promise.future();
     }
     
-    public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection) {
+    public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection, JsonObject message) {
         Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(message.getInteger("leagueId"));
         
-        sqlConnection.query("SELECT "
+        sqlConnection.queryWithParams("SELECT "
         		+ "t.id,"
         		+ "t.NAME,"
         		+ "t.SYMBOL,"
         		+ "t.IMAGE,"
         		+ "t.LEAGUE_ID,"
         		+ "To_Char(t.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
-        		+ "  FROM toppteam t WHERE t.dto is null", handler -> {
+        		+ "  FROM toppteam t WHERE t.LEAGUE_ID=nvl(?, t.LEAGUE_ID) and t.dto is null", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {

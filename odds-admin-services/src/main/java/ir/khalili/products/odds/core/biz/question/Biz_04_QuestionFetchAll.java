@@ -16,7 +16,7 @@ public class Biz_04_QuestionFetchAll {
 
     public static void fetchAll(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-        DAO_Question.fetchAll(sqlConnection).onComplete(result -> {
+        DAO_Question.fetchAll(sqlConnection, message).onComplete(result -> {
             if (result.failed()) {
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;

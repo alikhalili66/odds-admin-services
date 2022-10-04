@@ -25,10 +25,10 @@ public class CallQuestion extends AbstractVerticle{
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-		questionSave(client);
+//		questionSave(client);
 //		questionUpdate(client);
 //		questionDelete(client);
-//		questionFetchAll(client);
+		questionFetchAll(client);
 //		questionFetchById(client);
 	}
 
@@ -138,6 +138,8 @@ public class CallQuestion extends AbstractVerticle{
 	public void questionFetchAll(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("leagueId", 1);
+		
 		System.out.println("joInput:" + joInput);
 
 		try {

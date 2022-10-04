@@ -143,12 +143,18 @@ public class CallCompetition extends AbstractVerticle {
 	
 	
 	public void competitionFetchAll(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		joInput.put("leagueId", 1);
+		joInput.put("groupId", 1);
+		
+		System.out.println("joInput:" + joInput);
+		
 		try {
 			client
 			.post(port, host, "/v1/service/odds/competition/all/fetch")
 			.putHeader("Authorization", CallAuth.token)
 			
-			.send(ar -> {
+			.sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());

@@ -16,7 +16,7 @@ public class Biz_04_GroupFetchAll {
 
     public static void groupFetchAll(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-        DAO_Group.fetchAll(sqlConnection).onComplete(result -> {
+        DAO_Group.fetchAll(sqlConnection, message).onComplete(result -> {
             if (result.failed()) {
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;

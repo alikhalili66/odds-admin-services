@@ -107,10 +107,12 @@ public class DAO_Question {
 		return promise.future();
     }
     
-    public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection) {
+    public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection, JsonObject message) {
         Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(message.getInteger("leagueId"));
         
-        sqlConnection.query("SELECT "
+        sqlConnection.queryWithParams("SELECT "
         		+ "q.id,"
         		+ "q.LEAGUE_ID,"
         		+ "q.QUESTION,"
@@ -118,7 +120,7 @@ public class DAO_Question {
         		+ "q.TYPE,"
         		+ "q.MINPOINT,"
         		+ "To_Char(q.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
-        		+ "  FROM toppquestion q WHERE q.dto is null", handler -> {
+        		+ "  FROM toppquestion q WHERE q.LEAGUE_ID=nvl(?, q.LEAGUE_ID) and q.dto is null", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {

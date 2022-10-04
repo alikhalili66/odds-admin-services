@@ -26,10 +26,10 @@ public class CallGroup extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-		groupSave(client);
+//		groupSave(client);
 //		groupUpdate(client);
 //		groupDelete(client);
-//		groupFetchAll(client);
+		groupFetchAll(client);
 //		groupFetchById(client);
 //		groupTeamAssign(client);
 //		groupTeamUnAssign(client);
@@ -141,6 +141,8 @@ public class CallGroup extends AbstractVerticle {
 	public void groupFetchAll(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
+		joInput.put("leagueId", 1);
+		
 		System.out.println("joInput:" + joInput);
 
 		try {

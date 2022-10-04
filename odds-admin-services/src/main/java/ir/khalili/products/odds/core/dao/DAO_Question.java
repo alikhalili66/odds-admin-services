@@ -24,7 +24,7 @@ public class DAO_Question {
 		JsonArray params = new JsonArray();
 		params.add(message.getInteger("leagueId"));
 		params.add(message.getString("question"));
-		params.add(message.getString("answers"));
+		params.add(message.getString("symbol"));
 		params.add(message.getString("type"));
 		params.add(message.getInteger("minPoint"));
 		params.add(message.getInteger("userId"));
@@ -34,7 +34,7 @@ public class DAO_Question {
 				+ "id,"
 				+ "league_id,"
 				+ "question,"
-				+ "answers,"
+				+ "symbol,"
 				+ "type,"
 				+ "minpoint,"
 				+ "creationDate,"
@@ -61,7 +61,7 @@ public class DAO_Question {
 		JsonArray params = new JsonArray();
 		params.add(message.getInteger("leagueId"));
 		params.add(message.getString("question"));
-		params.add(message.getString("answers"));
+		params.add(message.getString("symbol"));
 		params.add(message.getString("type"));
 		params.add(message.getInteger("minPoint"));
 		params.add(message.getInteger("questionId"));
@@ -70,7 +70,7 @@ public class DAO_Question {
 				+ "update toppquestion q set "
 				+ "q.league_id=?,"
 				+ "q.question=?,"
-				+ "q.answers=?,"
+				+ "q.symbol=?,"
 				+ "q.type=?,"
 				+ "q.minpoint=? "
 				+ " where q.id=?", params, resultHandler->{
@@ -116,7 +116,7 @@ public class DAO_Question {
         		+ "q.id,"
         		+ "q.LEAGUE_ID,"
         		+ "q.QUESTION,"
-        		+ "q.ANSWERS,"
+        		+ "q.symbol,"
         		+ "q.TYPE,"
         		+ "q.MINPOINT,"
         		+ "To_Char(q.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
@@ -146,7 +146,7 @@ public class DAO_Question {
         		+ "q.id,"
         		+ "q.LEAGUE_ID,"
         		+ "q.QUESTION,"
-        		+ "q.ANSWERS,"
+        		+ "q.symbol,"
         		+ "q.TYPE,"
         		+ "q.MINPOINT,"
         		+ "To_Char(q.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"

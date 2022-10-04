@@ -31,7 +31,7 @@ public final class QuestionInputValidationUtil {
 
 			Integer leagueId;
 			String question;
-			String answers;
+			String symbol;
 			String type;
 			Integer minPoint;
 
@@ -40,7 +40,7 @@ public final class QuestionInputValidationUtil {
 
 	            leagueId = inputParameters.getInteger("leagueId");
 	            question = inputParameters.getString("question");
-	            answers = inputParameters.getString("answers");
+	            symbol = inputParameters.getString("symbol");
 	            type = inputParameters.getString("type");
 	            minPoint = inputParameters.getInteger("minPoint");
 	            
@@ -52,7 +52,7 @@ public final class QuestionInputValidationUtil {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد سوال معتبر نمی باشد");
 	            }
 
-	            if (null == answers || answers.isEmpty()) {
+	            if (null == symbol || symbol.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد پاسخ معتبر نمی باشد");
 	            }
 
@@ -76,7 +76,7 @@ public final class QuestionInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("leagueId", leagueId);
 			joResult.put("question", question);
-			joResult.put("answers", answers);
+			joResult.put("symbol", symbol);
 			joResult.put("type", type);
 			joResult.put("minPoint", minPoint);
 			joResult.put("userId", joToken.getInteger("id"));
@@ -103,7 +103,7 @@ public final class QuestionInputValidationUtil {
 			Integer questionId;
 			Integer leagueId;
 			String question;
-			String answers;
+			String symbol;
 			String type;
 			Integer minPoint;
 
@@ -113,7 +113,7 @@ public final class QuestionInputValidationUtil {
 	            questionId = inputParameters.getInteger("questionId");
 	            leagueId = inputParameters.getInteger("leagueId");
 	            question = inputParameters.getString("question");
-	            answers = inputParameters.getString("answers");
+	            symbol = inputParameters.getString("symbol");
 	            type = inputParameters.getString("type");
 	            minPoint = inputParameters.getInteger("minPoint");
 
@@ -129,7 +129,7 @@ public final class QuestionInputValidationUtil {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد سوال معتبر نمی باشد");
 	            }
 
-	            if (null == answers || answers.isEmpty()) {
+	            if (null == symbol || symbol.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد پاسخ معتبر نمی باشد");
 	            }
 
@@ -154,7 +154,7 @@ public final class QuestionInputValidationUtil {
 			joResult.put("questionId", questionId);
 			joResult.put("leagueId", leagueId);
 			joResult.put("question", question);
-			joResult.put("answers", answers);
+			joResult.put("symbol", symbol);
 			joResult.put("type", type);
 			joResult.put("minPoint", minPoint);
 			

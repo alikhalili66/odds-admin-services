@@ -207,7 +207,7 @@ public class DAO_Folder {
         		+ "q.question,"
         		+ "q.type,"
         		+ "q.minpoint,"
-        		+ "q.answers "
+        		+ "q.symbol "
         		+ "from "
         		+ "toppquestion q, toppfolderquestion fq "
         		+ "where "

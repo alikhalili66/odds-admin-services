@@ -36,10 +36,10 @@ public class CallQuestion extends AbstractVerticle{
 
 		JsonObject joInput = new JsonObject();
 		joInput.put("leagueId", 2);
-		joInput.put("question", "کدام کشور میتواند");
-		joInput.put("answers", "کشور اتیوپی");
+		joInput.put("question", "کدام کشور می بازد");
+		joInput.put("symbol", "کشور اتیوپی");
 		joInput.put("type", "H");
-		joInput.put("minPoint", 40);
+		joInput.put("minPoint", 0);
 		
 		System.out.println("joInput:" + joInput);
 
@@ -74,7 +74,7 @@ public class CallQuestion extends AbstractVerticle{
 		joInput.put("questionId", 4);
 		joInput.put("leagueId", 2);
 		joInput.put("question", "کدام کشور میتواند");
-		joInput.put("answers", "کشور ایران");
+		joInput.put("symbol", "کشور ایران");
 		joInput.put("type", "H");
 		joInput.put("minPoint", 40);
 		System.out.println("joInput:" + joInput);
@@ -138,7 +138,7 @@ public class CallQuestion extends AbstractVerticle{
 	public void questionFetchAll(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("leagueId", 1);
+//		joInput.put("leagueId", 1);
 		
 		System.out.println("joInput:" + joInput);
 

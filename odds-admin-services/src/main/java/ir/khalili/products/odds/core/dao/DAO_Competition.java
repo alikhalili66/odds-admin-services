@@ -266,7 +266,7 @@ public class DAO_Competition {
         		+ "q.question,"
         		+ "q.type,"
         		+ "q.minpoint,"
-        		+ "q.answers, "
+        		+ "q.symbol, "
         		+ "cq.norder, "
         		+ "cq.result "
         		+ "from "

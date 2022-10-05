@@ -30,7 +30,7 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionSave(client);
 //		competitionUpdate(client);
 //		competitionDelete(client);
-		competitionFetchAll(client);
+//		competitionFetchAll(client);
 //		competitionFetchById(client);
 //		competitionGroupFetch(client);
 //		competitionQuestionAssign(client);
@@ -38,6 +38,7 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionQuestionFetch(client);
 //		competitionResultRegister(client);
 //		questionResultRegister(client);
+		competitionPointCalculation(client);
 	}
 
 	public void competitionSave(WebClient client) {
@@ -360,6 +361,33 @@ public class CallCompetition extends AbstractVerticle {
 		
 		try {
 			client.post(port, host, "/v1/service/odds/competition/question/result/register").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void competitionPointCalculation(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		joInput.put("competitionId", 1);
+		
+		System.out.println("joInput:" + joInput);
+		try {
+			client.post(port, host, "/v1/service/odds/competition/point/calculation").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());

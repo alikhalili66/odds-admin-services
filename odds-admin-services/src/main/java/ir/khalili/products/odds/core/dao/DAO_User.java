@@ -132,6 +132,48 @@ public class DAO_User {
         return promise.future();
     }
     
+    public static Future<Void> saveUserPointHistory(SQLConnection sqlConnection, JsonObject message) {
+
+    	Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(message.getInteger("ID"));
+		params.add(message.getInteger("POINT"));
+		params.add("I");
+		params.add(null);
+		params.add(message.getLong("AMOUNT"));
+		
+		sqlConnection.updateWithParams(""
+				+ "insert into toppuserpointhistory("
+				+ "ID,"
+				+ "USER_ID,"
+				+ "POINT,"
+				+ "HISTORYTYPE,"
+				+ "HISTORYDESCRIPTION,"
+				+ "HISTORYDATE,"
+				+ "AMOUNT)"
+				+ "values("
+				+ "soppuserpointhistory.nextval,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "sysdate,"
+				+ "?)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("saveUserPointHistorySuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+
     
       
 }

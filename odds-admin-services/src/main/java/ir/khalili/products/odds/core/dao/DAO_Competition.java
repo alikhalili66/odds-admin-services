@@ -381,5 +381,155 @@ public class DAO_Competition {
 		return promise.future();
 	}
 	
+    public static Future<List<JsonObject>> fetchOddsTotalPointByCompetitionId(SQLConnection sqlConnection, Integer competitionId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(competitionId);
+        
+        sqlConnection.queryWithParams("select question_id,SUM(point) total_point from toppodds where competition_id=? group by question_id", params, handler -> {
+            if (handler.failed()) {
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                } else {
+                    logger.trace("fetchOddsTotalPointSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            }
+        });
+        return promise.future();
+    }
+    
+    public static Future<List<JsonObject>> fetchOddsWinnerUsersByCompetitionIdAndQuestionId(SQLConnection sqlConnection, Integer competitionId, Integer questionId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(questionId);
+        params.add(competitionId);
+        
+        sqlConnection.queryWithParams("SELECT" + 
+        		"    o.user_id " + 
+        		"FROM" + 
+        		"    toppodds                  o," + 
+        		"    toppcompetitionquestion   cq " + 
+        		"WHERE" + 
+        		"    o.competition_id = cq.competition_id" + 
+        		"    AND o.question_id = cq.question_id" + 
+        		"    AND o.answer = cq.result" + 
+        		"    AND o.question_id=?" + 
+        		"    AND o.competition_id=?", params, handler -> {
+            if (handler.failed()) {
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchOddsWinnerUsersByCompetitionIdAndQuestionIdSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            }
+        });
+        return promise.future();
+    }
+    
+    public static Future<List<JsonObject>> fetchOddsLoserUsersByCompetitionIdAndQuestionId(SQLConnection sqlConnection, Integer competitionId, Integer questionId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(questionId);
+        params.add(competitionId);
+        
+        sqlConnection.queryWithParams("SELECT" + 
+        		"    o.user_id " + 
+        		"FROM" + 
+        		"    toppodds                  o," + 
+        		"    toppcompetitionquestion   cq " + 
+        		"WHERE" + 
+        		"    o.competition_id = cq.competition_id" + 
+        		"    AND o.question_id = cq.question_id" + 
+        		"    AND o.answer != cq.result" + 
+        		"    AND o.question_id=?" + 
+        		"    AND o.competition_id=?", params, handler -> {
+            if (handler.failed()) {
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchOddsLoserUsersByCompetitionIdAndQuestionIdSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            }
+        });
+        return promise.future();
+    }
+    
+    
+    public static Future<Void> updateRewardPoint(SQLConnection sqlConnection, Long rewardPoint, Integer questionId, Integer competitionId, Integer userId) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		
+		params.add(rewardPoint);
+		params.add(questionId);
+		params.add(competitionId);
+		params.add(userId);
+		
+		sqlConnection.updateWithParams(""
+				+ "update toppodds o set "
+				+ "o.rewardpoint=? "
+				+ " where o.question_id=? and o.competition_id=? and o.user_id=?", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("updateRewardPointSuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+    
+    public static Future<Void> updateUserPoint(SQLConnection sqlConnection, Integer questionId, Integer competitionId, Integer userId) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		
+		params.add(competitionId);
+		params.add(userId);
+		params.add(questionId);
+		params.add(userId);
+		
+		sqlConnection.updateWithParams("UPDATE toppuser u " + 
+				"SET" + 
+				"    u.point = nvl(u.point + (" + 
+				"        SELECT" + 
+				"            o.rewardpoint" + 
+				"        FROM" + 
+				"            toppodds o" + 
+				"        WHERE" + 
+				"            o.competition_id = ?" + 
+				"            AND o.user_id = ?" + 
+				"            AND o.question_id = ?" + 
+				"    ), u.point)" + 
+				"WHERE" + 
+				"    u.id =?", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("updateUserPointSuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
     
 }

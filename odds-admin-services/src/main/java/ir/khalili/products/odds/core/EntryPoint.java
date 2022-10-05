@@ -32,6 +32,7 @@ import ir.khalili.products.odds.core.routemanager.competition.RtMgr_08_Competiti
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_09_CompetitionQuestionFetch;
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_10_CompetitionResultRegister;
 import ir.khalili.products.odds.core.routemanager.competition.RtMgr_11_CompetitionQuestionResultRegister;
+import ir.khalili.products.odds.core.routemanager.competition.RtMgr_12_CompetitionPointCalculation;
 import ir.khalili.products.odds.core.routemanager.config.RtMgr_01_ConfigUpdate;
 import ir.khalili.products.odds.core.routemanager.config.RtMgr_02_ConfigFetchAll;
 import ir.khalili.products.odds.core.routemanager.config.RtMgr_03_ConfigFetchById;
@@ -84,6 +85,7 @@ import ir.khalili.products.odds.core.verticle.competition.VRTCL_08_CompetitionQu
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_09_CompetitionQuestionFetch;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_10_CompetitionResultRegister;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_11_CompetitionQuestionResultRegister;
+import ir.khalili.products.odds.core.verticle.competition.VRTCL_12_CompetitionPointCalculation;
 import ir.khalili.products.odds.core.verticle.config.VRTCL_01_ConfigUpdate;
 import ir.khalili.products.odds.core.verticle.config.VRTCL_02_ConfigFetchAll;
 import ir.khalili.products.odds.core.verticle.config.VRTCL_03_ConfigFetchById;
@@ -210,6 +212,7 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_09_CompetitionQuestionFetch.class.getName());
     	vertx.deployVerticle(VRTCL_10_CompetitionResultRegister.class.getName());
     	vertx.deployVerticle(VRTCL_11_CompetitionQuestionResultRegister.class.getName());
+    	vertx.deployVerticle(VRTCL_12_CompetitionPointCalculation.class.getName());
     	
     	
 		//FOLDER
@@ -310,6 +313,7 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/competition/question/fetch")					.handler(RtMgr_09_CompetitionQuestionFetch					:: handler);
         router.post		("/v1/service/odds/competition/result/register")				.handler(RtMgr_10_CompetitionResultRegister					:: handler);
         router.post		("/v1/service/odds/competition/question/result/register")		.handler(RtMgr_11_CompetitionQuestionResultRegister			:: handler);
+        router.post		("/v1/service/odds/competition/point/calculation")				.handler(RtMgr_12_CompetitionPointCalculation				:: handler);
         
 		//FOLDER
         router.post		("/v1/service/odds/folder/save")								.handler(RtMgr_01_FolderSave								:: handler);

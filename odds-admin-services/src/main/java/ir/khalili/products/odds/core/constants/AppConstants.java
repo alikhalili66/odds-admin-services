@@ -19,6 +19,7 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_QUESTION_FETCH			= "nas.eb.core.srvc.competition.question.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_RESULT_REGISTER			= "nas.eb.core.srvc.competition.result.register";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_QUESTION_RESULT_REGISTER= "nas.eb.core.srvc.competition.question.result.register";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_POINT_CALCULATION 	    = "nas.eb.core.srvc.competition.point.calculation";
 	
 	/***********************FOLDER**************************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_FOLDER_SAVE							= "nas.eb.core.srvc.folder.save";

@@ -73,6 +73,8 @@ import ir.khalili.products.odds.core.routemanager.team.RtMgr_06_TeamImageUpdate;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_01_UserFetchAll;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_02_UserFetchById;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_03_UserFetchOdds;
+import ir.khalili.products.odds.core.routemanager.user.RtMgr_04_UserFetchQuestionAnswer;
+import ir.khalili.products.odds.core.routemanager.user.RtMgr_05_UserFetchPointHistory;
 import ir.khalili.products.odds.core.verticle.auth.VRTCL_01_AuthLogin;
 import ir.khalili.products.odds.core.verticle.auth.VRTCL_02_AuthOTP;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_01_CompetitionSave;
@@ -126,6 +128,8 @@ import ir.khalili.products.odds.core.verticle.team.VRTCL_06_TeamImageUpdate;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_01_UserFetchAll;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_02_UserFetchById;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_03_UserFetchOdds;
+import ir.khalili.products.odds.core.verticle.user.VRTCL_04_UserFetchQuestionAnswer;
+import ir.khalili.products.odds.core.verticle.user.VRTCL_05_UserFetchPointHistory;
 
 public class EntryPoint extends AbstractVerticle {
 
@@ -272,6 +276,8 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_01_UserFetchAll.class.getName());
     	vertx.deployVerticle(VRTCL_02_UserFetchById.class.getName());
     	vertx.deployVerticle(VRTCL_03_UserFetchOdds.class.getName());
+    	vertx.deployVerticle(VRTCL_04_UserFetchQuestionAnswer.class.getName());
+    	vertx.deployVerticle(VRTCL_05_UserFetchPointHistory.class.getName());
 	
     	//CONFIG
     	vertx.deployVerticle(VRTCL_01_ConfigUpdate.class.getName());
@@ -366,6 +372,8 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/user/all/fetch")								.handler(RtMgr_01_UserFetchAll								:: handler);
         router.post		("/v1/service/odds/user/id/fetch")								.handler(RtMgr_02_UserFetchById								:: handler);
         router.post		("/v1/service/odds/user/fetch/odds")							.handler(RtMgr_03_UserFetchOdds								:: handler);
+        router.post		("/v1/service/odds/user/fetch/question")						.handler(RtMgr_04_UserFetchQuestionAnswer					:: handler);
+        router.post		("/v1/service/odds/user/fetch/history")							.handler(RtMgr_05_UserFetchPointHistory							:: handler);
         
     	//CONFIG
         router.post		("/v1/service/odds/config/update")								.handler(RtMgr_01_ConfigUpdate								:: handler);

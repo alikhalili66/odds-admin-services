@@ -20,7 +20,7 @@ public class Biz_03_UserFetchOdds {
 
 		logger.trace("inputMessage:" + message);
 
-		DAO_User.fetchOdds(sqlConnection, message.getInteger("id")).onComplete(result -> {
+		DAO_User.fetchOdds(sqlConnection, message).onComplete(result -> {
 			if (result.failed()) {
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;

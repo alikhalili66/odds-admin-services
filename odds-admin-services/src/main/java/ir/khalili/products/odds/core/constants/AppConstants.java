@@ -70,6 +70,8 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_ALL_FETCH						= "nas.eb.core.srvc.user.all.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_ID_FETCH						= "nas.eb.core.srvc.user.id.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_ODDS_FETCH						= "nas.eb.core.srvc.user.odds.fetch";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_QUESTION_FETCH					= "nas.eb.core.srvc.user.question.fetch";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_HISTORY_FETCH					= "nas.eb.core.srvc.user.history.fetch";
 	
 	/***********************CONFIG****************************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_CONFIG_UPDATE						= "nas.eb.core.srvc.config.update";

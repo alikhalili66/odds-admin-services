@@ -9,6 +9,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
+import ir.khalili.products.odds.core.utils.NationalNumberChecker;
 
 public final class UserInputValidationUtil {
 
@@ -29,7 +30,50 @@ public final class UserInputValidationUtil {
 
 			final JsonObject joToken = handler.result();
 
+			String nationalNumber = null; // optional
+			Long cellphone = null; // optional
+			Integer startIndex = null;
+			Integer endIndex = null;
+			
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            nationalNumber = inputParameters.getString("nationalNumber");
+	            cellphone = inputParameters.getLong("cellphone");
+				startIndex = inputParameters.getInteger("startIndex");
+				endIndex = inputParameters.getInteger("endIndex");
+
+				if (nationalNumber != null && (nationalNumber.isEmpty() || !NationalNumberChecker.isValid(nationalNumber))) {
+					throw new EXCP_RtMgr_Validation(-602, "شماره ملی صحیح نمی باشد");
+				}
+
+				if (cellphone != null && cellphone < 0) {
+					throw new EXCP_RtMgr_Validation(-602, "شماره موبایل صحیح نمی باشد");
+				}
+				
+				if (startIndex== null || startIndex < 0) {
+					throw new EXCP_RtMgr_Validation(-602, "اندیس شروع صحیح نمی باشد.");
+				}
+				
+				if (endIndex== null || endIndex < 0) {
+					throw new EXCP_RtMgr_Validation(-602, "اندیس پایان صحیح نمی باشد.");
+				}
+				
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+
 			final JsonObject joResult = new JsonObject();
+			joResult.put("nationalNumber", nationalNumber);
+			joResult.put("cellphone", cellphone);
+			joResult.put("startIndex", startIndex);
+			joResult.put("endIndex", endIndex);
+			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
@@ -95,16 +139,28 @@ public final class UserInputValidationUtil {
 			final JsonObject joToken = handler.result();
 
 			Integer id;
-
+			Integer startIndex = null;
+			Integer endIndex = null;
+			
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
 	            id = inputParameters.getInteger("id");
-	            
+				startIndex = inputParameters.getInteger("startIndex");
+				endIndex = inputParameters.getInteger("endIndex");
+				
 	            if (null == id || id < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر معتبر نمی باشد");
 	            }
 
+				if (startIndex== null || startIndex < 0) {
+					throw new EXCP_RtMgr_Validation(-602, "اندیس شروع صحیح نمی باشد.");
+				}
+				
+				if (endIndex== null || endIndex < 0) {
+					throw new EXCP_RtMgr_Validation(-602, "اندیس پایان صحیح نمی باشد.");
+				}
+				
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
 				return;
@@ -116,7 +172,113 @@ public final class UserInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("id", id);
+			joResult.put("startIndex", startIndex);
+			joResult.put("endIndex", endIndex);
+			
 			joResult.put("userId", joToken.getInteger("id"));
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
+
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+		});
+
+    }
+	
+	public static void validateUserFetchQuestionAnswer(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
+
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+
+			Integer userId;
+			Integer competitionId;
+
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            userId = inputParameters.getInteger("userId");
+	            competitionId = inputParameters.getInteger("competitionId");
+	            
+	            if (null == userId || userId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر معتبر نمی باشد");
+	            }
+
+	            if (null == competitionId || competitionId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
+	            }
+
+	            
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+
+			final JsonObject joResult = new JsonObject();
+			joResult.put("competitionId", competitionId);
+			joResult.put("userId", userId);
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
+
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+		});
+
+    }
+	
+	public static void validateUserPointHistory(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
+
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+
+			Integer userId;
+			Integer startIndex = null;
+			Integer endIndex = null;
+			
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            userId = inputParameters.getInteger("userId");
+	            startIndex = inputParameters.getInteger("startIndex");
+	            endIndex = inputParameters.getInteger("endIndex");
+	            
+	            if (null == userId || userId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر معتبر نمی باشد");
+	            }
+
+				if (startIndex== null || startIndex < 0) {
+					throw new EXCP_RtMgr_Validation(-602, "اندیس شروع صحیح نمی باشد.");
+				}
+				
+				if (endIndex== null || endIndex < 0) {
+					throw new EXCP_RtMgr_Validation(-602, "اندیس پایان صحیح نمی باشد.");
+				}
+				
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+
+			final JsonObject joResult = new JsonObject();
+			joResult.put("userId", userId);
+			joResult.put("startIndex", startIndex);
+			joResult.put("endIndex", endIndex);
+			
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

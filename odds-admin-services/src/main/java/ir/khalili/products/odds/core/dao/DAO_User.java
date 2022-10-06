@@ -17,10 +17,16 @@ public class DAO_User {
 
     private static final Logger logger = LogManager.getLogger(DAO_User.class);
     
-    public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection) {
+    public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection, JsonObject message) {
         Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
         
-        sqlConnection.query("SELECT "
+        params.add(message.getLong("cellphone"));
+        params.add(message.getString("nationalNumber"));
+        params.add(message.getInteger("startIndex"));
+        params.add(message.getInteger("endIndex"));
+        
+        sqlConnection.queryWithParams("SELECT * FROM (SELECT "
         		+ "u.id,"
         		+ "u.NAME,"
         		+ "u.LASTNAME,"
@@ -28,14 +34,16 @@ public class DAO_User {
         		+ "u.AVATAR,"
         		+ "u.POINT,"
         		+ "u.AMOUNT,"
+        		+ "u.CELLPHONE,"
         		+ "u.NATIONALNUMBER,"
         		+ "To_Char(u.BIRTHDATE,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') BIRTH_DATE,"
         		+ "u.PROVINCE,"
         		+ "u.CITY,"
         		+ "u.POSTCODE,"
         		+ "u.ADDRESS,"
-        		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date "
-        		+ "  FROM toppuser u", handler -> {
+        		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date, "
+        		+ "row_number() over (ORDER BY u.id desc) line_number"
+        		+ "  FROM toppuser u where u.CELLPHONE=nvl(?,u.CELLPHONE) and u.NATIONALNUMBER=nvl(?,u.NATIONALNUMBER)) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
@@ -89,12 +97,14 @@ public class DAO_User {
         return promise.future();
     }
     
-    public static Future<List<JsonObject>> fetchOdds(SQLConnection sqlConnection, Integer userId) {
+    public static Future<List<JsonObject>> fetchOdds(SQLConnection sqlConnection, JsonObject message) {
         Promise<List<JsonObject>> promise = Promise.promise();
         JsonArray params = new JsonArray();
-        params.add(userId);
+        params.add(message.getInteger("id"));
+        params.add(message.getInteger("startIndex"));
+        params.add(message.getInteger("endIndex"));
         
-        sqlConnection.queryWithParams("SELECT "
+        sqlConnection.queryWithParams("SELECT * FROM (SELECT "
         		+ "o.id,"
         		+ "o.LEAGUE_ID,"
         		+ "l.name league_name,"
@@ -113,8 +123,9 @@ public class DAO_User {
         		+ "o.POINT,"
         		+ "o.CORRECTANSWER CORRECT_ANSWER,"
         		+ "o.REWARDPOINT REWARD_POINT,"
-        		+ "o.COUNT"
-        		+ "  FROM toppodds o, toppleague l, toppgroup g, toppquestion q where o.QUESTION_ID=q.id and o.GROUP_ID=g.id and o.LEAGUE_ID=l.id and o.id=?", params, handler -> {
+        		+ "o.COUNT,"
+        		+ "row_number() over (ORDER BY o.id desc) line_number"
+        		+ "  FROM toppodds o, toppleague l, toppgroup g, toppquestion q where o.QUESTION_ID=q.id and o.GROUP_ID=g.id and o.LEAGUE_ID=l.id and o.id=?) WHERE line_number BETWEEN ? AND ?", params, handler -> {
             if (handler.failed()) {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
@@ -174,6 +185,71 @@ public class DAO_User {
 		return promise.future();
 	}
 
+    public static Future<List<JsonObject>> fetchQuestionAnswer(SQLConnection sqlConnection, JsonObject message) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(message.getInteger("userId"));
+        params.add(message.getInteger("competitionId"));
+        
+        sqlConnection.queryWithParams("SELECT " + 
+        		"    q.question, " + 
+        		"    o.answer " + 
+        		"FROM " + 
+        		"    toppodds o, " + 
+        		"    toppquestion q " + 
+        		"WHERE " + 
+        		"    o.user_id = ? " + 
+        		"    AND o.competition_id = ? " + 
+        		"    AND o.question_id=q.id", params, handler -> {
+            if (handler.failed()) {
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                } else {
+                    logger.trace("fetchQuestionAnswerSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+ 
+    public static Future<List<JsonObject>> fetchUserPointHistory(SQLConnection sqlConnection, JsonObject message) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        
+        params.add(message.getInteger("userId"));
+        params.add(message.getInteger("startIndex"));
+        params.add(message.getInteger("endIndex"));
+        
+        sqlConnection.queryWithParams("SELECT * FROM (SELECT "
+        		+ "u.id,"
+        		+ "u.user_id,"
+        		+ "u.point,"
+        		+ "u.amount,"
+        		+ "u.historytype history_type,"
+        		+ "u.historydescription history_description,"
+        		+ "To_Char(u.historydate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') history_date, "
+        		+ "row_number() over (ORDER BY u.id desc) line_number"
+        		+ "  FROM toppuserpointhistory u where u.user_id=?) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
+            if (handler.failed()) {
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchUserPointHistorySuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
     
       
 }

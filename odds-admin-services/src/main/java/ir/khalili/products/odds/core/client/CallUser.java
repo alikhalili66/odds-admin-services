@@ -25,19 +25,26 @@ public class CallUser extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-//		userFetchAll(client);
+		userFetchAll(client);
 //		userFetchById(client);
-		userFetchOdds(client);
+//		userFetchOdds(client);
+//		userFetchQuestionAnswer(client);
+//		userFetchPointHistory(client);
 	}
 
 
 	public void userFetchAll(WebClient client) {
+		JsonObject joInput = new JsonObject();
+//		joInput.put("nationalNumber", "3241378012"); // optional
+//		joInput.put("cellphone", 9359308163L); // optional
+		joInput.put("startIndex", 1);
+		joInput.put("endIndex", 10);
 		
 		try {
 			client.post(port, host, "/v1/service/odds/user/all/fetch")
 			
 			.putHeader("Authorization", CallAuth.token)
-			.send(ar -> {
+			.sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -89,6 +96,8 @@ public class CallUser extends AbstractVerticle {
 	public void userFetchOdds(WebClient client) {
 		JsonObject joInput = new JsonObject();
 		joInput.put("id", 1);
+		joInput.put("startIndex", 1);
+		joInput.put("endIndex", 10);
 		
 		try {
 			client.post(port, host, "/v1/service/odds/user/fetch/odds")
@@ -115,5 +124,66 @@ public class CallUser extends AbstractVerticle {
 		}
 	}
 
+	public void userFetchQuestionAnswer(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		joInput.put("userId", 1);
+		joInput.put("competitionId", 1);
+		
+		try {
+			client.post(port, host, "/v1/service/odds/user/fetch/question")
+			
+			.putHeader("Authorization", CallAuth.token)
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
 	
+	public void userFetchPointHistory(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		joInput.put("userId", 1);
+		joInput.put("startIndex", 1);
+		joInput.put("endIndex", 10);
+		
+		try {
+			client.post(port, host, "/v1/service/odds/user/fetch/history")
+			
+			.putHeader("Authorization", CallAuth.token)
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
 }

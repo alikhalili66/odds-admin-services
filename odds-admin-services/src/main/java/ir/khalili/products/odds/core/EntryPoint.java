@@ -64,6 +64,10 @@ import ir.khalili.products.odds.core.routemanager.question.RtMgr_02_QuestionUpda
 import ir.khalili.products.odds.core.routemanager.question.RtMgr_03_QuestionDelete;
 import ir.khalili.products.odds.core.routemanager.question.RtMgr_04_QuestionFetchAll;
 import ir.khalili.products.odds.core.routemanager.question.RtMgr_05_QuestionFetchById;
+import ir.khalili.products.odds.core.routemanager.report.RtMgr_01_ReportRegisteredUsersCount;
+import ir.khalili.products.odds.core.routemanager.report.RtMgr_02_ReportCompetitorUsersCount;
+import ir.khalili.products.odds.core.routemanager.report.RtMgr_03_ReportCompetitorUsersAmount;
+import ir.khalili.products.odds.core.routemanager.report.RtMgr_04_ReportOddsCount;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_01_TeamSave;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_02_TeamUpdate;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_03_TeamDelete;
@@ -119,6 +123,10 @@ import ir.khalili.products.odds.core.verticle.question.VRTCL_02_QuestionUpdate;
 import ir.khalili.products.odds.core.verticle.question.VRTCL_03_QuestionDelete;
 import ir.khalili.products.odds.core.verticle.question.VRTCL_04_QuestionFetchAll;
 import ir.khalili.products.odds.core.verticle.question.VRTCL_05_QuestionFetchById;
+import ir.khalili.products.odds.core.verticle.report.VRTCL_01_ReportRegisteredUsersCount;
+import ir.khalili.products.odds.core.verticle.report.VRTCL_02_ReportCompetitorUsersCount;
+import ir.khalili.products.odds.core.verticle.report.VRTCL_03_ReportCompetitorUsersAmount;
+import ir.khalili.products.odds.core.verticle.report.VRTCL_04_ReportOddsCount;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_01_TeamSave;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_02_TeamUpdate;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_03_TeamDelete;
@@ -285,6 +293,13 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_03_ConfigFetchById.class.getName());
     	vertx.deployVerticle(VRTCL_04_ConfigFetchBySymbol.class.getName());
     	
+    	//REPORT
+    	vertx.deployVerticle(VRTCL_01_ReportRegisteredUsersCount.class.getName());
+    	vertx.deployVerticle(VRTCL_02_ReportCompetitorUsersCount.class.getName());
+    	vertx.deployVerticle(VRTCL_03_ReportCompetitorUsersAmount.class.getName());
+    	vertx.deployVerticle(VRTCL_04_ReportOddsCount.class.getName());
+    	
+    	
     }
 
     @Override
@@ -373,13 +388,19 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/user/id/fetch")								.handler(RtMgr_02_UserFetchById								:: handler);
         router.post		("/v1/service/odds/user/fetch/odds")							.handler(RtMgr_03_UserFetchOdds								:: handler);
         router.post		("/v1/service/odds/user/fetch/question")						.handler(RtMgr_04_UserFetchQuestionAnswer					:: handler);
-        router.post		("/v1/service/odds/user/fetch/history")							.handler(RtMgr_05_UserFetchPointHistory							:: handler);
+        router.post		("/v1/service/odds/user/fetch/history")							.handler(RtMgr_05_UserFetchPointHistory						:: handler);
         
     	//CONFIG
         router.post		("/v1/service/odds/config/update")								.handler(RtMgr_01_ConfigUpdate								:: handler);
         router.post		("/v1/service/odds/config/all/fetch")							.handler(RtMgr_02_ConfigFetchAll							:: handler);
         router.post		("/v1/service/odds/config/id/fetch")							.handler(RtMgr_03_ConfigFetchById							:: handler);
         router.post		("/v1/service/odds/config/symbol/fetch")						.handler(RtMgr_04_ConfigFetchBySymbol						:: handler);
+        
+        //REPORT
+        router.post		("/v1/service/odds/report/registered/users/count")				.handler(RtMgr_01_ReportRegisteredUsersCount				:: handler);
+        router.post		("/v1/service/odds/report/competitor/users/count")				.handler(RtMgr_02_ReportCompetitorUsersCount				:: handler);
+        router.post		("/v1/service/odds/report/competitor/users/amount")				.handler(RtMgr_03_ReportCompetitorUsersAmount				:: handler);
+        router.post		("/v1/service/odds/report/odds/count")							.handler(RtMgr_04_ReportOddsCount							:: handler);
         
 
         vertx.createHttpServer().requestHandler(router).listen(port);

@@ -79,5 +79,11 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_CONFIG_ID_FETCH						= "nas.eb.core.srvc.config.id.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_CONFIG_SYMBOL_FETCH					= "nas.eb.core.srvc.config.symbol.fetch";
 	
+	/***********************REPORT****************************/
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_REGISTERED_USERS_COUNT		= "nas.eb.core.srvc.report.registered.users.count";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_COMPETITOR_USERS_COUNT		= "nas.eb.core.srvc.report.competitor.users.count";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_COMPETITOR_USERS_AMOUNT		= "nas.eb.core.srvc.report.competitor.users.amount";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ODDS_COUNT					= "nas.eb.core.srvc.report.odds.count";
+	
 	
 }

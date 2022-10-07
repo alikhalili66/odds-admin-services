@@ -163,6 +163,7 @@ public class DAO_Competition {
         		+ "To_Char(c.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppcompetition c WHERE c.LEAGUE_ID=nvl(?, c.LEAGUE_ID) and c.GROUP_ID=nvl(?, c.GROUP_ID) and c.dto is null", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -198,6 +199,7 @@ public class DAO_Competition {
         		+ "To_Char(c.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppcompetition c WHERE c.id=? and c.dto is null", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -274,6 +276,7 @@ public class DAO_Competition {
         		+ "where "
         		+ "cq.COMPETITION_ID=? and cq.QUESTION_ID=q.id and q.dto is null", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
 
@@ -315,6 +318,7 @@ public class DAO_Competition {
         		+ "To_Char(c.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppcompetition c WHERE c.GROUP_ID = ? and c.dto is null", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -388,6 +392,7 @@ public class DAO_Competition {
         
         sqlConnection.queryWithParams("select question_id,SUM(point) total_point from toppodds where competition_id=? group by question_id", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -419,6 +424,7 @@ public class DAO_Competition {
         		"    AND o.question_id=?" + 
         		"    AND o.competition_id=?", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -450,6 +456,7 @@ public class DAO_Competition {
         		"    AND o.question_id=?" + 
         		"    AND o.competition_id=?", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {

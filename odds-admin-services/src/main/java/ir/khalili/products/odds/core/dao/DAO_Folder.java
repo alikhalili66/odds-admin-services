@@ -113,6 +113,7 @@ public class DAO_Folder {
         		+ "To_Char(f.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppfolder f WHERE f.LEAGUE_ID=nvl(?, f.LEAGUE_ID) and f.dto is null CONNECT BY PRIOR f.id = f.parent_id", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -141,6 +142,7 @@ public class DAO_Folder {
         		+ "To_Char(f.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppfolder f WHERE f.id=? and f.dto is null CONNECT BY PRIOR f.id = f.parent_id", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -213,6 +215,7 @@ public class DAO_Folder {
         		+ "where "
         		+ "fq.FOLDER_ID=? and fq.QUESTION_ID=q.id and q.dto is null", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
 

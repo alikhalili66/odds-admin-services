@@ -122,6 +122,7 @@ public class DAO_Question {
         		+ "To_Char(q.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppquestion q WHERE q.LEAGUE_ID=nvl(?, q.LEAGUE_ID) and q.dto is null", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -152,6 +153,7 @@ public class DAO_Question {
         		+ "To_Char(q.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppquestion q WHERE q.id=? and q.dto is null", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {

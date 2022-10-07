@@ -58,6 +58,7 @@ public class DAO_Config {
         		+ "c.value "
         		+ "  FROM toppconfig c", handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -85,6 +86,7 @@ public class DAO_Config {
         		+ "c.value "
         		+ "  FROM toppconfig c WHERE c.id=?", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -112,6 +114,7 @@ public class DAO_Config {
         		+ "c.value "
         		+ "  FROM toppconfig c WHERE c.SYMBOL=?", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {

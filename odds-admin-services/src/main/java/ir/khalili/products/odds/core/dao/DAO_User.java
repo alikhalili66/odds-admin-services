@@ -45,6 +45,7 @@ public class DAO_User {
         		+ "row_number() over (ORDER BY u.id desc) line_number"
         		+ "  FROM toppuser u where u.CELLPHONE=nvl(?,u.CELLPHONE) and u.NATIONALNUMBER=nvl(?,u.NATIONALNUMBER)) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -82,6 +83,7 @@ public class DAO_User {
         		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date "
         		+ "  FROM toppuser u where u.id=?", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -127,6 +129,7 @@ public class DAO_User {
         		+ "row_number() over (ORDER BY o.id desc) line_number"
         		+ "  FROM toppodds o, toppleague l, toppgroup g, toppquestion q where o.QUESTION_ID=q.id and o.GROUP_ID=g.id and o.LEAGUE_ID=l.id and o.id=?) WHERE line_number BETWEEN ? AND ?", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
 
@@ -202,6 +205,7 @@ public class DAO_User {
         		"    AND o.competition_id = ? " + 
         		"    AND o.question_id=q.id", params, handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
@@ -236,6 +240,7 @@ public class DAO_User {
         		+ "row_number() over (ORDER BY u.id desc) line_number"
         		+ "  FROM toppuserpointhistory u where u.user_id=?) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {

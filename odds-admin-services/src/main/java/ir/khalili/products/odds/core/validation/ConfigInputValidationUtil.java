@@ -29,28 +29,16 @@ public final class ConfigInputValidationUtil {
 			final JsonObject joToken = handler.result();
 
 			Integer configId;
-			String name;
-			String symbol;
 			String value;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
 	            configId = inputParameters.getInteger("configId");
-	            name = inputParameters.getString("name");
-	            symbol = inputParameters.getString("symbol");
 	            value = inputParameters.getString("value");
 
 	            if (null == configId || configId < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه پیکربندی معتبر نمی باشد");
-	            }
-	            
-	            if (null == name || name.isEmpty()) {
-	                throw new EXCP_RtMgr_Validation(-603, "فیلد نام معتبر نمی باشد");
-	            }
-	            
-	            if (null == symbol || symbol.isEmpty()) {
-	            	throw new EXCP_RtMgr_Validation(-603, "فیلد نماد معتبر نمی باشد");
 	            }
 	            
 	            if (null == value || value.isEmpty()) {
@@ -68,8 +56,6 @@ public final class ConfigInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("configId", configId);
-			joResult.put("name", name);
-			joResult.put("symbol", symbol);
 			joResult.put("value", value);
 			
 			joResult.put("userId", joToken.getInteger("id"));

@@ -27,16 +27,14 @@ public class CallConfig extends AbstractVerticle {
 		WebClient client = WebClient.create(vertx);
 //		leagueUpdate(client);
 //		leagueFetchAll(client);
-//		leagueFetchById(client);
-		leagueFetchBySymbol(client);
+		leagueFetchById(client);
+//		leagueFetchBySymbol(client);
 	}
 
 	public void leagueUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
 		joInput.put("configId", 1);
-		joInput.put("name", "قوانین");
-		joInput.put("symbol", "S");
 		joInput.put("value", "امتیازهاا از بین نمی روند");
 		
 		System.out.println("joInput:" + joInput);

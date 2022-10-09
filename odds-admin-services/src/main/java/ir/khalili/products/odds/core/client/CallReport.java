@@ -12,8 +12,8 @@ import io.vertx.ext.web.client.WebClient;
 public class CallReport extends AbstractVerticle {
 
 	private static final int port = 9090;
-	private static final String host  ="127.0.0.1";
-//	private static final String host  ="185.213.167.156";
+//	private static final String host  ="127.0.0.1";
+	private static final String host  ="185.213.167.156";
 	
 	public static void main(String[] args) {
 

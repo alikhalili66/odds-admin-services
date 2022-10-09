@@ -26,9 +26,9 @@ public class CallLocation extends AbstractVerticle {
 	public void start() throws Exception {
 
 		WebClient client = WebClient.create(vertx);
-		locationSave(client);
+//		locationSave(client);
 //		locationUpdate(client);
-//		locationDelete(client);
+		locationDelete(client);
 //		locationFetchAll(client);
 //		competitionLocationAssign(client);
 	}

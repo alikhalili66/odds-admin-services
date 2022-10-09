@@ -14,6 +14,7 @@ public final class ReportInputValidationUtil {
     private static Logger logger = LoggerFactory.getLogger(ReportInputValidationUtil.class);
 
     private ReportInputValidationUtil() {
+    	logger.trace("");
     }
 
 	public static void validateOddsCount(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {

@@ -35,10 +35,10 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionGroupFetch(client);
 //		competitionQuestionAssign(client);
 //		competitionQuestionUnAssign(client);
-//		competitionQuestionFetch(client);
+		competitionQuestionFetch(client);
 //		competitionResultRegister(client);
 //		questionResultRegister(client);
-		competitionPointCalculation(client);
+//		competitionPointCalculation(client);
 	}
 
 	public void competitionSave(WebClient client) {
@@ -146,7 +146,7 @@ public class CallCompetition extends AbstractVerticle {
 	public void competitionFetchAll(WebClient client) {
 		JsonObject joInput = new JsonObject();
 		joInput.put("leagueId", 1);
-		joInput.put("groupId", 1);
+//		joInput.put("groupId", 1);
 		
 		System.out.println("joInput:" + joInput);
 		
@@ -292,11 +292,11 @@ public class CallCompetition extends AbstractVerticle {
 
 	public void competitionQuestionFetch(WebClient client) {
 		JsonObject joInput = new JsonObject();
-		joInput.put("competitionId", 1);
+		joInput.put("competitionId", 15);
 
 		System.out.println("joInput:" + joInput);
 		try {
-			client.post(port, host, "/v1/service/odds/competition/fetch/question").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
+			client.post(port, host, "/v1/service/odds/competition/question/fetch").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());

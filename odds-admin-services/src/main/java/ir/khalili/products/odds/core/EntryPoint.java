@@ -226,6 +226,11 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_11_CompetitionQuestionResultRegister.class.getName());
     	vertx.deployVerticle(VRTCL_12_CompetitionPointCalculation.class.getName());
     	
+    	//CONFIG
+    	vertx.deployVerticle(VRTCL_01_ConfigUpdate.class.getName());
+    	vertx.deployVerticle(VRTCL_02_ConfigFetchAll.class.getName());
+    	vertx.deployVerticle(VRTCL_03_ConfigFetchById.class.getName());
+    	vertx.deployVerticle(VRTCL_04_ConfigFetchBySymbol.class.getName());
     	
 		//FOLDER
     	vertx.deployVerticle(VRTCL_01_FolderSave.class.getName());
@@ -270,6 +275,11 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_05_QuestionFetchById.class.getName());
     	
     	
+    	//REPORT
+    	vertx.deployVerticle(VRTCL_01_ReportRegisteredUsersCount.class.getName());
+    	vertx.deployVerticle(VRTCL_02_ReportCompetitorUsersCount.class.getName());
+    	vertx.deployVerticle(VRTCL_03_ReportCompetitorUsersAmount.class.getName());
+    	vertx.deployVerticle(VRTCL_04_ReportOddsCount.class.getName());
     	
     	//TEAM
     	vertx.deployVerticle(VRTCL_01_TeamSave.class.getName());
@@ -286,18 +296,8 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_03_UserFetchOdds.class.getName());
     	vertx.deployVerticle(VRTCL_04_UserFetchQuestionAnswer.class.getName());
     	vertx.deployVerticle(VRTCL_05_UserFetchPointHistory.class.getName());
-	
-    	//CONFIG
-    	vertx.deployVerticle(VRTCL_01_ConfigUpdate.class.getName());
-    	vertx.deployVerticle(VRTCL_02_ConfigFetchAll.class.getName());
-    	vertx.deployVerticle(VRTCL_03_ConfigFetchById.class.getName());
-    	vertx.deployVerticle(VRTCL_04_ConfigFetchBySymbol.class.getName());
-    	
-    	//REPORT
-    	vertx.deployVerticle(VRTCL_01_ReportRegisteredUsersCount.class.getName());
-    	vertx.deployVerticle(VRTCL_02_ReportCompetitorUsersCount.class.getName());
-    	vertx.deployVerticle(VRTCL_03_ReportCompetitorUsersAmount.class.getName());
-    	vertx.deployVerticle(VRTCL_04_ReportOddsCount.class.getName());
+
+
     	
     	
     }
@@ -335,6 +335,12 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/competition/result/register")				.handler(RtMgr_10_CompetitionResultRegister					:: handler);
         router.post		("/v1/service/odds/competition/question/result/register")		.handler(RtMgr_11_CompetitionQuestionResultRegister			:: handler);
         router.post		("/v1/service/odds/competition/point/calculation")				.handler(RtMgr_12_CompetitionPointCalculation				:: handler);
+        
+    	//CONFIG
+        router.post		("/v1/service/odds/config/update")								.handler(RtMgr_01_ConfigUpdate								:: handler);
+        router.post		("/v1/service/odds/config/all/fetch")							.handler(RtMgr_02_ConfigFetchAll							:: handler);
+        router.post		("/v1/service/odds/config/id/fetch")							.handler(RtMgr_03_ConfigFetchById							:: handler);
+        router.post		("/v1/service/odds/config/symbol/fetch")						.handler(RtMgr_04_ConfigFetchBySymbol						:: handler);
         
 		//FOLDER
         router.post		("/v1/service/odds/folder/save")								.handler(RtMgr_01_FolderSave								:: handler);
@@ -374,7 +380,13 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/question/delete")							.handler(RtMgr_03_QuestionDelete							:: handler);
         router.post		("/v1/service/odds/question/all/fetch")							.handler(RtMgr_04_QuestionFetchAll							:: handler);
         router.post		("/v1/service/odds/question/id/fetch")							.handler(RtMgr_05_QuestionFetchById							:: handler);
-    	
+
+        //REPORT
+        router.post		("/v1/service/odds/report/registered/users/count")				.handler(RtMgr_01_ReportRegisteredUsersCount				:: handler);
+        router.post		("/v1/service/odds/report/competitor/users/count")				.handler(RtMgr_02_ReportCompetitorUsersCount				:: handler);
+        router.post		("/v1/service/odds/report/competitor/users/amount")				.handler(RtMgr_03_ReportCompetitorUsersAmount				:: handler);
+        router.post		("/v1/service/odds/report/odds/count")							.handler(RtMgr_04_ReportOddsCount							:: handler);
+        
     	//TEAM
         router.post		("/v1/service/odds/team/save")									.handler(RtMgr_01_TeamSave									:: handler);
         router.post		("/v1/service/odds/team/update")								.handler(RtMgr_02_TeamUpdate								:: handler);
@@ -389,19 +401,7 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/user/fetch/odds")							.handler(RtMgr_03_UserFetchOdds								:: handler);
         router.post		("/v1/service/odds/user/fetch/question")						.handler(RtMgr_04_UserFetchQuestionAnswer					:: handler);
         router.post		("/v1/service/odds/user/fetch/history")							.handler(RtMgr_05_UserFetchPointHistory						:: handler);
-        
-    	//CONFIG
-        router.post		("/v1/service/odds/config/update")								.handler(RtMgr_01_ConfigUpdate								:: handler);
-        router.post		("/v1/service/odds/config/all/fetch")							.handler(RtMgr_02_ConfigFetchAll							:: handler);
-        router.post		("/v1/service/odds/config/id/fetch")							.handler(RtMgr_03_ConfigFetchById							:: handler);
-        router.post		("/v1/service/odds/config/symbol/fetch")						.handler(RtMgr_04_ConfigFetchBySymbol						:: handler);
-        
-        //REPORT
-        router.post		("/v1/service/odds/report/registered/users/count")				.handler(RtMgr_01_ReportRegisteredUsersCount				:: handler);
-        router.post		("/v1/service/odds/report/competitor/users/count")				.handler(RtMgr_02_ReportCompetitorUsersCount				:: handler);
-        router.post		("/v1/service/odds/report/competitor/users/amount")				.handler(RtMgr_03_ReportCompetitorUsersAmount				:: handler);
-        router.post		("/v1/service/odds/report/odds/count")							.handler(RtMgr_04_ReportOddsCount							:: handler);
-        
+
 
         vertx.createHttpServer().requestHandler(router).listen(port);
 

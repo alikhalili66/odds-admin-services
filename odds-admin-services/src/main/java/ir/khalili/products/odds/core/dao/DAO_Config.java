@@ -17,21 +17,17 @@ public class DAO_Config {
 
     private static final Logger logger = LogManager.getLogger(DAO_Config.class);
     
-    public static Future<Void> update(SQLConnection sqlConnection, JsonObject message) {
+    public static Future<Void> update(SQLConnection sqlConnection, int configId, String value) {
 
 		Promise<Void> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
 		
-		params.add(message.getString("name"));
-		params.add(message.getString("symbol"));
-		params.add(message.getString("value"));
-		params.add(message.getInteger("configId"));
+		params.add(value);
+		params.add(configId);
 		
 		sqlConnection.updateWithParams(""
 				+ "update toppconfig c set "
-				+ "c.NAME=?,"
-				+ "c.SYMBOL=?,"
 				+ "c.VALUE=? "
 				+ " where c.id=? ", params, resultHandler->{
 			if(resultHandler.failed()) {
@@ -55,6 +51,7 @@ public class DAO_Config {
         		+ "c.id,"
         		+ "c.NAME,"
         		+ "c.SYMBOL,"
+        		+ "c.type,"
         		+ "c.value "
         		+ "  FROM toppconfig c", handler -> {
             if (handler.failed()) {
@@ -83,6 +80,7 @@ public class DAO_Config {
         		+ "c.id,"
         		+ "c.NAME,"
         		+ "c.SYMBOL,"
+        		+ "c.type,"
         		+ "c.value "
         		+ "  FROM toppconfig c WHERE c.id=?", params, handler -> {
             if (handler.failed()) {
@@ -111,6 +109,7 @@ public class DAO_Config {
         		+ "c.id,"
         		+ "c.NAME,"
         		+ "c.SYMBOL,"
+        		+ "c.type,"
         		+ "c.value "
         		+ "  FROM toppconfig c WHERE c.SYMBOL=?", params, handler -> {
             if (handler.failed()) {

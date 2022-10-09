@@ -154,6 +154,7 @@ public class DAO_Competition {
         		+ "(select name from toppteam t where t.id=c.TEAM2_ID) TEAM2_name,"
         		+ "(select image from toppteam t where t.id=c.TEAM2_ID) TEAM2_image,"
         		+ "c.GROUP_ID,"
+        		+ "(select g.name from toppgroup g where g.id=c.GROUP_ID) GROUP_name,"
         		+ "c.RESULT,"
         		+ "To_Char(c.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
         		+ "To_Char(c.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
@@ -274,7 +275,8 @@ public class DAO_Competition {
         		+ "from "
         		+ "toppquestion q, toppcompetitionquestion cq "
         		+ "where "
-        		+ "cq.COMPETITION_ID=? and cq.QUESTION_ID=q.id and q.dto is null", params, handler -> {
+        		+ "cq.COMPETITION_ID=? and cq.QUESTION_ID=q.id and q.dto is null "
+        		+ "order by cq.norder asc", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

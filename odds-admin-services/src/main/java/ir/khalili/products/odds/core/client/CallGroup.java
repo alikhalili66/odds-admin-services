@@ -29,12 +29,12 @@ public class CallGroup extends AbstractVerticle {
 //		groupSave(client);
 //		groupUpdate(client);
 //		groupDelete(client);
-		groupFetchAll(client);
+//		groupFetchAll(client);
 //		groupFetchById(client);
 //		groupTeamAssign(client);
 //		groupTeamUnAssign(client);
 //		groupTeamFetch(client);
-//		groupCompetitionFetch(client);
+		groupCompetitionFetch(client);
 	}
 
 	public void groupSave(WebClient client) {

@@ -137,6 +137,8 @@ public class DAO_League {
         		+ "l.IMAGE,"
         		+ "To_Char(l.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
         		+ "To_Char(l.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
+        		+ "To_Char(l.oddsfrom,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_FROM,"
+        		+ "To_Char(l.oddsTo,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_TO,"
         		+ "To_Char(l.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppleague l WHERE l.dto is null", handler -> {
             if (handler.failed()) {
@@ -168,6 +170,8 @@ public class DAO_League {
         		+ "l.IMAGE,"
         		+ "To_Char(l.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
         		+ "To_Char(l.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
+        		+ "To_Char(l.oddsfrom,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_FROM,"
+        		+ "To_Char(l.oddsTo,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_TO,"
         		+ "To_Char(l.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
         		+ "  FROM toppleague l WHERE l.id=? and l.dto is null", params, handler -> {
             if (handler.failed()) {

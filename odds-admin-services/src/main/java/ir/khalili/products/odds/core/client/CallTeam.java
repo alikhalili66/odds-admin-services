@@ -344,7 +344,7 @@ public class CallTeam extends AbstractVerticle {
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/odds/team/member/id/fetch")
+			client.post(port, host, "/v1/service/odds/team/member/all/fetch")
 					
 					.putHeader("Authorization", CallAuth.token)
 					

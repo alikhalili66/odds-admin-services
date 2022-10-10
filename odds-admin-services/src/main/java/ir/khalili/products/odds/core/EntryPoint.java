@@ -426,7 +426,7 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/team/member/save")							.handler(RtMgr_07_TeamMemberSave							:: handler);
         router.post		("/v1/service/odds/team/member/update")							.handler(RtMgr_08_TeamMemberUpdate							:: handler);
         router.post		("/v1/service/odds/team/member/delete")							.handler(RtMgr_09_TeamMemberDelete							:: handler);
-        router.post		("/v1/service/odds/team/member/id/fetch")						.handler(RtMgr_10_TeamMemberFetchById						:: handler);
+        router.post		("/v1/service/odds/team/member/all/fetch")						.handler(RtMgr_10_TeamMemberFetchById						:: handler);
         
 		//USER
         router.post		("/v1/service/odds/user/all/fetch")								.handler(RtMgr_01_UserFetchAll								:: handler);

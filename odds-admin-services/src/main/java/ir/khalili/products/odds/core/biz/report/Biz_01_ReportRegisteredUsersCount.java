@@ -18,7 +18,9 @@ public class Biz_01_ReportRegisteredUsersCount {
 
         logger.trace("inputMessage:" + message);
 
-        DAO_Report.fetchRegisteredUsersCount(sqlConnection).onComplete(result -> {
+        final int leagueId = message.getInteger("leagueId");
+        
+        DAO_Report.fetchRegisteredUsersCount(sqlConnection, leagueId).onComplete(result -> {
             if (result.failed()) {
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;

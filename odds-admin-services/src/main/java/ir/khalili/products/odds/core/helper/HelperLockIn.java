@@ -55,7 +55,7 @@ public class HelperLockIn {
                 }
             } else {
                 logger.error(resHandler.cause());
-                promise.fail(resHandler.cause());
+                promise.fail(new BIZEXCP_Group(-1, "خطا در برقراری ارتباط با سامانه احراز هویت"));
             }
 
         });

@@ -26,8 +26,8 @@ public class CallConfig extends AbstractVerticle {
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 //		leagueUpdate(client);
-//		leagueFetchAll(client);
-		leagueFetchById(client);
+		leagueFetchAll(client);
+//		leagueFetchById(client);
 //		leagueFetchBySymbol(client);
 	}
 
@@ -67,10 +67,14 @@ public class CallConfig extends AbstractVerticle {
 	public void leagueFetchAll(WebClient client) {
 
 		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			
 			client.post(port, host, "/v1/service/odds/config/all/fetch")
 					
 					.putHeader("Authorization", CallAuth.token)
-					.send(ar -> {
+					.sendJson(joInput, ar -> {
 						try {
 							if (ar.succeeded()) {
 								JsonObject response = new JsonObject(ar.result().bodyAsString());

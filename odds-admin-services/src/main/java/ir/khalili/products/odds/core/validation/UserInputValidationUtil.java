@@ -29,7 +29,7 @@ public final class UserInputValidationUtil {
 			}
 
 			final JsonObject joToken = handler.result();
-
+			Integer leagueId;
 			String nationalNumber = null; // optional
 			Long cellphone = null; // optional
 			Integer startIndex = null;
@@ -38,6 +38,7 @@ public final class UserInputValidationUtil {
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
+	            leagueId = inputParameters.getInteger("leagueId");
 	            nationalNumber = inputParameters.getString("nationalNumber");
 	            cellphone = inputParameters.getLong("cellphone");
 				startIndex = inputParameters.getInteger("startIndex");
@@ -59,6 +60,10 @@ public final class UserInputValidationUtil {
 					throw new EXCP_RtMgr_Validation(-602, "اندیس پایان صحیح نمی باشد.");
 				}
 				
+				if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
+				
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
 				return;
@@ -69,6 +74,7 @@ public final class UserInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
+			joResult.put("leagueId", leagueId);
 			joResult.put("nationalNumber", nationalNumber);
 			joResult.put("cellphone", cellphone);
 			joResult.put("startIndex", startIndex);

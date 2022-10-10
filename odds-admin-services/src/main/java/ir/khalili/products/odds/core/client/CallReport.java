@@ -12,8 +12,8 @@ import io.vertx.ext.web.client.WebClient;
 public class CallReport extends AbstractVerticle {
 
 	private static final int port = 9090;
-//	private static final String host  ="127.0.0.1";
-	private static final String host  ="185.213.167.156";
+	private static final String host  ="127.0.0.1";
+//	private static final String host  ="185.213.167.156";
 	
 	public static void main(String[] args) {
 
@@ -28,17 +28,21 @@ public class CallReport extends AbstractVerticle {
 		WebClient client = WebClient.create(vertx);
 //		reportCompetitorUsersAmount(client);
 //		reportCompetitorUsersCount(client);
-//		reportOddsCount(client);
-		reportRegisteredUsersCount(client);
+		reportOddsCount(client);
+//		reportRegisteredUsersCount(client);
 	}
 
 	public void reportRegisteredUsersCount(WebClient client) {
 		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			
 			client
 			.post(port, host, "/v1/service/odds/report/registered/users/count")
 			.putHeader("Authorization", CallAuth.token)
 			
-			.send(ar -> {
+			.sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -61,11 +65,15 @@ public class CallReport extends AbstractVerticle {
 	
 	public void reportCompetitorUsersCount(WebClient client) {
 		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			
 			client
 			.post(port, host, "/v1/service/odds/report/competitor/users/count")
 			.putHeader("Authorization", CallAuth.token)
 			
-			.send(ar -> {
+			.sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -88,11 +96,15 @@ public class CallReport extends AbstractVerticle {
 	
 	public void reportCompetitorUsersAmount(WebClient client) {
 		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			
 			client
 			.post(port, host, "/v1/service/odds/report/competitor/users/amount")
 			.putHeader("Authorization", CallAuth.token)
 			
-			.send(ar -> {
+			.sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());
@@ -115,11 +127,15 @@ public class CallReport extends AbstractVerticle {
 	
 	public void reportOddsCount(WebClient client) {
 		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			
 			client
 			.post(port, host, "/v1/service/odds/report/odds/count")
 			.putHeader("Authorization", CallAuth.token)
 			
-			.send(ar -> {
+			.sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());

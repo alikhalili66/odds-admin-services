@@ -16,7 +16,11 @@ public class Biz_02_ConfigFetchAll {
 
     public static void fetchAll(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-    	DAO_Config.fetchAll(sqlConnection).onComplete(result -> {
+    	logger.trace("inputMessage:" + message);
+    	
+    	final int leagueId = message.getInteger("leagueId");
+    	
+    	DAO_Config.fetchAll(sqlConnection, leagueId).onComplete(result -> {
             if (result.failed()) {
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;

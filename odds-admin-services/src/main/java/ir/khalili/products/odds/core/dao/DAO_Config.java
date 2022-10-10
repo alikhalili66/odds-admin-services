@@ -44,16 +44,19 @@ public class DAO_Config {
 		return promise.future();
 	}
     
-    public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection) {
+    public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection, int leagueId) {
         Promise<List<JsonObject>> promise = Promise.promise();
         
-        sqlConnection.query("SELECT "
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        
+        sqlConnection.queryWithParams("SELECT "
         		+ "c.id,"
         		+ "c.NAME,"
         		+ "c.SYMBOL,"
         		+ "c.type,"
         		+ "c.value "
-        		+ "  FROM toppconfig c", handler -> {
+        		+ "  FROM toppconfig c where league_Id = ?", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

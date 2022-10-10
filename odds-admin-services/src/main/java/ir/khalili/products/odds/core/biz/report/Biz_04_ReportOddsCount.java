@@ -18,7 +18,9 @@ public class Biz_04_ReportOddsCount {
 
         logger.trace("inputMessage:" + message);
 
-        DAO_Report.fetchOddsCount(sqlConnection).onComplete(result -> {
+        final int leagueId = message.getInteger("leagueId");
+        
+        DAO_Report.fetchOddsCount(sqlConnection, leagueId).onComplete(result -> {
             if (result.failed()) {
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;

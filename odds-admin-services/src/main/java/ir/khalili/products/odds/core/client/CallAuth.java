@@ -12,10 +12,10 @@ import io.vertx.ext.web.client.WebClient;
 public class CallAuth extends AbstractVerticle {
 
 	private static final int port = 9090;
-//	private static final String host  ="127.0.0.1";
-	private static final String host  ="185.213.167.156";
+	private static final String host  ="127.0.0.1";
+//	private static final String host  ="185.213.167.156";
 	
-	public static String token = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjY4MSwiZXhwIjoxNjY1NDgwNzg0LCJpcCI6IjEyNy4wLjAuMSIsInByb2plY3RJZCI6MzIxLCJ0eXBlIjoiUyIsImlzQ2hhbmdlUGFzcyI6ZmFsc2UsImlhdCI6MTY2NTM5NDM4NH0.n-h2rx4l2B8TrsTOWxrt0s_VIG4Phup2Tw4khlrLvTg";
+	public static String token = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjY4MSwiZXhwIjoxNjY1NDkxNTEyLCJpcCI6IjE2Mi4xNTguMTI5LjE0MSIsInByb2plY3RJZCI6MzIxLCJ0eXBlIjoiUyIsImlzQ2hhbmdlUGFzcyI6ZmFsc2UsImlhdCI6MTY2NTQwNTExMn0.VoM10DJXeylp-nGNzxVJJOiw4192ZWVUz0YKAKNWGSo";
 
 	public static void main(String[] args) {
 

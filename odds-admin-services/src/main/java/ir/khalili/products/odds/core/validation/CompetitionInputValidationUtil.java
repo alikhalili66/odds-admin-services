@@ -36,6 +36,7 @@ public final class CompetitionInputValidationUtil {
 			Integer teamId1;
 			Integer teamId2;
 			Integer groupId;
+			Integer locationId;
 			String activeFrom;
 			String activeTo;
 			String oddsFrom;
@@ -49,6 +50,7 @@ public final class CompetitionInputValidationUtil {
 	            teamId1 = inputParameters.getInteger("teamId1");
 	            teamId2 = inputParameters.getInteger("teamId2");
 	            groupId = inputParameters.getInteger("groupId");
+	            locationId = inputParameters.getInteger("locationId");
 	            activeFrom = inputParameters.getString("activeFrom");
 	            activeTo = inputParameters.getString("activeTo");
 	            oddsFrom = inputParameters.getString("oddsFrom");
@@ -69,6 +71,10 @@ public final class CompetitionInputValidationUtil {
 	            
 	            if (null == groupId || groupId < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه گروه معتبر نمی باشد");
+	            }
+	            
+	            if (null == locationId || locationId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه محل برگزاری معتبر نمی باشد");
 	            }
 	            
 	            if (null == activeFrom || activeFrom.isEmpty() || !activeFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
@@ -105,6 +111,7 @@ public final class CompetitionInputValidationUtil {
 			joResult.put("teamId1", teamId1);
 			joResult.put("teamId2", teamId2);
 			joResult.put("groupId", groupId);
+			joResult.put("locationId", locationId);
 			joResult.put("activeFrom", activeFrom);
 			joResult.put("activeTo", activeTo);
 			joResult.put("oddsFrom", oddsFrom);
@@ -137,6 +144,7 @@ public final class CompetitionInputValidationUtil {
 			Integer teamId1;
 			Integer teamId2;
 			Integer groupId;
+			Integer locationId;
 			String activeFrom;
 			String activeTo;
 			String oddsFrom;
@@ -151,6 +159,7 @@ public final class CompetitionInputValidationUtil {
 	            teamId1 = inputParameters.getInteger("teamId1");
 	            teamId2 = inputParameters.getInteger("teamId2");
 	            groupId = inputParameters.getInteger("groupId");
+	            locationId = inputParameters.getInteger("locationId");
 	            activeFrom = inputParameters.getString("activeFrom");
 	            activeTo = inputParameters.getString("activeTo");
 	            oddsFrom = inputParameters.getString("oddsFrom");
@@ -175,6 +184,10 @@ public final class CompetitionInputValidationUtil {
 	            
 	            if (null == groupId || groupId < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه گروه معتبر نمی باشد");
+	            }
+	            
+	            if (null == locationId || locationId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه محل برگزاری معتبر نمی باشد");
 	            }
 	            
 	            if (null == activeFrom || activeFrom.isEmpty() || !activeFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
@@ -212,6 +225,7 @@ public final class CompetitionInputValidationUtil {
 			joResult.put("teamId1", teamId1);
 			joResult.put("teamId2", teamId2);
 			joResult.put("groupId", groupId);
+			joResult.put("locationId", locationId);
 			joResult.put("activeFrom", activeFrom);
 			joResult.put("activeTo", activeTo);
 			joResult.put("oddsFrom", oddsFrom);

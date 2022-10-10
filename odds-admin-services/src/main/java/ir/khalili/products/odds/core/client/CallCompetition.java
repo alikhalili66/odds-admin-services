@@ -28,14 +28,14 @@ public class CallCompetition extends AbstractVerticle {
 
 		WebClient client = WebClient.create(vertx);
 //		competitionSave(client);
-//		competitionUpdate(client);
+		competitionUpdate(client);
 //		competitionDelete(client);
 //		competitionFetchAll(client);
 //		competitionFetchById(client);
 //		competitionGroupFetch(client);
 //		competitionQuestionAssign(client);
 //		competitionQuestionUnAssign(client);
-		competitionQuestionFetch(client);
+//		competitionQuestionFetch(client);
 //		competitionResultRegister(client);
 //		questionResultRegister(client);
 //		competitionPointCalculation(client);
@@ -48,11 +48,12 @@ public class CallCompetition extends AbstractVerticle {
 		joInput.put("teamId1",1);
 		joInput.put("teamId2",2);
 		joInput.put("groupId",1);
-		joInput.put("activeFrom", "2022/09/30");
-		joInput.put("activeTo", "2022/09/30");
-		joInput.put("oddsFrom", "2022/10/01");
-		joInput.put("oddsTo", "2022/10/01");
-		joInput.put("competitionDate", "2022/10/05");
+		joInput.put("locationId",1);
+		joInput.put("activeFrom", "2022-09-30T10:10:10Z");
+		joInput.put("activeTo", "2022-09-30T10:10:10Z");
+		joInput.put("oddsFrom", "2022-09-30T10:10:10Z");
+		joInput.put("oddsTo", "2022-09-30T10:10:10Z");
+		joInput.put("competitionDate", "2022-09-30T10:10:10Z");
 		
 		System.out.println("joInput:" + joInput);
 		try {
@@ -85,11 +86,12 @@ public class CallCompetition extends AbstractVerticle {
 		joInput.put("teamId1",1);
 		joInput.put("teamId2",2);
 		joInput.put("groupId",1);
-		joInput.put("activeFrom", "2022/09/30");
-		joInput.put("activeTo", "2022/09/30");
-		joInput.put("oddsFrom", "2022/10/01");
-		joInput.put("oddsTo", "2022/10/01");
-		joInput.put("competitionDate", "2023/10/05");
+		joInput.put("locationId",1);
+		joInput.put("activeFrom", "2022-09-30T10:10:10Z");
+		joInput.put("activeTo", "2022-09-30T10:10:10Z");
+		joInput.put("oddsFrom", "2022-09-30T10:10:10Z");
+		joInput.put("oddsTo", "2022-09-30T10:10:10Z");
+		joInput.put("competitionDate", "2022-09-30T10:10:10Z");
 		
 		System.out.println("joInput:" + joInput);
 		

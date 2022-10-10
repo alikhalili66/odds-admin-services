@@ -25,11 +25,11 @@ public class CallUser extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-		userFetchAll(client);
+//		userFetchAll(client);
 //		userFetchById(client);
 //		userFetchOdds(client);
 //		userFetchQuestionAnswer(client);
-//		userFetchPointHistory(client);
+		userFetchPointHistory(client);
 	}
 
 
@@ -67,7 +67,7 @@ public class CallUser extends AbstractVerticle {
 
 	public void userFetchById(WebClient client) {
 		JsonObject joInput = new JsonObject();
-		joInput.put("userId", 1);
+		joInput.put("id", 1);
 		try {
 			client.post(port, host, "/v1/service/odds/user/id/fetch")
 			

@@ -28,6 +28,7 @@ public class DAO_Competition {
 		params.add(message.getInteger("teamId1"));
 		params.add(message.getInteger("teamId2"));
 		params.add(message.getInteger("groupId"));
+		params.add(message.getInteger("locationId"));
 		params.add(message.getString("activeFrom"));
 		params.add(message.getString("activeTo"));
 		params.add(message.getString("oddsFrom"));
@@ -42,6 +43,7 @@ public class DAO_Competition {
 				+ "TEAM1_ID,"
 				+ "TEAM2_ID,"
 				+ "GROUP_ID,"
+				+ "LOCATION_ID,"
 				+ "ACTIVEFROM,"
 				+ "ACTIVETO,"
 				+ "ODDSFROM,"
@@ -51,6 +53,7 @@ public class DAO_Competition {
 				+ "createdBy_id)"
 				+ "values("
 				+ "soppcompetition.nextval,"
+				+ "?,"
 				+ "?,"
 				+ "?,"
 				+ "?,"
@@ -86,6 +89,7 @@ public class DAO_Competition {
 		params.add(message.getInteger("teamId1"));
 		params.add(message.getInteger("teamId2"));
 		params.add(message.getInteger("groupId"));
+		params.add(message.getInteger("locationId"));
 		params.add(message.getString("activeFrom"));
 		params.add(message.getString("activeTo"));
 		params.add(message.getString("oddsFrom"));
@@ -99,6 +103,7 @@ public class DAO_Competition {
 				+ "c.TEAM1_ID=?,"
 				+ "c.TEAM2_ID=?,"
 				+ "c.GROUP_ID=?,"
+				+ "c.LOCATION_ID=?,"
 				+ "c.ACTIVEFROM=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
 				+ "c.ACTIVETO=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
 				+ "c.ODDSFROM=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
@@ -155,6 +160,8 @@ public class DAO_Competition {
         		+ "(select image from toppteam t where t.id=c.TEAM2_ID) TEAM2_image,"
         		+ "c.GROUP_ID,"
         		+ "(select g.name from toppgroup g where g.id=c.GROUP_ID) GROUP_name,"
+        		+ "c.LOCATION_ID,"
+        		+ "(select l.name from tOPPLocation l where l.id=c.LOCATION_ID) LOCATION_name,"
         		+ "c.RESULT,"
         		+ "To_Char(c.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
         		+ "To_Char(c.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
@@ -191,6 +198,7 @@ public class DAO_Competition {
         		+ "c.TEAM1_ID,"
         		+ "c.TEAM2_ID,"
         		+ "c.GROUP_ID,"
+        		+ "c.LOCATION_ID,"
         		+ "c.RESULT,"
         		+ "To_Char(c.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
         		+ "To_Char(c.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
@@ -311,6 +319,9 @@ public class DAO_Competition {
         		+ "(select name from toppteam t where t.id=c.TEAM2_ID) TEAM2_name,"
         		+ "(select image from toppteam t where t.id=c.TEAM2_ID) TEAM2_image,"
         		+ "c.GROUP_ID,"
+        		+ "(select g.name from toppgroup g where g.id=c.GROUP_ID) GROUP_name,"
+        		+ "c.LOCATION_ID,"
+        		+ "(select l.name from tOPPLocation l where l.id=c.LOCATION_ID) LOCATION_name,"
         		+ "c.RESULT,"
         		+ "To_Char(c.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
         		+ "To_Char(c.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"

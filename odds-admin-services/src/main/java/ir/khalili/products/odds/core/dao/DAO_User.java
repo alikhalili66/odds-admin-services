@@ -196,7 +196,10 @@ public class DAO_User {
         
         sqlConnection.queryWithParams("SELECT " + 
         		"    q.question, " + 
-        		"    o.answer " + 
+        		"	 o.POINT," + 
+        		"	 o.REWARDPOINT," + 
+        		"    o.answer, " + 
+        		"	 o.CORRECTANSWER " + 
         		"FROM " + 
         		"    toppodds o, " + 
         		"    toppquestion q " + 

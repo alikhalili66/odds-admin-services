@@ -63,7 +63,6 @@ import ir.khalili.products.odds.core.routemanager.location.RtMgr_01_LocationSave
 import ir.khalili.products.odds.core.routemanager.location.RtMgr_02_LocationUpdate;
 import ir.khalili.products.odds.core.routemanager.location.RtMgr_03_LocationDelete;
 import ir.khalili.products.odds.core.routemanager.location.RtMgr_04_LocationFetchAll;
-import ir.khalili.products.odds.core.routemanager.location.RtMgr_05_CompetitionLocationAssign;
 import ir.khalili.products.odds.core.routemanager.question.RtMgr_01_QuestionSave;
 import ir.khalili.products.odds.core.routemanager.question.RtMgr_02_QuestionUpdate;
 import ir.khalili.products.odds.core.routemanager.question.RtMgr_03_QuestionDelete;
@@ -127,7 +126,6 @@ import ir.khalili.products.odds.core.verticle.location.VRTCL_01_LocationSave;
 import ir.khalili.products.odds.core.verticle.location.VRTCL_02_LocationUpdate;
 import ir.khalili.products.odds.core.verticle.location.VRTCL_03_LocationDelete;
 import ir.khalili.products.odds.core.verticle.location.VRTCL_04_LocationFetchAll;
-import ir.khalili.products.odds.core.verticle.location.VRTCL_05_CompetitionLocationAssign;
 import ir.khalili.products.odds.core.verticle.question.VRTCL_01_QuestionSave;
 import ir.khalili.products.odds.core.verticle.question.VRTCL_02_QuestionUpdate;
 import ir.khalili.products.odds.core.verticle.question.VRTCL_03_QuestionDelete;
@@ -270,8 +268,12 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_03_LeagueDelete.class.getName());
     	vertx.deployVerticle(VRTCL_04_LeagueFetchAll.class.getName());
     	vertx.deployVerticle(VRTCL_05_LeagueFetchById.class.getName());
-    	
-    	
+
+        //LOCATION
+    	vertx.deployVerticle(VRTCL_01_LocationSave.class.getName());
+    	vertx.deployVerticle(VRTCL_02_LocationUpdate.class.getName());
+    	vertx.deployVerticle(VRTCL_03_LocationDelete.class.getName());
+    	vertx.deployVerticle(VRTCL_04_LocationFetchAll.class.getName());
     	
     	//ODDS
     	
@@ -307,12 +309,6 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_04_UserFetchQuestionAnswer.class.getName());
     	vertx.deployVerticle(VRTCL_05_UserFetchPointHistory.class.getName());
 
-        //LOCATION
-    	vertx.deployVerticle(VRTCL_01_LocationSave.class.getName());
-    	vertx.deployVerticle(VRTCL_02_LocationUpdate.class.getName());
-    	vertx.deployVerticle(VRTCL_03_LocationDelete.class.getName());
-    	vertx.deployVerticle(VRTCL_04_LocationFetchAll.class.getName());
-    	vertx.deployVerticle(VRTCL_05_CompetitionLocationAssign.class.getName());
     	
     	
     }
@@ -384,7 +380,13 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/league/delete")								.handler(RtMgr_03_LeagueDelete								:: handler);
         router.post		("/v1/service/odds/league/all/fetch")							.handler(RtMgr_04_LeagueFetchAll							:: handler);
         router.post		("/v1/service/odds/league/id/fetch")							.handler(RtMgr_05_LeagueFetchById							:: handler);
-    	
+       
+        //LOCATION
+        router.post		("/v1/service/odds/location/save")								.handler(RtMgr_01_LocationSave								:: handler);
+        router.post		("/v1/service/odds/location/update")							.handler(RtMgr_02_LocationUpdate							:: handler);
+        router.post		("/v1/service/odds/location/delete")							.handler(RtMgr_03_LocationDelete							:: handler);
+        router.post		("/v1/service/odds/location/all/fetch")							.handler(RtMgr_04_LocationFetchAll							:: handler);
+        
     	//ODDS
     	
     	
@@ -417,14 +419,7 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/user/fetch/question")						.handler(RtMgr_04_UserFetchQuestionAnswer					:: handler);
         router.post		("/v1/service/odds/user/fetch/history")							.handler(RtMgr_05_UserFetchPointHistory						:: handler);
 
-        //LOCATION
-        router.post		("/v1/service/odds/location/save")								.handler(RtMgr_01_LocationSave								:: handler);
-        router.post		("/v1/service/odds/location/update")							.handler(RtMgr_02_LocationUpdate							:: handler);
-        router.post		("/v1/service/odds/location/delete")							.handler(RtMgr_03_LocationDelete							:: handler);
-        router.post		("/v1/service/odds/location/all/fetch")							.handler(RtMgr_04_LocationFetchAll							:: handler);
-        router.post		("/v1/service/odds/location/competition/assign")				.handler(RtMgr_05_CompetitionLocationAssign					:: handler);
-       
-        
+
         vertx.createHttpServer().requestHandler(router).listen(port);
 
         /*********************************************************/

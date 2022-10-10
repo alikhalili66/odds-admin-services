@@ -28,9 +28,13 @@ public class CallTeam extends AbstractVerticle {
 //		teamSave(client);
 //		teamUpdate(client);
 //		teamDelete(client);
-		teamFetchAll(client);
+//		teamFetchAll(client);
 //		teamFetchById(client);
 //		teamImageUpdate(client);
+//		teamMemberSave(client);
+//		teamMemberUpdate(client);
+//		teamMemberDelete(client);
+		teamMemberFetchById(client);
 	}
 
 	public void teamSave(WebClient client) {
@@ -210,6 +214,140 @@ public class CallTeam extends AbstractVerticle {
 			client.post(port, host, "/v1/service/odds/team/image/update")
 					
 					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void teamMemberSave(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		joInput.put("teamId", 1);
+		joInput.put("name", "علی کریمی");
+		joInput.put("count", 10);
+		joInput.put("position", "FORWARD");
+		
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/team/member/save")
+					
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void teamMemberUpdate(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		joInput.put("memberId", 1);
+		joInput.put("teamId", 1);
+		joInput.put("name", "کریم باقری");
+		joInput.put("count", 10);
+		joInput.put("position", "FORWARD");
+
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/team/member/update")
+					
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void teamMemberDelete(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		joInput.put("memberId", 1);
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/team/member/delete")
+					
+					.putHeader("Authorization", CallAuth.token)
+					.sendJson(joInput, ar -> {
+						try {
+							if (ar.succeeded()) {
+								JsonObject response = new JsonObject(ar.result().bodyAsString());
+								System.out.println(Json.encodePrettily(response));
+							} else {
+								System.out.println(ar.cause());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+
+							System.exit(0);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void teamMemberFetchById(WebClient client) {
+
+		JsonObject joInput = new JsonObject();
+		joInput.put("teamId", 1);
+		System.out.println("joInput:" + joInput);
+
+		try {
+			client.post(port, host, "/v1/service/odds/team/member/id/fetch")
+					
+					.putHeader("Authorization", CallAuth.token)
+					
 					.sendJson(joInput, ar -> {
 						try {
 							if (ar.succeeded()) {

@@ -78,6 +78,10 @@ import ir.khalili.products.odds.core.routemanager.team.RtMgr_03_TeamDelete;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_04_TeamFetchAll;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_05_TeamFetchById;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_06_TeamImageUpdate;
+import ir.khalili.products.odds.core.routemanager.team.RtMgr_07_TeamMemberSave;
+import ir.khalili.products.odds.core.routemanager.team.RtMgr_08_TeamMemberUpdate;
+import ir.khalili.products.odds.core.routemanager.team.RtMgr_09_TeamMemberDelete;
+import ir.khalili.products.odds.core.routemanager.team.RtMgr_10_TeamMemberFetchById;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_01_UserFetchAll;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_02_UserFetchById;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_03_UserFetchOdds;
@@ -141,6 +145,10 @@ import ir.khalili.products.odds.core.verticle.team.VRTCL_03_TeamDelete;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_04_TeamFetchAll;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_05_TeamFetchById;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_06_TeamImageUpdate;
+import ir.khalili.products.odds.core.verticle.team.VRTCL_07_TeamMemberSave;
+import ir.khalili.products.odds.core.verticle.team.VRTCL_08_TeamMemberUpdate;
+import ir.khalili.products.odds.core.verticle.team.VRTCL_09_TeamMemberDelete;
+import ir.khalili.products.odds.core.verticle.team.VRTCL_10_TeamMemberFetchById;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_01_UserFetchAll;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_02_UserFetchById;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_03_UserFetchOdds;
@@ -300,6 +308,10 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_04_TeamFetchAll.class.getName());
     	vertx.deployVerticle(VRTCL_05_TeamFetchById.class.getName());
     	vertx.deployVerticle(VRTCL_06_TeamImageUpdate.class.getName());
+    	vertx.deployVerticle(VRTCL_07_TeamMemberSave.class.getName());
+    	vertx.deployVerticle(VRTCL_08_TeamMemberUpdate.class.getName());
+    	vertx.deployVerticle(VRTCL_09_TeamMemberDelete.class.getName());
+    	vertx.deployVerticle(VRTCL_10_TeamMemberFetchById.class.getName());
     	
     	
 		//USER
@@ -411,6 +423,10 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/team/all/fetch")								.handler(RtMgr_04_TeamFetchAll								:: handler);
         router.post		("/v1/service/odds/team/id/fetch")								.handler(RtMgr_05_TeamFetchById								:: handler);
         router.post		("/v1/service/odds/team/image/update")							.handler(RtMgr_06_TeamImageUpdate 							:: handler);
+        router.post		("/v1/service/odds/team/member/save")							.handler(RtMgr_07_TeamMemberSave							:: handler);
+        router.post		("/v1/service/odds/team/member/update")							.handler(RtMgr_08_TeamMemberUpdate							:: handler);
+        router.post		("/v1/service/odds/team/member/delete")							.handler(RtMgr_09_TeamMemberDelete							:: handler);
+        router.post		("/v1/service/odds/team/member/id/fetch")						.handler(RtMgr_10_TeamMemberFetchById						:: handler);
         
 		//USER
         router.post		("/v1/service/odds/user/all/fetch")								.handler(RtMgr_01_UserFetchAll								:: handler);

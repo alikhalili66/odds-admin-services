@@ -65,6 +65,10 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_ALL_FETCH						= "nas.eb.core.srvc.team.all.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_ID_FETCH						= "nas.eb.core.srvc.team.id.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_IMAGE_UPDATE					= "nas.eb.core.srvc.team.image.update";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_MEMBER_SAVE					= "nas.eb.core.srvc.team.member.save";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_MEMBER_UPDATE					= "nas.eb.core.srvc.team.member.update";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_MEMBER_DELETE					= "nas.eb.core.srvc.team.member.delete";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_MEMBER_ID_FETCH				= "nas.eb.core.srvc.team.member.id.fetch";
 	
 	/***********************USER****************************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_ALL_FETCH						= "nas.eb.core.srvc.user.all.fetch";

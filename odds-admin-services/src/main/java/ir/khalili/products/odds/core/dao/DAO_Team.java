@@ -52,6 +52,41 @@ public class DAO_Team {
 		return promise.future();
 	}
   
+    public static Future<Void> saveMember(SQLConnection sqlConnection, JsonObject message) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(message.getInteger("teamId"));
+		params.add(message.getString("name"));
+		params.add(message.getInteger("count"));
+		params.add(message.getString("position"));
+		params.add(message.getInteger("userId"));
+		
+		sqlConnection.updateWithParams(""
+				+ "insert into tOPPTeamMember("
+				+ "id,"
+				+ "TEAM_ID,"
+				+ "name,"
+				+ "count,"
+				+ "position,"
+				+ "creationDate,"
+				+ "createdBy_id)"
+				+ "values(soppteammember.nextval,?,?,?,?,sysdate,?)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("saveMemberSuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+    
     public static Future<Void> update(SQLConnection sqlConnection, JsonObject message) {
 
 		Promise<Void> promise = Promise.promise();
@@ -75,6 +110,38 @@ public class DAO_Team {
 			}
 			
 			logger.trace("UpdateTeamSuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+    
+    public static Future<Void> updateMember(SQLConnection sqlConnection, JsonObject message) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(message.getInteger("teamId"));
+		params.add(message.getString("name"));
+		params.add(message.getInteger("count"));
+		params.add(message.getString("position"));
+		params.add(message.getInteger("memberId"));
+		
+		sqlConnection.updateWithParams(""
+				+ "update tOPPTeamMember t set "
+				+ "t.TEAM_ID=?,"
+				+ "t.name=?,"
+				+ "t.count=?,"
+				+ "t.position=?"
+				+ " where t.id=?", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("updateMemberSuccessful");
 			promise.complete();
 			
 		});
@@ -121,6 +188,25 @@ public class DAO_Team {
 			}
 			
 			logger.trace("deleteTeamByIdSuccessful");
+			promise.complete();
+			
+		});
+		return promise.future();
+    }
+    
+    public static Future<JsonObject> deleteMember(SQLConnection sqlConnection, Integer memberId) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(memberId);
+        
+        sqlConnection.updateWithParams("update tOPPTeamMember set dto=sysdate WHERE id=?", params, handler -> {
+			if(handler.failed()) {
+				logger.error("Unable to get accessQueryResult:", handler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("deleteTeamMemberByIdSuccessful");
 			promise.complete();
 			
 		});
@@ -178,6 +264,35 @@ public class DAO_Team {
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
                     logger.trace("fetchAllTeamByIdSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<JsonObject> memberFetchById(SQLConnection sqlConnection, Integer teamId) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(teamId);
+        
+        sqlConnection.queryWithParams("SELECT "
+        		+ "t.id,"
+        		+ "t.NAME,"
+        		+ "t.count,"
+        		+ "t.position,"
+        		+ "To_Char(t.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "  FROM tOPPTeamMember t WHERE t.team_Id=? and t.dto is null", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                } else {
+                    logger.trace("memberFetchByIdSuccessful");
                     promise.complete(handler.result().getRows().get(0));
                 }
             

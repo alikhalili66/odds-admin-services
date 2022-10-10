@@ -240,6 +240,49 @@ public final class TeamInputValidationUtil {
 
     }
 	
+	public static void validateMemberDelete(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
+
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+
+			final JsonObject joToken = handler.result();
+
+			Integer memberId;
+
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            memberId = inputParameters.getInteger("memberId");
+	            
+	            if (null == memberId || memberId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه عضو معتبر نمی باشد");
+	            }
+
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+
+			final JsonObject joResult = new JsonObject();
+			joResult.put("memberId", memberId);
+			joResult.put("userId", joToken.getInteger("id"));
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
+
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+		});
+
+    }
+	
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
 		InputValidationUtil.validateToken(context).onComplete(handler -> {
@@ -327,5 +370,183 @@ public final class TeamInputValidationUtil {
 
     }
 	
+	public static void validateMemberFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
+
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+
+			final JsonObject joToken = handler.result();
+
+			Integer teamId;
+
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            teamId = inputParameters.getInteger("teamId");
+	            
+	            if (null == teamId || teamId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه تیم معتبر نمی باشد");
+	            }
+
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+
+			final JsonObject joResult = new JsonObject();
+			joResult.put("teamId", teamId);
+			joResult.put("userId", joToken.getInteger("id"));
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
+
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+		});
+
+    }
 	
+	public static void validateMemberUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
+
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+
+			final JsonObject joToken = handler.result();
+
+			Integer memberId;
+			Integer teamId;
+			String name;
+			Integer count;
+			String position;
+
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            memberId = inputParameters.getInteger("memberId");
+	            teamId = inputParameters.getInteger("teamId");
+	            name = inputParameters.getString("name");
+	            count = inputParameters.getInteger("count");
+	            position = inputParameters.getString("position");
+
+	            if (null == memberId || memberId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه عضو معتبر نمی باشد");
+	            }
+	            
+	            if (null == teamId || teamId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه تیم معتبر نمی باشد");
+	            }
+	            
+	            if (null == name || name.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نام عضو معتبر نمی باشد");
+	            }
+
+	            if (null == count || count < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد تعداد معتبر نمی باشد");
+	            }
+	            
+	            if (null == position || position.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد پست معتبر نمی باشد");
+	            }
+
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+
+			final JsonObject joResult = new JsonObject();
+			joResult.put("memberId", memberId);
+			joResult.put("teamId", teamId);
+			joResult.put("name", name);
+			joResult.put("count", count);
+			joResult.put("position", position);
+			
+			joResult.put("userId", joToken.getInteger("id"));
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
+
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+		});
+
+    }
+	
+	public static void validateMemberSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+		InputValidationUtil.validateToken(context).onComplete(handler -> {
+
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+
+			final JsonObject joToken = handler.result();
+
+			Integer teamId;
+			String name;
+			Integer count;
+			String position;
+
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            teamId = inputParameters.getInteger("teamId");
+	            name = inputParameters.getString("name");
+	            count = inputParameters.getInteger("count");
+	            position = inputParameters.getString("position");
+
+	            if (null == teamId || teamId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه تیم معتبر نمی باشد");
+	            }
+	            
+	            if (null == name || name.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد نام عضو معتبر نمی باشد");
+	            }
+
+	            if (null == count || count < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد تعداد معتبر نمی باشد");
+	            }
+	            
+	            if (null == position || position.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "فیلد پست معتبر نمی باشد");
+	            }
+
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+
+			final JsonObject joResult = new JsonObject();
+			joResult.put("teamId", teamId);
+			joResult.put("name", name);
+			joResult.put("count", count);
+			joResult.put("position", position);
+			
+			joResult.put("userId", joToken.getInteger("id"));
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
+
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+		});
+
+    }
 }

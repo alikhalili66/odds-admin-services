@@ -11,9 +11,9 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Team;
 
-public class Biz_10_TeamMemberFetchById {
+public class Biz_10_TeamMemberFetchAll {
 
-    private static final Logger logger = LogManager.getLogger(Biz_10_TeamMemberFetchById.class);
+    private static final Logger logger = LogManager.getLogger(Biz_10_TeamMemberFetchAll.class);
 
     public static void memberFetchById(Vertx vertx, SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
@@ -21,7 +21,7 @@ public class Biz_10_TeamMemberFetchById {
 
 		final Integer teamId = message.getInteger("teamId");
 
-		DAO_Team.memberFetchById(sqlConnection, teamId).onComplete(result -> {
+		DAO_Team.fetchAllMemberByTeamId(sqlConnection, teamId).onComplete(result -> {
 			if (result.failed()) {
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;

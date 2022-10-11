@@ -68,7 +68,7 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_MEMBER_SAVE					= "nas.eb.core.srvc.team.member.save";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_MEMBER_UPDATE					= "nas.eb.core.srvc.team.member.update";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_MEMBER_DELETE					= "nas.eb.core.srvc.team.member.delete";
-	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_MEMBER_ID_FETCH				= "nas.eb.core.srvc.team.member.id.fetch";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_MEMBER_ALL_FETCH				= "nas.eb.core.srvc.team.member.all.fetch";
 	
 	/***********************USER****************************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_ALL_FETCH						= "nas.eb.core.srvc.user.all.fetch";

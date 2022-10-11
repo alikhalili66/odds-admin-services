@@ -15,9 +15,9 @@ import ir.khalili.products.odds.core.validation.TeamInputValidationUtil;
 /**
  * @author A.KH
  */
-public class RtMgr_10_TeamMemberFetchById   {
+public class RtMgr_10_TeamMemberFetchAll   {
 	
-	private static								Logger 			logger 								= LogManager.getLogger(RtMgr_10_TeamMemberFetchById.class);
+	private static								Logger 			logger 								= LogManager.getLogger(RtMgr_10_TeamMemberFetchAll.class);
 	
 	public static void handler(RoutingContext context) {
 		
@@ -34,7 +34,7 @@ public class RtMgr_10_TeamMemberFetchById   {
     		
 			}
 			
-			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_TEAM_MEMBER_ID_FETCH, validateHandler.result(),replyHandler->{
+			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_TEAM_MEMBER_ALL_FETCH, validateHandler.result(),replyHandler->{
 				
 				if (replyHandler.succeeded()) {
 					logger.trace("jobs done:"+replyHandler.result().body());

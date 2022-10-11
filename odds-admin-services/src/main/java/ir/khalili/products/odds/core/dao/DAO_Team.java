@@ -273,8 +273,8 @@ public class DAO_Team {
         return promise.future();
     }
     
-    public static Future<JsonObject> memberFetchById(SQLConnection sqlConnection, Integer teamId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<List<JsonObject>> fetchAllMemberByTeamId(SQLConnection sqlConnection, Integer teamId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(teamId);
         
@@ -290,10 +290,10 @@ public class DAO_Team {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                    promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("memberFetchByIdSuccessful");
-                    promise.complete(handler.result().getRows().get(0));
+                    promise.complete(handler.result().getRows());
                 }
             
             }

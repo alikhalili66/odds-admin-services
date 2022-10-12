@@ -1,0 +1,3 @@
+insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'قوانین و مقررات','TERMS_CONDITIONS','/app/odds/config/S_1665312994399.txt','File',1);
+insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'امتیاز هدیه اولیه','PRIMARY_GIFT_POINTS',100,'Number',1);
+insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'حداقل امتیاز هر سوال','MINIMUM_SCORE_QUESTION',10,'Number',1);

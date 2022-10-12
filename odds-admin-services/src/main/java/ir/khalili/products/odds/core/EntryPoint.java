@@ -14,9 +14,11 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.ResponseTimeHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import ir.khalili.products.odds.core.helper.HelperInitial;
@@ -329,11 +331,28 @@ public class EntryPoint extends AbstractVerticle {
     public void start(Promise<Void> startPromise) throws Exception {
 
         /*********************************************************/
+        /*******************CorsHandler***************************/
+        /*********************************************************/
+
+        CorsHandler corsHandler = CorsHandler.create();
+        corsHandler.allowedMethod(HttpMethod.POST);
+        corsHandler.allowedMethod(HttpMethod.PUT);
+        corsHandler.allowedMethod(HttpMethod.GET);
+        corsHandler.allowedMethod(HttpMethod.DELETE);
+        corsHandler.allowedHeader("Authorization");
+        corsHandler.allowedHeader("Content-Type");
+        corsHandler.allowedHeader("Access-Control-Request-Method");
+        corsHandler.allowedHeader("Access-Control-Allow-Credentials");
+        corsHandler.allowedHeader("Access-Control-Allow-Origin");
+        corsHandler.allowedHeader("Access-Control-Allow-Headers");
+        
+        /*********************************************************/
         /*******************Router********************************/
         /*********************************************************/
         router = Router.router(vertx);
         router.route().handler(BodyHandler.create());
         router.route().handler(StaticHandler.create());
+        router.route().handler(corsHandler);
         router.route().handler(ResponseTimeHandler.create());
 
         /*********************************************************/

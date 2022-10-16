@@ -35,8 +35,8 @@ public class CallLeague extends AbstractVerticle {
 	public void leagueSave(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("name", "X");
-		joInput.put("symbol", "X");
+		joInput.put("name", "Z");
+		joInput.put("symbol", "Z");
 		joInput.put("image", "path");
 		joInput.put("activeFrom", "2022-09-30T10:10:10Z");
 		joInput.put("activeTo", "2022-09-30T10:10:10Z");

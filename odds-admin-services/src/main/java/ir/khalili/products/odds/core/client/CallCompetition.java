@@ -27,8 +27,8 @@ public class CallCompetition extends AbstractVerticle {
 	public void start() throws Exception {
 
 		WebClient client = WebClient.create(vertx);
-//		competitionSave(client);
-		competitionUpdate(client);
+		competitionSave(client);
+//		competitionUpdate(client);
 //		competitionDelete(client);
 //		competitionFetchAll(client);
 //		competitionFetchById(client);

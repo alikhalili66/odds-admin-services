@@ -40,7 +40,15 @@ public class DAO_Team {
 				+ "values(soppteam.nextval,?,?,?,?,sysdate,?)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
-				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				
+				if(resultHandler.cause().getMessage().toUpperCase().contains("UN_TEAM_NAME")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نام تکراری است."));
+				}else if(resultHandler.cause().getMessage().toUpperCase().contains("UN_TEAM_SYMBOL")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نماد تکراری است."));
+				}else {
+					promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				}
+				
 				return;
 			}
 			
@@ -105,7 +113,13 @@ public class DAO_Team {
 				+ " where t.id=?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
-				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				if(resultHandler.cause().getMessage().toUpperCase().contains("UN_TEAM_NAME")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نام تکراری است."));
+				}else if(resultHandler.cause().getMessage().toUpperCase().contains("UN_TEAM_SYMBOL")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نماد تکراری است."));
+				}else {
+					promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				}
 				return;
 			}
 			

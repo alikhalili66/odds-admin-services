@@ -37,7 +37,7 @@ public class Biz_01_ConfigUpdate {
 
 			if(result.result().getString("TYPE").equals("File")) {
             	
-                String fileName = "/app/odds/config/" + result.result().getString("SYMBOL")+ "_" + new Date().getTime() + ".txt";
+                String fileName = "/app/odds/config/" + result.result().getInteger("LEAGUE_ID") + "/" + result.result().getString("SYMBOL")+ "_" + new Date().getTime() + ".txt";
 
             	try {
                 	try(Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"))) {

@@ -17,12 +17,31 @@ public class DAO_League {
 
     private static final Logger logger = LogManager.getLogger(DAO_League.class);
     
-    public static Future<Void> save(SQLConnection sqlConnection, JsonObject message) {
+    public static Future<Integer> fetchSequence(SQLConnection sqlConnection) {
+
+ 		Promise<Integer> promise = Promise.promise();
+ 		
+ 		sqlConnection.query("select soppleague.nextval as id from dual", resultHandler->{
+ 			if(resultHandler.failed()) {
+ 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+ 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+ 				return;
+ 			}
+ 			
+ 			logger.trace("SaveLeagueSuccessful");
+ 			promise.complete(resultHandler.result().getRows().get(0).getInteger("ID"));
+ 			
+ 		});
+ 		
+ 		return promise.future();
+ 	}
+    
+    public static Future<Void> save(SQLConnection sqlConnection, int id, JsonObject message) {
 
 		Promise<Void> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
-		
+		params.add(id);
 		params.add(message.getString("name"));
 		params.add(message.getString("symbol"));
 		params.add(message.getString("image"));
@@ -45,7 +64,7 @@ public class DAO_League {
 				+ "creationDate,"
 				+ "createdBy_id)"
 				+ "values("
-				+ "soppleague.nextval,"
+				+ "?,"
 				+ "?,"
 				+ "?,"
 				+ "?,"
@@ -57,7 +76,13 @@ public class DAO_League {
 				+ "?)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
-				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				if(resultHandler.cause().getMessage().toUpperCase().contains("UN_LEAGUE_NAME")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نام تکراری است."));
+				}else if(resultHandler.cause().getMessage().toUpperCase().contains("UN_LEAGUE_SYMBOL")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نماد تکراری است."));
+				}else {
+					promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				}
 				return;
 			}
 			
@@ -96,7 +121,13 @@ public class DAO_League {
 				+ " where l.id=? ", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
-				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				if(resultHandler.cause().getMessage().toUpperCase().contains("UN_LEAGUE_NAME")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نام تکراری است."));
+				}else if(resultHandler.cause().getMessage().toUpperCase().contains("UN_LEAGUE_SYMBOL")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نماد تکراری است."));
+				}else {
+					promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				}
 				return;
 			}
 			

@@ -20,7 +20,7 @@ public class Biz_01_TeamSave {
 
         logger.trace("inputMessage:" + message);
 
-        HelperImage.saveImage(vertx, message.getString("image"), message.getString("name")).onComplete(result -> {
+        HelperImage.saveImage(vertx, message.getString("image"), message.getString("symbol")).onComplete(result -> {
             if (result.failed()) {
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;

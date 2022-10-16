@@ -4,10 +4,12 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
+import ir.khalili.products.odds.core.dao.DAO_Config;
 import ir.khalili.products.odds.core.dao.DAO_League;
 
 public class Biz_01_LeagueSave {
@@ -18,19 +20,33 @@ public class Biz_01_LeagueSave {
 
         logger.trace("inputMessage:" + message);
 
-        DAO_League.save(sqlConnection, message).onComplete(handler -> {
-            if (handler.failed()) {
-                resultHandler.handle(Future.failedFuture(handler.cause()));
+        DAO_League.fetchSequence(sqlConnection).onComplete(handlerSeq->{
+        	
+        	if (handlerSeq.failed()) {
+                resultHandler.handle(Future.failedFuture(handlerSeq.cause()));
                 return;
             }
+        	
+        	Future<Void> futSave = DAO_League.save(sqlConnection, handlerSeq.result(), message);
+        	Future<Void> futConfig = DAO_Config.doSaveConfigLeague(sqlConnection, handlerSeq.result());
             
-			resultHandler.handle(Future.succeededFuture(
-					new JsonObject()
-					.put("resultCode", 1)
-					.put("resultMessage", "عملیات با موفقیت انجام شد.")
-					));
+            CompositeFuture.join(futSave, futConfig).onComplete(handler -> {
+                if (handler.failed()) {
+                    resultHandler.handle(Future.failedFuture(handler.cause()));
+                    return;
+                }
+                
+    			resultHandler.handle(Future.succeededFuture(
+    					new JsonObject()
+    					.put("resultCode", 1)
+    					.put("resultMessage", "عملیات با موفقیت انجام شد.")
+    					));
 
+            });
+            
         });
+        
+
 
     }
 

@@ -10,7 +10,7 @@
   },
   "lockin": {
     "port": 8080,
-    "host": "api.lockin.ir",
+    "host": "185.213.167.156",
     "APIKEY": "cf012f1e9349bc4fdca0271144d51f885106865fd6f814f333097c95117f27f6bd173146be40e592fbacf433bc13d7c8"
   },
   "jwt": {

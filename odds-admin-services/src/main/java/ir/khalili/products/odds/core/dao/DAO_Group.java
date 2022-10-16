@@ -41,7 +41,13 @@ public class DAO_Group {
 				+ "values(soppgroup.nextval,?,?,TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),sysdate,?)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
-				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				if(resultHandler.cause().getMessage().toUpperCase().contains("UN_GROUP_NAME")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نام تکراری است."));
+				}else if(resultHandler.cause().getMessage().toUpperCase().contains("UN_GROUP_SYMBOL")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نماد تکراری است."));
+				}else {
+					promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				}
 				return;
 			}
 			
@@ -74,7 +80,13 @@ public class DAO_Group {
 				+ " where g.id=?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
-				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				if(resultHandler.cause().getMessage().toUpperCase().contains("UN_GROUP_NAME")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نام تکراری است."));
+				}else if(resultHandler.cause().getMessage().toUpperCase().contains("UN_GROUP_SYMBOL")) {
+					promise.fail(new DAOEXCP_Internal(-100, "نماد تکراری است."));
+				}else {
+					promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				}
 				return;
 			}
 			

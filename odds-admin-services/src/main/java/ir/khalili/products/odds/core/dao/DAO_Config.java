@@ -84,6 +84,7 @@ public class DAO_Config {
         		+ "c.NAME,"
         		+ "c.SYMBOL,"
         		+ "c.type,"
+        		+ "c.LEAGUE_ID,"
         		+ "c.value "
         		+ "  FROM toppconfig c WHERE c.id=?", params, handler -> {
             if (handler.failed()) {
@@ -132,4 +133,29 @@ public class DAO_Config {
         return promise.future();
     }
      
+	public static Future<Void> doSaveConfigLeague(SQLConnection sqlConnection, int leagueId) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		List<JsonArray> params = new ArrayList<>();
+		params.add(new JsonArray().add("قوانین و مقررات").add("TERMS_CONDITIONS").add("/app/odds/config/S_1665312994399.txt").add("File").add(leagueId));
+		params.add(new JsonArray().add("امتیاز هدیه اولیه").add("PRIMARY_GIFT_POINTS").add("100").add("Number").add(leagueId));
+		params.add(new JsonArray().add("حداقل امتیاز هر سوال").add("MINIMUM_SCORE_QUESTION").add("10").add("Number").add(leagueId));
+		
+		sqlConnection.batchWithParams(
+				"insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,?,?,?,?,?)" 
+				, params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("doSaveAgentConfigSuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
 }

@@ -21,29 +21,18 @@ public class DAO_User {
         Promise<List<JsonObject>> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(message.getInteger("leagueId"));
-        params.add(message.getLong("cellphone"));
-        params.add(message.getString("nationalNumber"));
         params.add(message.getInteger("startIndex"));
         params.add(message.getInteger("endIndex"));
         
         sqlConnection.queryWithParams("SELECT * FROM (SELECT "
         		+ "u.id,"
-        		+ "u.NAME,"
-        		+ "u.LASTNAME,"
+        		+ "u.UGID,"
         		+ "u.NIKENAME,"
-        		+ "u.AVATAR,"
         		+ "u.POINT,"
         		+ "u.AMOUNT,"
-        		+ "u.CELLPHONE,"
-        		+ "u.NATIONALNUMBER,"
-        		+ "To_Char(u.BIRTHDATE,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') BIRTH_DATE,"
-        		+ "u.PROVINCE,"
-        		+ "u.CITY,"
-        		+ "u.POSTCODE,"
-        		+ "u.ADDRESS,"
         		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date, "
         		+ "row_number() over (ORDER BY u.id desc) line_number"
-        		+ "  FROM toppuser u where u.league_Id = ? and u.CELLPHONE=nvl(?,u.CELLPHONE) and u.NATIONALNUMBER=nvl(?,u.NATIONALNUMBER)) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
+        		+ "  FROM toppuser u where u.league_Id = ?) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -68,18 +57,10 @@ public class DAO_User {
         
         sqlConnection.queryWithParams("SELECT "
         		+ "u.id,"
-        		+ "u.NAME,"
-        		+ "u.LASTNAME,"
+        		+ "u.UGID,"
         		+ "u.NIKENAME,"
-        		+ "u.AVATAR,"
         		+ "u.POINT,"
         		+ "u.AMOUNT,"
-        		+ "u.NATIONALNUMBER,"
-        		+ "To_Char(u.BIRTHDATE,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') BIRTH_DATE,"
-        		+ "u.PROVINCE,"
-        		+ "u.CITY,"
-        		+ "u.POSTCODE,"
-        		+ "u.ADDRESS,"
         		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date "
         		+ "  FROM toppuser u where u.id=?", params, handler -> {
             if (handler.failed()) {

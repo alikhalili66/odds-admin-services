@@ -35,7 +35,7 @@ public class CallUser extends AbstractVerticle {
 
 	public void userFetchAll(WebClient client) {
 		JsonObject joInput = new JsonObject();
-//		joInput.put("nationalNumber", "3241378012"); // optional
+		joInput.put("leagueId", 1); 
 //		joInput.put("cellphone", 9359308163L); // optional
 		joInput.put("startIndex", 1);
 		joInput.put("endIndex", 10);
@@ -67,7 +67,7 @@ public class CallUser extends AbstractVerticle {
 
 	public void userFetchById(WebClient client) {
 		JsonObject joInput = new JsonObject();
-		joInput.put("id", 1);
+		joInput.put("id", 23);
 		try {
 			client.post(port, host, "/v1/service/odds/user/id/fetch")
 			

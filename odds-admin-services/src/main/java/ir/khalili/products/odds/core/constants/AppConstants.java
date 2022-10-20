@@ -95,4 +95,10 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_LOCATION_DELETE						= "nas.eb.core.srvc.location.delete";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_LOCATION_ALL_FETCH					= "nas.eb.core.srvc.location.all.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_COMPETITION_LOCATION_ASSIGN			= "nas.eb.core.srvc.competition.location.assign";
+	
+	/***********************TRANSACTION*********************/
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TRANSACTION_ALL_FETCH				= "nas.eb.core.srvc.transaction.all.fetch";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TRANSACTION_REJECT					= "nas.eb.core.srvc.transaction.reject";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TRANSACTION_CONFIRM					= "nas.eb.core.srvc.transaction.confirm";
+	
 }

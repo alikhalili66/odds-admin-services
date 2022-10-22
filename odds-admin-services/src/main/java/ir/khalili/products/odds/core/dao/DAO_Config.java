@@ -56,7 +56,7 @@ public class DAO_Config {
         		+ "c.SYMBOL,"
         		+ "c.type,"
         		+ "c.value "
-        		+ "  FROM toppconfig c where league_Id = ?", params, handler -> {
+        		+ "  FROM toppconfig c where league_Id = ? or league_Id is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -141,6 +141,12 @@ public class DAO_Config {
 		params.add(new JsonArray().add("قوانین و مقررات").add("TERMS_CONDITIONS").add("/app/odds/config/S_1665312994399.txt").add("File").add(leagueId));
 		params.add(new JsonArray().add("امتیاز هدیه اولیه").add("PRIMARY_GIFT_POINTS").add("100").add("Number").add(leagueId));
 		params.add(new JsonArray().add("حداقل امتیاز هر سوال").add("MINIMUM_SCORE_QUESTION").add("10").add("Number").add(leagueId));
+		params.add(new JsonArray().add("مبلغ بسته برنزی").add("AMOUNT_BRONZE_PACKAGE").add("200000").add("Number").add(leagueId));
+		params.add(new JsonArray().add("مبلغ بسته نقره ای").add("AMOUNT_SILVER_PACKAGE").add("500000").add("Number").add(leagueId));
+		params.add(new JsonArray().add("مبلغ بسته طلایی").add("AMOUNT_GOLDEN_PACKAGE").add("1000000").add("Number").add(leagueId));
+		params.add(new JsonArray().add("امتیاز بسته برنزی").add("POINT_BRONZE_PACKAGE").add("10").add("Number").add(leagueId));
+		params.add(new JsonArray().add("امتیاز بسته نقره ای").add("POINT_SILVER_PACKAGE").add("50").add("Number").add(leagueId));
+		params.add(new JsonArray().add("امتیاز بسته طلایی").add("POINT_GOLDEN_PACKAGE").add("100").add("Number").add(leagueId));
 		
 		sqlConnection.batchWithParams(
 				"insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,?,?,?,?,?)" 

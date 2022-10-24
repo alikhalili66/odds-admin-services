@@ -484,7 +484,7 @@ public class DAO_Competition {
     }
     
     
-    public static Future<Void> updateRewardPoint(SQLConnection sqlConnection, Long rewardPoint, Integer questionId, Integer competitionId, Integer userId) {
+    public static Future<Void> updateRewardPointForCalculation(SQLConnection sqlConnection, Long rewardPoint, Integer questionId, Integer competitionId, Integer userId) {
 
 		Promise<Void> promise = Promise.promise();
 		
@@ -505,7 +505,7 @@ public class DAO_Competition {
 				return;
 			}
 			
-			logger.trace("updateRewardPointSuccessful");
+			logger.trace("updateRewardPointForCalculationSuccessful");
 			promise.complete();
 			
 		});
@@ -513,7 +513,7 @@ public class DAO_Competition {
 		return promise.future();
 	}
     
-    public static Future<Void> updateUserPoint(SQLConnection sqlConnection, Integer questionId, Integer competitionId, Integer userId) {
+    public static Future<Void> updateUserPointForCalculation(SQLConnection sqlConnection, Integer questionId, Integer competitionId, Integer userId) {
 
 		Promise<Void> promise = Promise.promise();
 		
@@ -544,11 +544,32 @@ public class DAO_Competition {
 				return;
 			}
 			
-			logger.trace("updateUserPointSuccessful");
+			logger.trace("updateUserPointForCalculationSuccessful");
 			promise.complete();
 			
 		});
 		
+		return promise.future();
+	}
+    
+    public static Future<Void> updateUserPointAndAmount(SQLConnection sqlConnection, Integer point, Long amount, Integer userId) {
+
+		Promise<Void> promise = Promise.promise();
+		JsonArray params = new JsonArray();
+		
+		params.add(point);
+		params.add(amount);
+		params.add(userId);
+		
+		sqlConnection.updateWithParams("UPDATE toppuser u SET u.point = (u.point + ?), u.amount=(u.amount + ?) WHERE u.id =?", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			logger.trace("updateUserPointAndAmountSuccessful");
+			promise.complete();
+		});
 		return promise.future();
 	}
     

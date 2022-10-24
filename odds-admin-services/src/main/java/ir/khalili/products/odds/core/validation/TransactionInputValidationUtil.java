@@ -29,14 +29,14 @@ public final class TransactionInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
-			Integer transactionId;
+			Integer id;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            transactionId = inputParameters.getInteger("transactionId");
+	            id = inputParameters.getInteger("id");
 	            
-	            if (null != transactionId && transactionId < 1) {
+	            if (null != id && id < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه تراکنش معتبر نمی باشد");
 	            }
 
@@ -50,7 +50,7 @@ public final class TransactionInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("transactionId", transactionId);
+			joResult.put("id", id);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -73,14 +73,14 @@ public final class TransactionInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
-			Integer transactionId;
+			Integer id;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            transactionId = inputParameters.getInteger("transactionId");
+	            id = inputParameters.getInteger("id");
 	            
-	            if (null != transactionId && transactionId < 1) {
+	            if (null != id && id < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه تراکنش معتبر نمی باشد");
 	            }
 	            
@@ -94,7 +94,7 @@ public final class TransactionInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("transactionId", transactionId);
+			joResult.put("id", id);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));

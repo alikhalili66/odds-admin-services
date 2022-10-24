@@ -18,7 +18,48 @@ public class DAO_Transaction {
     private static final Logger logger = LogManager.getLogger(DAO_Transaction.class);
     
 
-	public static Future<List<JsonObject>> doTransactionFetchAll(SQLConnection sqlConnection, JsonObject message) {
+	public static Future<JsonObject> fetchTransactionById(SQLConnection sqlConnection, Integer id) {
+		
+		Promise<JsonObject> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(id);
+		
+		sqlConnection.queryWithParams("select "+
+				"t.ID," + 
+				"t.POINT," + 
+				"t.AMOUNT," + 
+				"t.TYPE," +
+				"t.STATUS," +
+				"t.USER_ID," +
+				"t.APPLICATIONCODE," +
+				"t.INVOICEID," +
+				"t.DESCRIPTION," +
+				"t.TRANSACTIONID," +
+				"(select username from toppuser where id=t.USER_ID) as USERNAME, " +
+				"to_char(t.creationDate,'YYYY-MM-DD HH24:MI:SS.mm') as CREATIONDATE " +
+				" FROM topptransaction t where t.id=?", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			if(null == resultHandler.result() || null == resultHandler.result().getRows() || resultHandler.result().getRows().isEmpty()) {
+				logger.warn("TransactionFetchByTransactionIdNotFound");
+				promise.complete(new JsonObject());
+			}else {
+				logger.trace("TransactionFetchByTransactionIdRESULT:"+ resultHandler.result().getRows().get(0));
+				promise.complete(resultHandler.result().getRows().get(0));
+			}
+			
+		});
+		
+		return promise.future();
+	}
+
+    
+	public static Future<List<JsonObject>> fetchAllTransaction(SQLConnection sqlConnection, JsonObject message) {
 		
 		Promise<List<JsonObject>> promise = Promise.promise();
 		
@@ -62,11 +103,11 @@ public class DAO_Transaction {
 		return promise.future();
 	}
 
-    public static Future<Void> doUpdateTransactionStatus(SQLConnection sqlConnection, Integer transactionId, String status) {
+    public static Future<Void> updateTransactionStatus(SQLConnection sqlConnection, Integer id, String status) {
         Promise<Void> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(status);
-        params.add(transactionId);
+        params.add(id);
         
         sqlConnection.updateWithParams("update topptransaction set status=? WHERE id=?", params, handler -> {
 			if(handler.failed()) {

@@ -1,27 +1,31 @@
 {
-  "port": 9090,
-  "Access_Control_Allow_Origin": "http://localhost:3000",
-  "dbConfig": {
-    "username": "sch_test",
-    "password": "Test#2022",
-    "host": "185.213.167.156",
-    "serviceName": "pdb1",
-    "port": 1521
-  },
-  "lockin": {
-    "port": 8080,
-    "host": "185.213.167.156",
-    "APIKEY": "cf012f1e9349bc4fdca0271144d51f885106865fd6f814f333097c95117f27f6bd173146be40e592fbacf433bc13d7c8"
-  },
-  "jwt": {
-    "algorithm": "HS256",
-    "secretKey": "iUM d#v"
-  },
-  "fileManager": {
-    "root": "d:/odds"
-  },
-  "sabtahval": {
-    "userName": "caspUser",
-    "password": "casp456"
-  }
+	"port": 9090,
+	"Access_Control_Allow_Origin": "http://localhost:3000",
+	"dbConfig": {
+		"username": "sch_test",
+		"password": "Test#2022",
+		"host": "185.213.167.156",
+		"serviceName": "pdb1",
+		"port": 1521
+	},
+	"lockin": {
+		"port": 8080,
+		"host": "185.213.167.156",
+		"APIKEY": "cf012f1e9349bc4fdca0271144d51f885106865fd6f814f333097c95117f27f6bd173146be40e592fbacf433bc13d7c8"
+	},
+	"paypod": {
+		"port": 8086,
+		"host": "https://test.kipaad.ir/8086/megaKipaad"
+	},
+	"jwt": {
+		"algorithm": "HS256",
+		"secretKey": "iUM d#v"
+	},
+	"fileManager": {
+		"root": "d:/odds"
+	},
+	"sabtahval": {
+		"userName": "caspUser",
+		"password": "casp456"
+	}
 }

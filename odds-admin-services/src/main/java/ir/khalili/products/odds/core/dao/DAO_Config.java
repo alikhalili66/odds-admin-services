@@ -147,6 +147,11 @@ public class DAO_Config {
 		params.add(new JsonArray().add("امتیاز بسته برنزی").add("POINT_BRONZE_PACKAGE").add("10").add("Number").add(leagueId));
 		params.add(new JsonArray().add("امتیاز بسته نقره ای").add("POINT_SILVER_PACKAGE").add("50").add("Number").add(leagueId));
 		params.add(new JsonArray().add("امتیاز بسته طلایی").add("POINT_GOLDEN_PACKAGE").add("100").add("Number").add(leagueId));
+		params.add(new JsonArray().add("شناسه لیگ فعال در پنل کاربری").add("ACTIVE_LEAGUE_ID").add("1").add("Number").add(leagueId));
+		params.add(new JsonArray().add("محدودیت خرید روزانه").add("LIMITATION_BUY_PACKAGE").add("5000000").add("Number").add(leagueId));
+		params.add(new JsonArray().add("ضریب حداقل").add("MINIMUM_COEFFICIENT").add("2").add("Number").add(leagueId));
+		params.add(new JsonArray().add("امتیاز هر تراکنش").add("POINTS_PER_TRANSACTION").add("10").add("Number").add(leagueId));
+		params.add(new JsonArray().add("مبلغ هر تراکنش").add("AMOUNT_PER_TRANSACTION").add("50000").add("Number").add(leagueId));
 		
 		sqlConnection.batchWithParams(
 				"insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,?,?,?,?,?)" 

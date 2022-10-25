@@ -27,8 +27,8 @@ public class CallTransaction extends AbstractVerticle {
 
 		WebClient client = WebClient.create(vertx);
 //		transactionFetchAll(client);
-		transactionReject(client);
-//		transactionConfirm(client);
+//		transactionReject(client);
+		transactionConfirm(client);
 	}
 
 	
@@ -37,7 +37,7 @@ public class CallTransaction extends AbstractVerticle {
 			
 			JsonObject joInput = new JsonObject();
 			joInput.put("id", 1);
-			
+			joInput.put("transactionId", "transactionId");
 			
 			client
 			.post(port, host, "/v1/service/odds/transaction/reject")
@@ -99,7 +99,7 @@ public class CallTransaction extends AbstractVerticle {
 		}
 	}
 	
-	public void transactionCancel(WebClient client) {
+	public void transactionConfirm(WebClient client) {
 		try {
 			
 			JsonObject joInput = new JsonObject();

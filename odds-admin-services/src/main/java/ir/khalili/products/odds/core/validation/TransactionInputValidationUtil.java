@@ -30,16 +30,16 @@ public final class TransactionInputValidationUtil {
 			final JsonObject joToken = handler.result();
 
 			Integer id;
-
+			
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
 	            id = inputParameters.getInteger("id");
 	            
-	            if (null != id && id < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه تراکنش معتبر نمی باشد");
+	            if (null == id || id < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه معتبر نمی باشد");
 	            }
-
+	            
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
 				return;
@@ -74,14 +74,14 @@ public final class TransactionInputValidationUtil {
 			final JsonObject joToken = handler.result();
 
 			Integer id;
-
+			
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
 	            id = inputParameters.getInteger("id");
 	            
-	            if (null != id && id < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه تراکنش معتبر نمی باشد");
+	            if (null == id || id < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه معتبر نمی باشد");
 	            }
 	            
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -117,8 +117,8 @@ public final class TransactionInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
-			Integer transactionId = null; 	// Optional
-			Integer userId = null;			// Optional
+			String date = null;				// Optional
+			String username = null;			// Optional
 			String status = null;			// Optional
 			Integer startIndex = null;
 			Integer endIndex = null;
@@ -126,19 +126,19 @@ public final class TransactionInputValidationUtil {
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            transactionId = inputParameters.getInteger("transactionId");
-	            userId = inputParameters.getInteger("userId");
+	            date = inputParameters.getString("date");
+	            username = inputParameters.getString("username");
 	            status = inputParameters.getString("status");
 				startIndex = inputParameters.getInteger("startIndex");
 				endIndex = inputParameters.getInteger("endIndex");
 				
-	            if (null != transactionId && transactionId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه تراکنش معتبر نمی باشد");
-	            }
+//	            if (null != transactionId && transactionId < 1) {
+//	                throw new EXCP_RtMgr_Validation(-603, "شناسه تراکنش معتبر نمی باشد");
+//	            }
 
-	            if (null != userId && userId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر معتبر نمی باشد");
-	            }
+//	            if (null != userId && userId < 1) {
+//	                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر معتبر نمی باشد");
+//	            }
 	            
 	            if (null != status && status.trim().isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "وضعیت تراکنش معتبر نمی باشد");
@@ -162,12 +162,13 @@ public final class TransactionInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("transactionId", transactionId);
-			joResult.put("userId", userId);
+			joResult.put("date", date);
+			joResult.put("username", username);
 			joResult.put("status", status);
 			joResult.put("startIndex", startIndex);
 			joResult.put("endIndex", endIndex);
 			
+			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
 

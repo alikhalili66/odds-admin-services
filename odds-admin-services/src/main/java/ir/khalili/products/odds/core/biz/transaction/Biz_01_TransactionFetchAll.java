@@ -17,6 +17,8 @@ public class Biz_01_TransactionFetchAll {
 
     public static void fetchAll(Vertx vertx, SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
+    	logger.trace("inputMessage:" + message);
+    	
         DAO_Transaction.fetchAllTransaction(sqlConnection, message).onComplete(result -> {
             if (result.failed()) {
                 resultHandler.handle(Future.failedFuture(result.cause()));

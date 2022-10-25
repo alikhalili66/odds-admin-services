@@ -2,9 +2,9 @@ package ir.khalili.products.odds.core.enums;
 
 public enum TransactionStatus {
 
-	P("PENDING"),
-	R("REJECT"),
-	C("CONFIRM");
+	pending("PENDING"),
+	reject("REJECT"),
+	confirm("CONFIRM");
 	
 	TransactionStatus(String symbol) {}
 }

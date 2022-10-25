@@ -14,8 +14,10 @@
 		"APIKEY": "cf012f1e9349bc4fdca0271144d51f885106865fd6f814f333097c95117f27f6bd173146be40e592fbacf433bc13d7c8"
 	},
 	"paypod": {
-		"port": 8086,
-		"host": "https://test.kipaad.ir/8086/megaKipaad"
+		"confirm": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/close",
+		"reject": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/cancel",
+		"check": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/check",
+		"token": "UzBsUVQwUmZRVkJKWDFWVFJWST1fUzBsUVQwUkFJVUFqSkVBeE1qTTA="
 	},
 	"jwt": {
 		"algorithm": "HS256",
@@ -23,9 +25,5 @@
 	},
 	"fileManager": {
 		"root": "d:/odds"
-	},
-	"sabtahval": {
-		"userName": "caspUser",
-		"password": "casp456"
 	}
 }

@@ -36,7 +36,7 @@ public class DAO_Transaction {
 				"t.INVOICEID," +
 				"t.DESCRIPTION," +
 				"t.TRANSACTIONID," +
-				"(select username from toppuser where id=t.USER_ID) as USERNAME, " +
+				"t.USERNAME," +
 				"to_char(t.creationDate,'YYYY-MM-DD HH24:MI:SS.mm') as CREATIONDATE " +
 				" FROM topptransaction t where t.id=?", params, resultHandler->{
 			if(resultHandler.failed()) {
@@ -47,7 +47,7 @@ public class DAO_Transaction {
 			
 			if(null == resultHandler.result() || null == resultHandler.result().getRows() || resultHandler.result().getRows().isEmpty()) {
 				logger.warn("TransactionFetchByTransactionIdNotFound");
-				promise.complete(new JsonObject());
+				promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد."));
 			}else {
 				logger.trace("TransactionFetchByTransactionIdRESULT:"+ resultHandler.result().getRows().get(0));
 				promise.complete(resultHandler.result().getRows().get(0));
@@ -64,26 +64,32 @@ public class DAO_Transaction {
 		Promise<List<JsonObject>> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
-		params.add(message.getInteger("transactionId"));
-		params.add(message.getInteger("userId"));
+		
+		params.add(message.getString("date"));
+		params.add(message.getString("username"));
 		params.add(message.getString("status"));
 		params.add(message.getInteger("startIndex"));
 		params.add(message.getInteger("endIndex"));
 		
 		sqlConnection.queryWithParams("SELECT * FROM (select "+
 				"t.ID," + 
+				"t.TRANSACTIONID," + 
 				"t.POINT," + 
 				"t.AMOUNT," + 
 				"t.TYPE," +
 				"t.STATUS," +
-				"t.USER_ID," +
 				"t.APPLICATIONCODE," +
 				"t.INVOICEID," +
 				"t.DESCRIPTION," +
-				"to_char(t.creationDate,'YYYY-MM-DD HH24:MI:SS.mm')   as CREATIONDATE,"
-				+ " row_number() over (ORDER BY t.id desc) line_number" 
-				+ " FROM topptransaction t where t.id=nvl(?,t.id) and t.USER_ID=nvl(?,t.USER_ID) and t.status=nvl(?,t.status) " 
-				+ "  ) WHERE line_number BETWEEN ? AND ?", params, resultHandler->{
+				"t.USERNAME," +
+				"to_char(t.creationDate,'YYYY-MM-DD HH24:MI:SS.mm')   as CREATIONDATE," +
+				" row_number() over (ORDER BY t.id desc) line_number" +
+				" FROM topptransaction t " +
+				" where 1=1 "
+				+ " and trunc(CREATIONDATE) = nvl(TO_DATE(?, 'YYYY-MM-DD'),trunc(CREATIONDATE)) "
+				+ " and t.username=nvl(?,t.username) "
+				+ " and t.status=nvl(?,t.status) " +
+				"  ) WHERE line_number BETWEEN ? AND ?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -123,6 +129,25 @@ public class DAO_Transaction {
 		return promise.future();
     }
     
+    public static Future<Void> updateTransactionStatus(SQLConnection sqlConnection, Integer id, String status, String transactionId) {
+        Promise<Void> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(status);
+        params.add(transactionId);
+        params.add(id);
+        
+        sqlConnection.updateWithParams("update topptransaction set status=?, transactionId=? WHERE id=?", params, handler -> {
+			if(handler.failed()) {
+				logger.error("Unable to get accessQueryResult:", handler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("updateTransactionStatus");
+			promise.complete();
+			
+		});
+		return promise.future();
+    }
     
-
 }

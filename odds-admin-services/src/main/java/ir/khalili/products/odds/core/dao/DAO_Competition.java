@@ -419,6 +419,27 @@ public class DAO_Competition {
         return promise.future();
     }
     
+    public static Future<List<JsonObject>> fetchOddsTotalCorrectPointByCompetitionId(SQLConnection sqlConnection, Integer competitionId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(competitionId);
+        
+        sqlConnection.queryWithParams("select question_id,SUM(point) total_point from toppodds where competition_id=? group by question_id", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                } else {
+                    logger.trace("fetchOddsTotalPointSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            }
+        });
+        return promise.future();
+    }
+    
     public static Future<List<JsonObject>> fetchOddsWinnerUsersByCompetitionIdAndQuestionId(SQLConnection sqlConnection, Integer competitionId, Integer questionId) {
         Promise<List<JsonObject>> promise = Promise.promise();
         JsonArray params = new JsonArray();
@@ -426,7 +447,8 @@ public class DAO_Competition {
         params.add(competitionId);
         
         sqlConnection.queryWithParams("SELECT" + 
-        		"    o.user_id " + 
+        		"    o.user_id, " + 
+        		"    o.POINT " + 
         		"FROM" + 
         		"    toppodds                  o," + 
         		"    toppcompetitionquestion   cq " + 
@@ -484,20 +506,20 @@ public class DAO_Competition {
     }
     
     
-    public static Future<Void> updateRewardPointForCalculation(SQLConnection sqlConnection, Long rewardPoint, Integer questionId, Integer competitionId, Integer userId) {
+    public static Future<Void> updateRewardPointForCalculation(SQLConnection sqlConnection, int coefficient, Integer questionId, Integer competitionId, Integer userId) {
 
 		Promise<Void> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
 		
-		params.add(rewardPoint);
+		params.add(coefficient);
 		params.add(questionId);
 		params.add(competitionId);
 		params.add(userId);
 		
 		sqlConnection.updateWithParams(""
 				+ "update toppodds o set "
-				+ "o.rewardpoint=? "
+				+ "o.rewardpoint= o.POINT * ? "
 				+ " where o.question_id=? and o.competition_id=? and o.user_id=?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());

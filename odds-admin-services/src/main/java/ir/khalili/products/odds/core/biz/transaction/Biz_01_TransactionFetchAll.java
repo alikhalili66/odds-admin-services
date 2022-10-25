@@ -1,9 +1,12 @@
 package ir.khalili.products.odds.core.biz.transaction;
 
+import java.util.List;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -19,7 +22,10 @@ public class Biz_01_TransactionFetchAll {
 
     	logger.trace("inputMessage:" + message);
     	
-        DAO_Transaction.fetchAllTransaction(sqlConnection, message).onComplete(result -> {
+    	Future<Integer> futFetchCountAllTransaction = DAO_Transaction.fetchCountAllTransaction(sqlConnection, message);
+    	Future<List<JsonObject>> futFetchAllTransaction = DAO_Transaction.fetchAllTransaction(sqlConnection, message);
+    	
+    	CompositeFuture.all(futFetchAllTransaction, futFetchCountAllTransaction).onComplete(result -> {
             if (result.failed()) {
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
@@ -27,11 +33,15 @@ public class Biz_01_TransactionFetchAll {
             
             logger.trace("TRANSACTION_FETCH_ALL_RESULT : " + result.result());
             
+            JsonObject joOutput = new JsonObject();
+			joOutput.put("TotalCount", futFetchCountAllTransaction.result());
+			joOutput.put("List", futFetchAllTransaction.result());
+			
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()
 					.put("resultCode", 1)
 					.put("resultMessage", "عملیات با موفقیت انجام شد.")
-					.put("info", result.result())
+					.put("info", joOutput)
 			));
         });
     }

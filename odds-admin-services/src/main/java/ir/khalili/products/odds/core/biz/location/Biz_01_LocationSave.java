@@ -22,12 +22,14 @@ public class Biz_01_LocationSave {
 
         HelperImage.saveImage(vertx, message.getString("image"), message.getString("name")).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }
             message.put("image", result.result());
             DAO_Location.save(sqlConnection, message).onComplete(handler -> {
             	if (handler.failed()) {
+            		logger.error("Unable to complete handler: " + handler.cause());
             		resultHandler.handle(Future.failedFuture(handler.cause()));
             		return;
             	}

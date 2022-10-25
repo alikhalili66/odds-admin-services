@@ -24,6 +24,7 @@ public class Biz_01_UserFetchAll {
     	
     	CompositeFuture.all(fetchCountAll, fetchAll).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }

@@ -18,6 +18,7 @@ public class Biz_04_LeagueFetchAll {
 
         DAO_League.fetchAll(sqlConnection).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }

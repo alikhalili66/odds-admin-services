@@ -28,6 +28,7 @@ public class DAO_User {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchCountAllNoDataFound");
                 	promise.complete(0);
                 } else {
                     logger.trace("fetchCountAllSuccessful");
@@ -65,6 +66,7 @@ public class DAO_User {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchAllNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchAllUserSuccessful");
@@ -95,6 +97,7 @@ public class DAO_User {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchByIdNoDataFound");
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
                     logger.trace("fetchAllUserByIdSuccessful");
@@ -142,6 +145,7 @@ public class DAO_User {
             } else {
 
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchOddsNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchOddsSuccessful");
@@ -220,6 +224,7 @@ public class DAO_User {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchQuestionAnswerNoDataFound");
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
                     logger.trace("fetchQuestionAnswerSuccessful");
@@ -255,6 +260,7 @@ public class DAO_User {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchUserPointHistoryNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchUserPointHistorySuccessful");

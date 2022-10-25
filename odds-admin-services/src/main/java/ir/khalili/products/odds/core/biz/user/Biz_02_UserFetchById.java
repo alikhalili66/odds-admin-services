@@ -20,6 +20,7 @@ public class Biz_02_UserFetchById {
 
 		DAO_User.fetchById(sqlConnection, message.getInteger("id")).onComplete(result -> {
 			if (result.failed()) {
+				logger.error("Unable to complete result: " + result.cause());
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;
 			}

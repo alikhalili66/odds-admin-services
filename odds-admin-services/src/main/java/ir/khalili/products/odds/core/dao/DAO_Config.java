@@ -62,6 +62,7 @@ public class DAO_Config {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchAllConfigNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchAllConfigSuccessful");
@@ -92,6 +93,7 @@ public class DAO_Config {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchConfigByIdNoDataFound");
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
                     logger.trace("fetchAllConfigByIdSuccessful");
@@ -121,6 +123,7 @@ public class DAO_Config {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchBySymbolNoDataFound");
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
                     logger.trace("fetchAllConfigBySymbolSuccessful");
@@ -153,9 +156,7 @@ public class DAO_Config {
 		params.add(new JsonArray().add("امتیاز هر تراکنش").add("POINTS_PER_TRANSACTION").add("10").add("Number").add(leagueId));
 		params.add(new JsonArray().add("مبلغ هر تراکنش").add("AMOUNT_PER_TRANSACTION").add("50000").add("Number").add(leagueId));
 		
-		sqlConnection.batchWithParams(
-				"insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,?,?,?,?,?)" 
-				, params, resultHandler->{
+		sqlConnection.batchWithParams("insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,?,?,?,?,?)" , params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

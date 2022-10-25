@@ -24,12 +24,14 @@ public class Biz_05_TeamFetchById {
 
 		DAO_Team.fetchById(sqlConnection, teamId).onComplete(result -> {
 			if (result.failed()) {
+				logger.error("Unable to complete result: " + result.cause());
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;
 			}
 
             HelperImage.getImage(vertx, result.result().getString("IMAGE")).onComplete(result0 -> {
                 if (result0.failed()) {
+                	logger.error("Unable to complete result0: " + result0.cause());
                     resultHandler.handle(Future.failedFuture(result0.cause()));
                     return;
                 }

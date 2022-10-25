@@ -123,6 +123,7 @@ public class DAO_Location {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchAllLocationNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchAllLocationSuccessful");
@@ -159,6 +160,7 @@ public class DAO_Location {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchLocationByIdNoDataFound");
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
                     logger.trace("fetchAllCompetitionByIdSuccessful");
@@ -237,6 +239,7 @@ public class DAO_Location {
             } else {
 
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchQuestionNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("CompetitionfetchQuestionSuccessful");
@@ -278,6 +281,7 @@ public class DAO_Location {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchCompetitionByGroupIdNoDataFound");
                     promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchAllCompetitionSuccessful");
@@ -352,6 +356,7 @@ public class DAO_Location {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchOddsTotalPointByCompetitionIdNoDataFound");
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
                     logger.trace("fetchOddsTotalPointSuccessful");
@@ -384,6 +389,7 @@ public class DAO_Location {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchOddsWinnerUsersByCompetitionIdAndQuestionIdNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchOddsWinnerUsersByCompetitionIdAndQuestionIdSuccessful");
@@ -416,6 +422,7 @@ public class DAO_Location {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchOddsLoserUsersByCompetitionIdAndQuestionIdNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchOddsLoserUsersByCompetitionIdAndQuestionIdSuccessful");

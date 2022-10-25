@@ -20,6 +20,7 @@ public class Biz_01_GroupSave {
 
         DAO_Group.save(sqlConnection, message).onComplete(handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to complete handler: " + handler.cause());
                 resultHandler.handle(Future.failedFuture(handler.cause()));
                 return;
             }

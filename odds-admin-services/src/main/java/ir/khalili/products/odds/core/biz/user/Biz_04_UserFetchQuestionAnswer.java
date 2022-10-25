@@ -20,6 +20,7 @@ public class Biz_04_UserFetchQuestionAnswer {
 
 		DAO_User.fetchQuestionAnswer(sqlConnection, message).onComplete(result -> {
 			if (result.failed()) {
+				logger.error("Unable to complete result: " + result.cause());
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;
 			}

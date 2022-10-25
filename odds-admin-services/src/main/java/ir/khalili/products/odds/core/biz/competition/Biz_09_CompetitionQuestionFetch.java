@@ -21,6 +21,7 @@ public class Biz_09_CompetitionQuestionFetch {
 
         DAO_Competition.fetchQuestion(sqlConnection, message).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete handle: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }

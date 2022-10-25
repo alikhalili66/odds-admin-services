@@ -20,12 +20,14 @@ public class Biz_04_LocationFetchAll {
 
     	DAO_Location.fetchAll(sqlConnection, message).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }
             
             HelperImage.getImage(vertx, result.result()).onComplete(result0 -> {
                 if (result0.failed()) {
+                	logger.error("Unable to complete result0: " + result0.cause());
                     resultHandler.handle(Future.failedFuture(result0.cause()));
                     return;
                 }

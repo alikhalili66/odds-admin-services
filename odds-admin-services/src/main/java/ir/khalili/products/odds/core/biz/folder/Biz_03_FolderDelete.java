@@ -22,6 +22,7 @@ public class Biz_03_FolderDelete {
 
         DAO_Folder.delete(sqlConnection, folderId).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }

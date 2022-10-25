@@ -29,6 +29,7 @@ public class Biz_01_ConfigUpdate {
 		
 		DAO_Config.fetchById(sqlConnection, configId).onComplete(result -> {
 			if (result.failed()) {
+				logger.error("Unable to complete result: " + result.cause());
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;
 			}
@@ -45,6 +46,7 @@ public class Biz_01_ConfigUpdate {
                 	} 
                 	message.put("value", fileName);
                 } catch (Exception e) {
+                	logger.error("ERROR_WHEN_CONVERTING_FILE");
                     e.printStackTrace();
                     resultHandler.handle(Future.failedFuture(new BIZEXCP_Invalid("خطای در تبدیل فایل. با راهبر سامانه تماس بگیرید.")));
                     return;
@@ -54,6 +56,7 @@ public class Biz_01_ConfigUpdate {
 			
 	        DAO_Config.update(sqlConnection, configId, message.getString("value")).onComplete(handler -> {
 	            if (handler.failed()) {
+	            	logger.error("Unable to complete handler: " + handler.cause());
 	                resultHandler.handle(Future.failedFuture(handler.cause()));
 	                return;
 	            }

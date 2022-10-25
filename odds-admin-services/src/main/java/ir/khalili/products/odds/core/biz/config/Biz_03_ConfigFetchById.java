@@ -28,6 +28,7 @@ public class Biz_03_ConfigFetchById {
 
 		DAO_Config.fetchById(sqlConnection, configId).onComplete(result -> {
 			if (result.failed()) {
+				logger.error("Unable to complete result: " + result.cause());
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;
 			}
@@ -49,9 +50,9 @@ public class Biz_03_ConfigFetchById {
 					result.result().put("VALUE", buffer.toString());
 
 				} catch (Exception e) {
+					logger.error("ERROR_WHEN_CONVERTING_FILE");
 					e.printStackTrace();
-					resultHandler.handle(Future
-							.failedFuture(new BIZEXCP_Invalid("خطای در تبدیل فایل. با راهبر سامانه تماس بگیرید.")));
+					resultHandler.handle(Future.failedFuture(new BIZEXCP_Invalid("خطای در تبدیل فایل. با راهبر سامانه تماس بگیرید.")));
 					return;
 				}
 			}

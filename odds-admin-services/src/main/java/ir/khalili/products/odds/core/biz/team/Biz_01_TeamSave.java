@@ -22,12 +22,14 @@ public class Biz_01_TeamSave {
 
         HelperImage.saveImage(vertx, message.getString("image"), message.getString("symbol")).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }
             message.put("image", result.result());
             DAO_Team.save(sqlConnection, message).onComplete(handler -> {
             	if (handler.failed()) {
+            		logger.error("Unable to complete handler: " + handler.cause());
             		resultHandler.handle(Future.failedFuture(handler.cause()));
             		return;
             	}

@@ -21,6 +21,7 @@ public class Biz_07_TeamMemberSave {
         
         DAO_Team.saveMember(sqlConnection, message).onComplete(handler -> {
         	if (handler.failed()) {
+        		logger.error("Unable to complete handler: " + handler.cause());
         		resultHandler.handle(Future.failedFuture(handler.cause()));
         		return;
         	}

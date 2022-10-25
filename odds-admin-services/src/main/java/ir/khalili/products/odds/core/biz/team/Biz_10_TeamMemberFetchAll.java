@@ -23,6 +23,7 @@ public class Biz_10_TeamMemberFetchAll {
 
 		DAO_Team.fetchAllMemberByTeamId(sqlConnection, teamId).onComplete(result -> {
 			if (result.failed()) {
+				logger.error("Unable to complete result: " + result.cause());
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;
 			}

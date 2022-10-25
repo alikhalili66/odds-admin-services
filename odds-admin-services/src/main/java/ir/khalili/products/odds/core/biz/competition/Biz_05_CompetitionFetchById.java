@@ -22,6 +22,7 @@ public class Biz_05_CompetitionFetchById {
 
         DAO_Competition.fetchById(sqlConnection, competitionId).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete handle: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }

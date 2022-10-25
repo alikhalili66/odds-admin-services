@@ -18,6 +18,7 @@ public class Biz_04_FolderFetchAll {
 
         DAO_Folder.fetchAll(sqlConnection, message).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }

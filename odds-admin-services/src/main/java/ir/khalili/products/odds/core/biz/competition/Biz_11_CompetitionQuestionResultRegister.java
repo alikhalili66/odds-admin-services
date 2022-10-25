@@ -21,6 +21,7 @@ public class Biz_11_CompetitionQuestionResultRegister {
 
         DAO_Competition.questionResultRegister(sqlConnection, message).onComplete(handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to complete handle: " + handler.cause());
                 resultHandler.handle(Future.failedFuture(handler.cause()));
                 return;
             }

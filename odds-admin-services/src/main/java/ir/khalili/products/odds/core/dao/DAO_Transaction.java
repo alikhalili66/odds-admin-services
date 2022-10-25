@@ -46,7 +46,7 @@ public class DAO_Transaction {
 			}
 			
 			if(null == resultHandler.result() || null == resultHandler.result().getRows() || resultHandler.result().getRows().isEmpty()) {
-				logger.warn("TransactionFetchByTransactionIdNotFound");
+				logger.error("TransactionFetchByTransactionIdNotFound");
 				promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد."));
 			}else {
 				logger.trace("TransactionFetchByTransactionIdRESULT:"+ resultHandler.result().getRows().get(0));
@@ -83,7 +83,7 @@ public class DAO_Transaction {
 			}
 			
 			if(null == resultHandler.result() || null == resultHandler.result().getRows() || resultHandler.result().getRows().isEmpty()) {
-				logger.warn("TransactionCountNotFound");
+				logger.error("TransactionCountNotFound");
 				promise.complete(0);
 			}else {
 				logger.trace("FetchCountAllTransactionRESULT:"+ resultHandler.result().getRows().get(0).getInteger("CNT"));
@@ -134,7 +134,7 @@ public class DAO_Transaction {
 			}
 			
 			if(null == resultHandler.result() || null == resultHandler.result().getRows() || resultHandler.result().getRows().isEmpty()) {
-				logger.warn("TransactionNotFound");
+				logger.error("TransactionNotFound");
 				promise.complete(new ArrayList<>());
 			}else {
 				logger.trace("TransactionRESULT:"+ resultHandler.result().getRows().get(0));

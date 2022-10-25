@@ -22,6 +22,7 @@ public class Biz_05_LeagueFetchById {
 
 		DAO_League.fetchById(sqlConnection, leagueId).onComplete(result -> {
 			if (result.failed()) {
+				logger.error("Unable to complete result: " + result.cause());
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;
 			}

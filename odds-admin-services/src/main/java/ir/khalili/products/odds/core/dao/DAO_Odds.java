@@ -29,6 +29,7 @@ public class DAO_Odds {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchOddsReportNoDataFound");
                     promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchAllCompetitionSuccessful");
@@ -53,6 +54,7 @@ public class DAO_Odds {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchOddsCountNoDataFound");
                     promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchAllCompetitionSuccessful");

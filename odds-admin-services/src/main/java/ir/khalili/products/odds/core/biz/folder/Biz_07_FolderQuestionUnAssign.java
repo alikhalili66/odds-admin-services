@@ -20,6 +20,7 @@ public class Biz_07_FolderQuestionUnAssign {
 
         DAO_Folder.unAssignQuestion(sqlConnection, message).onComplete(handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to complete handler: " + handler.cause());
                 resultHandler.handle(Future.failedFuture(handler.cause()));
                 return;
             }

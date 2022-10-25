@@ -36,6 +36,7 @@ public class Biz_05_ReportCalculateCompetition {
         CompositeFuture.join(futCompetition, futQuestion, futOdds, futOddsCount, futDelete).onComplete(joinHandler01->{
         	
             if (joinHandler01.failed()) {
+            	logger.error("Unable to complete joinHandler01: " + joinHandler01.cause());
                 resultHandler.handle(Future.failedFuture(joinHandler01.cause()));
                 return;
             }
@@ -78,6 +79,7 @@ public class Biz_05_ReportCalculateCompetition {
             DAO_CompetitionReport.saveCompetitionReport(sqlConnection, list).onComplete(joinHandler02->{
             	
             	 if (joinHandler02.failed()) {
+            		 logger.error("Unable to complete joinHandler02: " + joinHandler02.cause());
                      resultHandler.handle(Future.failedFuture(joinHandler02.cause()));
                      return;
                  }

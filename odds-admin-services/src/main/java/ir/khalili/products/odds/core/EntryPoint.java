@@ -144,6 +144,7 @@ import ir.khalili.products.odds.core.verticle.report.VRTCL_01_ReportRegisteredUs
 import ir.khalili.products.odds.core.verticle.report.VRTCL_02_ReportCompetitorUsersCount;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_03_ReportCompetitorUsersAmount;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_04_ReportOddsCount;
+import ir.khalili.products.odds.core.verticle.report.VRTCL_05_ReportCalculateCompetition;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_01_TeamSave;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_02_TeamUpdate;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_03_TeamDelete;
@@ -308,6 +309,7 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_02_ReportCompetitorUsersCount.class.getName());
     	vertx.deployVerticle(VRTCL_03_ReportCompetitorUsersAmount.class.getName());
     	vertx.deployVerticle(VRTCL_04_ReportOddsCount.class.getName());
+    	vertx.deployVerticle(VRTCL_05_ReportCalculateCompetition.class.getName());
     	
     	//TEAM
     	vertx.deployVerticle(VRTCL_01_TeamSave.class.getName());

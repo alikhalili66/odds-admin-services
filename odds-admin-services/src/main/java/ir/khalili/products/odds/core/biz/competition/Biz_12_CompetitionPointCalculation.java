@@ -32,6 +32,7 @@ public class Biz_12_CompetitionPointCalculation {
         logger.trace("CALCULATE_TOTAL_POINT_FOR_THIS_COMPETITION_PER_QUESTION_ID");
         DAO_Competition.fetchOddsTotalPointByCompetitionId(sqlConnection, competitionId).onComplete(totalPointResult -> {
             if (totalPointResult.failed()) {
+            	logger.error("Unable to complete totalPointResult: " + totalPointResult.cause());
                 resultHandler.handle(Future.failedFuture(totalPointResult.cause()));
                 return;
             }
@@ -67,6 +68,7 @@ public class Biz_12_CompetitionPointCalculation {
             
             CompositeFuture.all(futList).onComplete(result1 -> {
                 if (result1.failed()) {
+                	logger.error("Unable to complete result1: " + result1.cause());
                     resultHandler.handle(Future.failedFuture(result1.cause()));
                     return;
                 }
@@ -117,6 +119,7 @@ public class Biz_12_CompetitionPointCalculation {
                 
                 CompositeFuture.all(futList2).onComplete(result2 -> {
                     if (result2.failed()) {
+                    	logger.error("Unable to complete result2: " + result2.cause());
                         resultHandler.handle(Future.failedFuture(result2.cause()));
                         return;
                     }
@@ -139,6 +142,7 @@ public class Biz_12_CompetitionPointCalculation {
                     
                     CompositeFuture.all(futList3).onComplete(result3 -> {
                         if (result3.failed()) {
+                        	logger.error("Unable to complete result3: " + result3.cause());
                             resultHandler.handle(Future.failedFuture(result3.cause()));
                             return;
                         }

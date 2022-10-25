@@ -37,7 +37,7 @@ public class Biz_02_TransactionReject {
             
             logger.trace("transaction:" + futTransactionFetchByTransactionId.result());
             
-            if(futTransactionFetchByTransactionId.result().getString("STATUS").equals(TransactionStatus.pending.name())) {
+            if(!futTransactionFetchByTransactionId.result().getString("STATUS").equals(TransactionStatus.pending.getStatus())) {
             	 resultHandler.handle(Future.failedFuture(new BIZEXCP_Transaction(-100, "وضعیت تراکنش در حال بررسی نمی باشد.")));
                 return;
             }
@@ -64,7 +64,7 @@ public class Biz_02_TransactionReject {
                         return;
                     }
                     
-                    DAO_Transaction.updateTransactionStatus(sqlConnection, id, TransactionStatus.reject.name()).onComplete(joinHandler04->{
+                    DAO_Transaction.updateTransactionStatus(sqlConnection, id, TransactionStatus.reject.getStatus()).onComplete(joinHandler04->{
                     	
                     	 if (joinHandler04.failed()) {
                              resultHandler.handle(Future.failedFuture(joinHandler04.cause()));

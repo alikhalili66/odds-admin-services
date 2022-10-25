@@ -65,7 +65,7 @@ public class DAO_Transaction {
 		
 		JsonArray params = new JsonArray();
 		
-		params.add(message.getString("date"));
+		params.add(null == message.getString("date") ? null : message.getString("date").split(" ")[0]);
 		params.add(message.getString("username"));
 		params.add(message.getString("status"));
 		params.add(message.getInteger("startIndex"));

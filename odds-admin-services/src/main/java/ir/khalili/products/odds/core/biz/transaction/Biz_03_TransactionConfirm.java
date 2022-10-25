@@ -37,8 +37,8 @@ public class Biz_03_TransactionConfirm {
                 return;
             }
             
-            if(futTransactionFetchByTransactionId.result().getString("STATUS").equals(TransactionStatus.pending.name())) {
-           	 resultHandler.handle(Future.failedFuture(new BIZEXCP_Transaction(-100, "وضعیت تراکنش در حال بررسی نمی باشد.")));
+            if(!futTransactionFetchByTransactionId.result().getString("STATUS").equals(TransactionStatus.pending.getStatus())) {
+           	 	resultHandler.handle(Future.failedFuture(new BIZEXCP_Transaction(-100, "وضعیت تراکنش در حال بررسی نمی باشد.")));
                return;
            }
             
@@ -69,7 +69,7 @@ public class Biz_03_TransactionConfirm {
                     
                     Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futFetchById.result().getInteger("ID")).put("AMOUNT", futFetchById.result().getLong("AMOUNT")).put("POINT", futFetchById.result().getInteger("POINT")));
                     Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, futFetchById.result().getInteger("POINT"), futFetchById.result().getLong("AMOUNT"), futFetchById.result().getInteger("ID"));
-                    Future<Void> futUpdateTransactionStatus = DAO_Transaction.updateTransactionStatus(sqlConnection, id, futTransactionId.result(), TransactionStatus.confirm.name());
+                    Future<Void> futUpdateTransactionStatus = DAO_Transaction.updateTransactionStatus(sqlConnection, id, futTransactionId.result(), TransactionStatus.confirm.getStatus());
                     
                 	CompositeFuture.all(futSaveUserPointHistory, futUpdateUserPointAndAmount, futUpdateTransactionStatus).onComplete(joinHandler04 -> {
                         

@@ -199,6 +199,7 @@ public class DAO_Competition {
         		+ "c.TEAM2_ID,"
         		+ "c.GROUP_ID,"
         		+ "c.LOCATION_ID,"
+        		+ "c.LEAGUE_ID,"
         		+ "c.RESULT,"
         		+ "To_Char(c.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
         		+ "To_Char(c.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"

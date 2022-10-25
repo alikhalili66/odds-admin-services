@@ -1,4 +1,4 @@
-package ir.khalili.products.odds.core.verticle.transaction;
+package ir.khalili.products.odds.core.verticle.report;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -8,12 +8,12 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.transaction.Biz_02_TransactionReject;
+import ir.khalili.products.odds.core.biz.report.Biz_05_ReportCalculateCompetition;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 
-public class VRTCL_02_TransactionReject extends AbstractVerticle {
-	private Logger logger = LogManager.getLogger(VRTCL_02_TransactionReject.class);
+public class VRTCL_05_ReportCalculateCompetition extends AbstractVerticle {
+	private Logger logger = LogManager.getLogger(VRTCL_05_ReportCalculateCompetition.class);
 	
 	@Override
     public void start(Promise<Void> startPromise) throws Exception {
@@ -24,9 +24,9 @@ public class VRTCL_02_TransactionReject extends AbstractVerticle {
     	try {
     		JDBCClient ircJDBC = JDBCClient.createShared(vertx, Configuration.getDataBaseConfig(),AppConstants.APP_DS_ODDS);
     		
-        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_TRANSACTION_REJECT, message -> {
+        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_CALCULATE_COMPETITION, message -> {
         		
-        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_TRANSACTION_REJECT+" recieved with message:"+((JsonObject)(message.body())));
+        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_CALCULATE_COMPETITION+" recieved with message:"+((JsonObject)(message.body())));
     				
         		ircJDBC.getConnection(connection -> {
 					
@@ -39,7 +39,7 @@ public class VRTCL_02_TransactionReject extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_02_TransactionReject.reject(vertx, sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_05_ReportCalculateCompetition.fetchOddsCount(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());
@@ -58,7 +58,7 @@ public class VRTCL_02_TransactionReject extends AbstractVerticle {
 		    		});
 				});
         	});
-        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_TRANSACTION_REJECT+" ready to reply.");
+        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_CALCULATE_COMPETITION+" ready to reply.");
         	startPromise.complete();
 		} catch (Exception e) {
 			logger.error("EXCEPTION DETECTED STARTING",e);

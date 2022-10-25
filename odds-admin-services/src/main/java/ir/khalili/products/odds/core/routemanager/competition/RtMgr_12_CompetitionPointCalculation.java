@@ -43,6 +43,9 @@ public class RtMgr_12_CompetitionPointCalculation   {
 					.putHeader("content-type", "application/json; charset=utf-8")
 					.end(Json.encodePrettily(replyHandler.result().body()));
 					
+					context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_CALCULATE_COMPETITION, validateHandler.result());
+					
+					
 				} else {// Unable to communicate with event bus
 					
 					logger.error("UNABLE TO COMMUNICATE WITH EVENT BUS!");

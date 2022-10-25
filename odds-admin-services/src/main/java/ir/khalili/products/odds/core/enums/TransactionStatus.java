@@ -2,9 +2,17 @@ package ir.khalili.products.odds.core.enums;
 
 public enum TransactionStatus {
 
-	pending("PENDING"),
-	reject("REJECT"),
-	confirm("CONFIRM");
+	pending("P"),
+	reject("R"),
+	confirm("C");
 	
-	TransactionStatus(String symbol) {}
+	private String status;
+	
+	TransactionStatus(String status) {
+		this.status = status;
+	}
+
+	public String getStatus() {
+		return status;
+	}
 }

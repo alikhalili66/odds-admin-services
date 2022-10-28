@@ -87,6 +87,7 @@ import ir.khalili.products.odds.core.routemanager.team.RtMgr_10_TeamMemberFetchA
 import ir.khalili.products.odds.core.routemanager.transaction.RtMgr_01_TransactionFetchAll;
 import ir.khalili.products.odds.core.routemanager.transaction.RtMgr_02_TransactionReject;
 import ir.khalili.products.odds.core.routemanager.transaction.RtMgr_03_TransactionConfirm;
+import ir.khalili.products.odds.core.routemanager.transaction.RtMgr_04_TransactionSave;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_01_UserFetchAll;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_02_UserFetchById;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_03_UserFetchOdds;
@@ -158,6 +159,7 @@ import ir.khalili.products.odds.core.verticle.team.VRTCL_10_TeamMemberFetchAll;
 import ir.khalili.products.odds.core.verticle.transaction.VRTCL_01_TransactionFetchAll;
 import ir.khalili.products.odds.core.verticle.transaction.VRTCL_02_TransactionReject;
 import ir.khalili.products.odds.core.verticle.transaction.VRTCL_03_TransactionConfirm;
+import ir.khalili.products.odds.core.verticle.transaction.VRTCL_04_TransactionSave;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_01_UserFetchAll;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_02_UserFetchById;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_03_UserFetchOdds;
@@ -335,6 +337,7 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_01_TransactionFetchAll.class.getName());
     	vertx.deployVerticle(VRTCL_02_TransactionReject.class.getName());
     	vertx.deployVerticle(VRTCL_03_TransactionConfirm.class.getName());
+    	vertx.deployVerticle(VRTCL_04_TransactionSave.class.getName());
     	
     }
 
@@ -469,6 +472,7 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/transaction/all/fetch")						.handler(RtMgr_01_TransactionFetchAll						:: handler);
         router.post		("/v1/service/odds/transaction/reject")							.handler(RtMgr_02_TransactionReject							:: handler);
         router.post		("/v1/service/odds/transaction/confirm")						.handler(RtMgr_03_TransactionConfirm						:: handler);
+        router.post		("/v1/service/odds/transaction/save")							.handler(RtMgr_04_TransactionSave							:: handler);
 
         
         vertx.createHttpServer().requestHandler(router).listen(port);

@@ -222,4 +222,37 @@ public class DAO_League {
         return promise.future();
     }
       
+    public static Future<JsonObject> fetchValidLeagueById(SQLConnection sqlConnection, Integer leagueId) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        
+        sqlConnection.queryWithParams("SELECT "
+        		+ "l.id,"
+        		+ "l.NAME,"
+        		+ "l.SYMBOL,"
+        		+ "l.IMAGE,"
+        		+ "To_Char(l.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
+        		+ "To_Char(l.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
+        		+ "To_Char(l.oddsfrom,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_FROM,"
+        		+ "To_Char(l.oddsTo,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_TO,"
+        		+ "To_Char(l.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "  FROM toppleague l WHERE l.id=? and sysdate > ACTIVEFROM and sysdate < ACTIVETO and l.dto is null", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                    promise.fail(new DAOEXCP_Internal(-100, "لیگ معتبر نمی باشد."));
+                } else {
+                    logger.trace("fetchAllLeagueByIdSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
 }

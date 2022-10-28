@@ -1,5 +1,7 @@
 package ir.khalili.products.odds.core.validation;
 
+import java.text.SimpleDateFormat;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +15,7 @@ import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
 public final class TransactionInputValidationUtil {
 
     private static Logger logger = LoggerFactory.getLogger(TransactionInputValidationUtil.class);
+    private static SimpleDateFormat sdf = new SimpleDateFormat("YYYY/MM/DD HH:mm:ss");
 
     private TransactionInputValidationUtil() {
     	logger.trace("");
@@ -178,5 +181,79 @@ public final class TransactionInputValidationUtil {
 
     }
 	
+	public static void validateTransactionSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+        String applicationCode;
+        Integer amount;
+        String invoiceId;
+        String description;
+        String userId;
+        String date;
+        Integer leagueId;
+		
+        try {
+            final JsonObject inputParameters = InputValidationUtil.validate(context);
+            applicationCode = inputParameters.getString("applicationCode");
+            amount = inputParameters.getInteger("amount");
+            invoiceId = inputParameters.getString("invoiceId");
+            description = inputParameters.getString("description");
+            userId = inputParameters.getString("userId");
+            date = inputParameters.getString("date");
+            leagueId = inputParameters.getInteger("leagueId");
+
+            if (null == applicationCode || applicationCode.isEmpty() || applicationCode.length() > 100) {
+                throw new EXCP_RtMgr_Validation(-603, "کد برنامه صحیح نمی باشد.");
+            }
+
+            if (null == amount || amount < 1 || amount > 999999999) {
+                throw new EXCP_RtMgr_Validation(-603, "مبلغ معتبر نمی باشد");
+            }
+
+            if (null == description || description.isEmpty() || description.length() > 200) {
+                throw new EXCP_RtMgr_Validation(-603, "توضیحات نوع تراکنش معتبر نمی باشد");
+            }
+
+            if (null == invoiceId || invoiceId.isEmpty() || invoiceId.length() > 100) {
+                throw new EXCP_RtMgr_Validation(-603, "شناسه صورتحساب معتبر نمی باشد");
+            }
+
+            if (null == userId || userId.isEmpty()) {
+                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر صحیح نمی باشد.");
+            }
+            
+            if (null == leagueId || leagueId < 1) {
+            	throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+            }
+
+            if (null == date || date.isEmpty()) {
+                throw new EXCP_RtMgr_Validation(-603, "زمان وارد شده تراکنش صحیح نمی باشد.");
+            }
+
+            sdf.parse(date);
+            
+        } catch (EXCP_RtMgr_Validation e) {
+			resultHandler.handle(Future.failedFuture(e));
+			return;
+		} catch (Exception e) {
+			logger.error("INPUT TYPE VALIDATION FAILED.", e);
+			resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+			return;
+		}
+
+        final JsonObject joResult = new JsonObject();
+        joResult.put("applicationCode", applicationCode);
+        joResult.put("amount", amount);
+        joResult.put("invoiceId", invoiceId);
+        joResult.put("description", description);
+        joResult.put("userId", userId);
+        joResult.put("date", date);
+        joResult.put("leagueId", leagueId);
+		
+		joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+		joResult.put("ip", context.request().remoteAddress().host());
+
+		resultHandler.handle(Future.succeededFuture(joResult));
+
 	
+    }
 }

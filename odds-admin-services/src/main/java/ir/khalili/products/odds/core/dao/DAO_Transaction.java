@@ -17,6 +17,62 @@ public class DAO_Transaction {
 
     private static final Logger logger = LogManager.getLogger(DAO_Transaction.class);
     
+    public static Future<Integer> saveTransaction(SQLConnection sqlConnection, int point, int amount, int userId, String applicationCode, String invoiceId, String description, String date) {
+
+        Promise<Integer> promise = Promise.promise();
+
+        sqlConnection.query("SELECT SOPPTRANSACTION.NEXTVAL ID FROM DUAL ", seqtHandler -> {
+            if (seqtHandler.failed()) {
+                logger.error("Unable to get accessQueryResult:", seqtHandler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == seqtHandler.result() || null == seqtHandler.result().getRows() || seqtHandler.result().getRows().isEmpty()) {
+                    promise.fail(new DAOEXCP_Internal(-100, "اطلاعات مورد نظر موجود نمی باشد."));
+                } else {
+                    logger.trace("fetchTransactionID");
+                    
+                    JsonArray params = new JsonArray();
+                    params.add(seqtHandler.result().getRows().get(0).getInteger("ID"));
+                    params.add(point);
+                    params.add(amount);
+                    params.add("P");
+                    params.add("C");
+                    params.add(userId);
+                    params.add(applicationCode);
+                    params.add(invoiceId);
+                    params.add(description);
+                    params.add(date);
+                    
+                    System.out.println(params);
+
+                    sqlConnection.updateWithParams("INSERT INTO TOPPTRANSACTION (" +
+                            "    ID," +
+                            "    POINT," +
+                            "    AMOUNT," +
+                            "    TYPE," +
+                            "    STATUS," +
+                            "    USER_ID," +
+                            "    APPLICATIONCODE," +
+                            "    INVOICEID," +
+                            "    DESCRIPTION," +
+                            "    CREATIONDATE" +
+                            ") VALUES (?,?,?,?,?,?,?,?,?,TO_Date(?,'YYYY/MM/DD HH24:MI:SS'))", params, resultHandler -> {
+                        if (resultHandler.failed()) {
+                            logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+                            promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+                            return;
+                        }
+                        logger.trace("saveUserHistoryPointByAppTransaction");
+                        promise.complete(seqtHandler.result().getRows().get(0).getInteger("ID"));
+
+                    });
+                }
+            }
+        });
+        
+        return promise.future();
+    
+    }
 
 	public static Future<JsonObject> fetchTransactionById(SQLConnection sqlConnection, Integer id) {
 		

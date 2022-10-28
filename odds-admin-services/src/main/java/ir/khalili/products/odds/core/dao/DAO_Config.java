@@ -133,6 +133,36 @@ public class DAO_Config {
         return promise.future();
     }
      
+    public static Future<JsonObject> fetchBySymbol(SQLConnection sqlConnection, int leagueId, String symbol) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        params.add(symbol);
+        
+        sqlConnection.queryWithParams("SELECT "
+        		+ "c.id,"
+        		+ "c.NAME,"
+        		+ "c.SYMBOL,"
+        		+ "c.type,"
+        		+ "c.value "
+        		+ "  FROM toppconfig c WHERE c.league_Id = ? and c.SYMBOL=?", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                    promise.fail(new DAOEXCP_Internal(-100, "کانفیگ مورد نظر یافت نشد"));
+                } else {
+                    logger.trace("fetchAllConfigBySymbolSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
 	public static Future<Void> doSaveConfigLeague(SQLConnection sqlConnection, int leagueId) {
 
 		Promise<Void> promise = Promise.promise();
@@ -152,6 +182,9 @@ public class DAO_Config {
 		params.add(new JsonArray().add("ضریب حداقل").add("MINIMUM_COEFFICIENT").add("2").add("Number").add(leagueId));
 		params.add(new JsonArray().add("امتیاز هر تراکنش").add("POINTS_PER_TRANSACTION").add("10").add("Number").add(leagueId));
 		params.add(new JsonArray().add("مبلغ هر تراکنش").add("AMOUNT_PER_TRANSACTION").add("50000").add("Number").add(leagueId));
+		params.add(new JsonArray().add("شناسه بسته برنزی").add("PRODUCT_BRONZE_PACKAGE").add("1").add("Number").add(leagueId));
+		params.add(new JsonArray().add("شناسه بسته نقره ای").add("PRODUCT_SILVER_PACKAGE").add("1").add("Number").add(leagueId));
+		params.add(new JsonArray().add("شناسه بسته طلایی").add("PRODUCT_GOLDEN_PACKAGE").add("1").add("Number").add(leagueId));
 		
 		sqlConnection.batchWithParams(
 				"insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,?,?,?,?,?)" 

@@ -101,5 +101,6 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TRANSACTION_ALL_FETCH				= "nas.eb.core.srvc.transaction.all.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TRANSACTION_REJECT					= "nas.eb.core.srvc.transaction.reject";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TRANSACTION_CONFIRM					= "nas.eb.core.srvc.transaction.confirm";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TRANSACTION_SAVE					= "nas.eb.core.srvc.transaction.save";
 	
 }

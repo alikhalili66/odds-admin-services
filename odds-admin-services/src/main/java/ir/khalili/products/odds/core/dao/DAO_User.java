@@ -243,5 +243,32 @@ public class DAO_User {
         return promise.future();
     }
     
-      
+    public static Future<JsonObject> fetchUserByUGID(SQLConnection sqlConnection, int leagueId, String UGID) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        params.add(UGID);
+
+        sqlConnection.queryWithParams("SELECT " +
+                "  TU.ID , " +
+                "  TU.NIKENAME, " +
+                "  TU.POINT, " +
+                "  TU.AMOUNT   " +
+                "  FROM TOPPUSER TU " +
+                "  WHERE LEAGUE_ID = ? and TU.UGID    = ? ", params, resultHandler -> {
+            if (resultHandler.failed()) {
+                logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == resultHandler.result() || null == resultHandler.result().getRows() || resultHandler.result().getRows().isEmpty()) {
+                    promise.fail(new DAOEXCP_Internal(-100, "کاربر مورد نظر موجود نمی باشد."));
+                } else {
+                    logger.trace("fetchUserByUGID01");
+                    promise.complete(resultHandler.result().getRows().get(0));
+                }
+            }
+        });
+
+        return promise.future();
+    }
 }

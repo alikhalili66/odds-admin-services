@@ -42,10 +42,13 @@ public class DAO_Group {
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				if(resultHandler.cause().getMessage().toUpperCase().contains("UN_GROUP_NAME")) {
+					logger.error("UN_GROUP_NAME_UNIQUE_CONSTRAINT");
 					promise.fail(new DAOEXCP_Internal(-100, "نام تکراری است."));
 				}else if(resultHandler.cause().getMessage().toUpperCase().contains("UN_GROUP_SYMBOL")) {
+					logger.error("UN_GROUP_SYMBOL_UNIQUE_CONSTRAINT");
 					promise.fail(new DAOEXCP_Internal(-100, "نماد تکراری است."));
 				}else {
+					logger.error("SAVE_GROUP_FAILED.");
 					promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
 				}
 				return;
@@ -81,10 +84,13 @@ public class DAO_Group {
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				if(resultHandler.cause().getMessage().toUpperCase().contains("UN_GROUP_NAME")) {
+					logger.error("UN_GROUP_NAME_UNIQUE_CONSTRAINT");
 					promise.fail(new DAOEXCP_Internal(-100, "نام تکراری است."));
 				}else if(resultHandler.cause().getMessage().toUpperCase().contains("UN_GROUP_SYMBOL")) {
+					logger.error("UN_GROUP_SYMBOL_UNIQUE_CONSTRAINT");
 					promise.fail(new DAOEXCP_Internal(-100, "نماد تکراری است."));
 				}else {
+					logger.error("UPDATE_GROUP_FAILED.");
 					promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
 				}
 				return;
@@ -135,6 +141,7 @@ public class DAO_Group {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchAllGroupNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchAllGroupSuccessful");
@@ -165,6 +172,7 @@ public class DAO_Group {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchGroupByIdNoDataFound");
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
                     logger.trace("fetchAllGroupByIdSuccessful");
@@ -240,6 +248,7 @@ public class DAO_Group {
             } else {
 
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchTeamNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("TeamfetchQuestionSuccessful");

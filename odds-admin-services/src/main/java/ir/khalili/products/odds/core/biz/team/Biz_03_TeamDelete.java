@@ -22,6 +22,7 @@ public class Biz_03_TeamDelete {
 
         DAO_Team.delete(sqlConnection, teamId).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }

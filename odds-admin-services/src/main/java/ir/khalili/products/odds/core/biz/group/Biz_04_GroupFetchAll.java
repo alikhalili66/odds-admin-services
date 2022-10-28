@@ -18,6 +18,7 @@ public class Biz_04_GroupFetchAll {
 
         DAO_Group.fetchAll(sqlConnection, message).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result);
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }

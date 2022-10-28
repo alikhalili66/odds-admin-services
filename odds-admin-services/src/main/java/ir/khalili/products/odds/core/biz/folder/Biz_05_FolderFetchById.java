@@ -21,6 +21,7 @@ public class Biz_05_FolderFetchById {
 
 		DAO_Folder.fetchById(sqlConnection, folderId).onComplete(result -> {
 			if (result.failed()) {
+				logger.error("Unable to complete result: " + result.cause());
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;
 			}

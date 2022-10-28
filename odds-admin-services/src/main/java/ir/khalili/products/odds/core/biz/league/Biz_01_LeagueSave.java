@@ -21,8 +21,8 @@ public class Biz_01_LeagueSave {
         logger.trace("inputMessage:" + message);
 
         DAO_League.fetchSequence(sqlConnection).onComplete(handlerSeq->{
-        	
         	if (handlerSeq.failed()) {
+        		logger.error("Unable to complete handlerSeq: " + handlerSeq.cause());
                 resultHandler.handle(Future.failedFuture(handlerSeq.cause()));
                 return;
             }
@@ -32,6 +32,7 @@ public class Biz_01_LeagueSave {
             
             CompositeFuture.join(futSave, futConfig).onComplete(handler -> {
                 if (handler.failed()) {
+                	logger.error("Unable to complete handler: " + handler.cause());
                     resultHandler.handle(Future.failedFuture(handler.cause()));
                     return;
                 }

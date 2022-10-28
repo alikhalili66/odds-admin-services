@@ -102,7 +102,7 @@ public class DAO_Transaction {
 			}
 			
 			if(null == resultHandler.result() || null == resultHandler.result().getRows() || resultHandler.result().getRows().isEmpty()) {
-				logger.warn("TransactionFetchByTransactionIdNotFound");
+				logger.error("TransactionFetchByTransactionIdNotFound");
 				promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد."));
 			}else {
 				logger.trace("TransactionFetchByTransactionIdRESULT:"+ resultHandler.result().getRows().get(0));
@@ -115,6 +115,43 @@ public class DAO_Transaction {
 	}
 
     
+	public static Future<Integer> fetchCountAllTransaction(SQLConnection sqlConnection, JsonObject message) {
+		
+		Promise<Integer> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		
+		params.add(null == message.getString("date") ? null : message.getString("date").split(" ")[0]);
+		params.add(message.getString("username"));
+		params.add(message.getString("status"));
+		
+		sqlConnection.queryWithParams("select count(*) CNT " +
+				" FROM topptransaction t " +
+				" where 1=1 "
+				+ " and trunc(CREATIONDATE) = nvl(TO_DATE(?, 'YYYY-MM-DD'),trunc(CREATIONDATE)) "
+				+ " and t.username=nvl(?,t.username) "
+				+ " and t.status=nvl(?,t.status) " +
+				" ", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			if(null == resultHandler.result() || null == resultHandler.result().getRows() || resultHandler.result().getRows().isEmpty()) {
+				logger.error("TransactionCountNotFound");
+				promise.complete(0);
+			}else {
+				logger.trace("FetchCountAllTransactionRESULT:"+ resultHandler.result().getRows().get(0).getInteger("CNT"));
+				promise.complete(resultHandler.result().getRows().get(0).getInteger("CNT"));
+			}
+			
+		});
+		
+		return promise.future();
+	}
+
+	
 	public static Future<List<JsonObject>> fetchAllTransaction(SQLConnection sqlConnection, JsonObject message) {
 		
 		Promise<List<JsonObject>> promise = Promise.promise();
@@ -153,7 +190,7 @@ public class DAO_Transaction {
 			}
 			
 			if(null == resultHandler.result() || null == resultHandler.result().getRows() || resultHandler.result().getRows().isEmpty()) {
-				logger.warn("TransactionNotFound");
+				logger.error("TransactionNotFound");
 				promise.complete(new ArrayList<>());
 			}else {
 				logger.trace("TransactionRESULT:"+ resultHandler.result().getRows().get(0));

@@ -27,6 +27,7 @@ public class DAO_CompetitionReport {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchRegisteredUsersCountNoDataFound");
                 	promise.complete(0);
                 } else {
                     logger.trace("fetchRegisteredUsersCountSuccessful");

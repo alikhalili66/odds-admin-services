@@ -22,17 +22,20 @@ public class Biz_06_TeamImageUpdate {
 
         DAO_Team.fetchById(sqlConnection, message.getInteger("teamId")).onComplete(handler0 -> {
         	if (handler0.failed()) {
+        		logger.error("Unable to complete handler0: " + handler0.cause());
         		resultHandler.handle(Future.failedFuture(handler0.cause()));
         		return;
         	}
         	HelperImage.saveImage(vertx, message.getString("image"), handler0.result().getString("NAME")).onComplete(result -> {
         		if (result.failed()) {
+        			logger.error("Unable to complete result: " + result.cause());
         			resultHandler.handle(Future.failedFuture(result.cause()));
         			return;
         		}
         		message.put("image", result.result());
         		DAO_Team.updateImage(sqlConnection, message).onComplete(handler -> {
         			if (handler.failed()) {
+        				logger.error("Unable to complete handler: " + handler.cause());
         				resultHandler.handle(Future.failedFuture(handler.cause()));
         				return;
         			}

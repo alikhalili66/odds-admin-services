@@ -22,6 +22,7 @@ public class Biz_01_ReportRegisteredUsersCount {
         
         DAO_Report.fetchRegisteredUsersCount(sqlConnection, leagueId).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }

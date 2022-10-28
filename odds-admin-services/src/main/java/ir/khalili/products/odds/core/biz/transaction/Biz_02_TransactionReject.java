@@ -29,8 +29,8 @@ public class Biz_02_TransactionReject {
     	Future<JsonObject> futTransactionFetchByTransactionId = DAO_Transaction.fetchTransactionById(sqlConnection, id);
     	
     	CompositeFuture.all(futTransactionFetchByTransactionId, Helper.createFutureVoid()).onComplete(joinHandler01 -> {
-    		
             if (joinHandler01.failed()) {
+            	logger.error("Unable to complete joinHandler01: " + joinHandler01.cause());
                 resultHandler.handle(Future.failedFuture(joinHandler01.cause()));
                 return;
             }
@@ -38,7 +38,8 @@ public class Biz_02_TransactionReject {
             logger.trace("transaction:" + futTransactionFetchByTransactionId.result());
             
             if(!futTransactionFetchByTransactionId.result().getString("STATUS").equals(TransactionStatus.pending.getStatus())) {
-            	 resultHandler.handle(Future.failedFuture(new BIZEXCP_Transaction(-100, "وضعیت تراکنش در حال بررسی نمی باشد.")));
+            	logger.error("TRANSACTION_STATUS_FAILED");
+            	resultHandler.handle(Future.failedFuture(new BIZEXCP_Transaction(-100, "وضعیت تراکنش در حال بررسی نمی باشد.")));
                 return;
             }
             
@@ -51,8 +52,8 @@ public class Biz_02_TransactionReject {
             }
             
             futTransactionId.onComplete(joinHandler02->{
-            	
             	if (joinHandler02.failed()) {
+            		logger.error("Unable to complete joinHandler02: " + joinHandler02.cause());
                     resultHandler.handle(Future.failedFuture(joinHandler02.cause()));
                     return;
                 }
@@ -60,13 +61,14 @@ public class Biz_02_TransactionReject {
             	HelperPayPod.rejectTransaction(futTransactionFetchByTransactionId.result().getString("USERNAME"), futTransactionId.result()).onComplete(joinHandler03 -> {
                    
             		if (joinHandler03.failed()) {
+            			logger.error("Unable to complete joinHandler03: " + joinHandler03.cause());
                         resultHandler.handle(Future.failedFuture(joinHandler03.cause()));
                         return;
                     }
                     
                     DAO_Transaction.updateTransactionStatus(sqlConnection, id, TransactionStatus.reject.getStatus()).onComplete(joinHandler04->{
-                    	
                     	 if (joinHandler04.failed()) {
+                    		 logger.error("Unable to complete joinHandler04: " + joinHandler04.cause());
                              resultHandler.handle(Future.failedFuture(joinHandler04.cause()));
                              return;
                          }

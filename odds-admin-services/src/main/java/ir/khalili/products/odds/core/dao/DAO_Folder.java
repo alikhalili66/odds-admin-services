@@ -117,6 +117,7 @@ public class DAO_Folder {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchAllFolderNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("fetchAllFolderSuccessful");
@@ -146,6 +147,7 @@ public class DAO_Folder {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchFolderByIdNoDataFound");
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
                     logger.trace("fetchAllFolderByIdSuccessful");
@@ -220,6 +222,7 @@ public class DAO_Folder {
             } else {
 
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchQuestionNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
                     logger.trace("FolderfetchQuestionSuccessful");

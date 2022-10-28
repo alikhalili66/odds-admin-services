@@ -22,6 +22,7 @@ public class Biz_05_GroupFetchById {
 
 		DAO_Group.fetchById(sqlConnection, groupId).onComplete(result -> {
 			if (result.failed()) {
+				logger.error("Unable to complete result: " + result);
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;
 			}

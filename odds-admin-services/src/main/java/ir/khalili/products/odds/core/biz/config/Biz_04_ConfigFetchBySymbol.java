@@ -22,6 +22,7 @@ public class Biz_04_ConfigFetchBySymbol {
 
 		DAO_Config.fetchBySymbol(sqlConnection, symbol).onComplete(result -> {
 			if (result.failed()) {
+				logger.error("Unable to complete result: " + result.cause());
 				resultHandler.handle(Future.failedFuture(result.cause()));
 				return;
 			}

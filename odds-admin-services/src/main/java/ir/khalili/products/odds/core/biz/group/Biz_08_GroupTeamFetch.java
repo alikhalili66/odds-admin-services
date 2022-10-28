@@ -22,12 +22,14 @@ public class Biz_08_GroupTeamFetch {
 
         DAO_Group.fetchTeam(sqlConnection, message).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result);
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }
             
             HelperImage.getImage(vertx, result.result()).onComplete(result0 -> {
                 if (result0.failed()) {
+                	logger.error("Unable to complete result0: " + result0);
                     resultHandler.handle(Future.failedFuture(result0.cause()));
                     return;
                 }

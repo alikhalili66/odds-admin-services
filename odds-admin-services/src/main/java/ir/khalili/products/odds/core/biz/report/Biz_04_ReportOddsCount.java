@@ -22,6 +22,7 @@ public class Biz_04_ReportOddsCount {
         
         DAO_Report.fetchOddsCount(sqlConnection, leagueId).onComplete(result -> {
             if (result.failed()) {
+            	logger.error("Unable to complete result: " + result.cause());
                 resultHandler.handle(Future.failedFuture(result.cause()));
                 return;
             }

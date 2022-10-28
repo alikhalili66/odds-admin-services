@@ -20,6 +20,7 @@ public class Biz_07_GroupTeamUnAssign {
 
         DAO_Group.unAssignQuestion(sqlConnection, message).onComplete(handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to complete handler: " + handler);
                 resultHandler.handle(Future.failedFuture(handler.cause()));
                 return;
             }

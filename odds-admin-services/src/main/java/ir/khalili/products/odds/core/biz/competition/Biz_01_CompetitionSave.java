@@ -20,6 +20,7 @@ public class Biz_01_CompetitionSave {
 
         DAO_Competition.save(sqlConnection, message).onComplete(handler -> {
             if (handler.failed()) {
+            	logger.error("Unable to complete handle: " + handler.cause());
                 resultHandler.handle(Future.failedFuture(handler.cause()));
                 return;
             }

@@ -30,43 +30,54 @@ public class Biz_04_TransactionSave {
         final String description = message.getString("description");
         final String UGID = message.getString("userId");
         final String date = message.getString("date");
-        final Integer leagueId = message.getInteger("leagueId");
         
-        Future<JsonObject> futPoint = DAO_Config.fetchBySymbol(sqlConnection, leagueId, "POINTS_PER_TRANSACTION");
-        Future<JsonObject> futAmount = DAO_Config.fetchBySymbol(sqlConnection, leagueId, "AMOUNT_PER_TRANSACTION");
-        Future<JsonObject> futLeague = DAO_League.fetchValidLeagueById(sqlConnection, leagueId);
-        Future<JsonObject> futUser = DAO_User.fetchUserByUGID(sqlConnection, leagueId, UGID);
-
-        CompositeFuture.join(futPoint, futAmount, futLeague, futUser).onComplete(joinHandler01 -> {
-
-            if (joinHandler01.failed()) {
-                logger.error("Unable to complete joinHandler01: " + joinHandler01.cause());
-                resultHandler.handle(Future.failedFuture(joinHandler01.cause()));
+        DAO_Config.fetchActiveLeague(sqlConnection).onComplete(leagueHandler->{
+        	
+        	if (leagueHandler.failed()) {
+                logger.error("Unable to complete leagueHandler: " + leagueHandler.cause());
+                resultHandler.handle(Future.failedFuture(leagueHandler.cause()));
                 return;
             }
-            
-            int minAmount = Integer.parseInt(futAmount.result().getString("VALUE"));
-            int point = amount/ minAmount;
-            
-            Future<Integer> futTransaction = DAO_Transaction.saveTransaction(sqlConnection, point, amount, futUser.result().getInteger("ID"), applicationCode, invoiceId, description, date);
-            Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futUser.result().getInteger("ID")).put("AMOUNT", amount).put("POINT", point));
-            Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, point, 0l, futUser.result().getInteger("ID"));
-            
-        	CompositeFuture.all(futTransaction , futSaveUserPointHistory, futUpdateUserPointAndAmount).onComplete(joinHandler04 -> {
-                
-        		if (joinHandler04.failed()) {
-                    resultHandler.handle(Future.failedFuture(joinHandler04.cause()));
-                    return;
-                }
-                logger.trace("TRANSACTION_CONFIRM_DONE");
-                resultHandler.handle(Future.succeededFuture(
-                		new JsonObject()
-                		.put("resultCode", 1)
-                		.put("resultMessage", "عملیات با موفقیت انجام شد.")
-                		));
-        	});
 
+        	final Integer leagueId = leagueHandler.result();
+        	
+        	Future<JsonObject> futPoint = DAO_Config.fetchBySymbol(sqlConnection, leagueId, "POINTS_PER_TRANSACTION");
+        	Future<JsonObject> futAmount = DAO_Config.fetchBySymbol(sqlConnection, leagueId, "AMOUNT_PER_TRANSACTION");
+        	Future<JsonObject> futLeague = DAO_League.fetchValidLeagueById(sqlConnection, leagueId);
+        	Future<JsonObject> futUser = DAO_User.fetchUserByUGID(sqlConnection, leagueId, UGID);
+        	
+        	CompositeFuture.join(futPoint, futAmount, futLeague, futUser).onComplete(joinHandler01 -> {
+        		
+        		if (joinHandler01.failed()) {
+        			logger.error("Unable to complete joinHandler01: " + joinHandler01.cause());
+        			resultHandler.handle(Future.failedFuture(joinHandler01.cause()));
+        			return;
+        		}
+        		
+        		int minAmount = Integer.parseInt(futAmount.result().getString("VALUE"));
+        		int point = amount/ minAmount;
+        		
+        		Future<Integer> futTransaction = DAO_Transaction.saveTransaction(sqlConnection, point, amount, futUser.result().getInteger("ID"), applicationCode, invoiceId, description, date);
+        		Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futUser.result().getInteger("ID")).put("AMOUNT", amount).put("POINT", point));
+        		Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, point, 0l, futUser.result().getInteger("ID"));
+        		
+        		CompositeFuture.all(futTransaction , futSaveUserPointHistory, futUpdateUserPointAndAmount).onComplete(joinHandler04 -> {
+        			
+        			if (joinHandler04.failed()) {
+        				resultHandler.handle(Future.failedFuture(joinHandler04.cause()));
+        				return;
+        			}
+        			logger.trace("TRANSACTION_CONFIRM_DONE");
+        			resultHandler.handle(Future.succeededFuture(
+        					new JsonObject()
+        					.put("resultCode", 1)
+        					.put("resultMessage", "عملیات با موفقیت انجام شد.")
+        					));
+        		});
+        		
+        	});
         });
+        
     }
 
 }

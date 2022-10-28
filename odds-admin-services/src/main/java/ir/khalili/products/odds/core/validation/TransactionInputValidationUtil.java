@@ -189,7 +189,6 @@ public final class TransactionInputValidationUtil {
         String description;
         String userId;
         String date;
-        Integer leagueId;
 		
         try {
             final JsonObject inputParameters = InputValidationUtil.validate(context);
@@ -199,7 +198,6 @@ public final class TransactionInputValidationUtil {
             description = inputParameters.getString("description");
             userId = inputParameters.getString("userId");
             date = inputParameters.getString("date");
-            leagueId = inputParameters.getInteger("leagueId");
 
             if (null == applicationCode || applicationCode.isEmpty() || applicationCode.length() > 100) {
                 throw new EXCP_RtMgr_Validation(-603, "کد برنامه صحیح نمی باشد.");
@@ -221,10 +219,6 @@ public final class TransactionInputValidationUtil {
                 throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر صحیح نمی باشد.");
             }
             
-            if (null == leagueId || leagueId < 1) {
-            	throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
-            }
-
             if (null == date || date.isEmpty()) {
                 throw new EXCP_RtMgr_Validation(-603, "زمان وارد شده تراکنش صحیح نمی باشد.");
             }
@@ -247,7 +241,6 @@ public final class TransactionInputValidationUtil {
         joResult.put("description", description);
         joResult.put("userId", userId);
         joResult.put("date", date);
-        joResult.put("leagueId", leagueId);
 		
 		joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 		joResult.put("ip", context.request().remoteAddress().host());

@@ -15,7 +15,8 @@ insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.n
 insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'شناسه بسته طلایی','PRODUCT_GOLDEN_PACKAGE',100,'Number',1);
 
 insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'شناسه لیگ فعال در پنل کاربری','ACTIVE_LEAGUE_ID',1,'Number',null);
-insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'محدودیت خرید روزانه','LIMITATION_BUY_PACKAGE',5000000,'Number',null);
-insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'ضریب حداقل','MINIMUM_COEFFICIENT',2,'Number',null);
-insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'امتیاز هر تراکنش','POINTS_PER_TRANSACTION',10,'Number',null);
-insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'مبلغ هر تراکنش','AMOUNT_PER_TRANSACTION',50000,'Number',null);
+
+insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'محدودیت خرید روزانه','LIMITATION_BUY_PACKAGE',5000000,'Number',1);
+--insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'ضریب حداقل','MINIMUM_COEFFICIENT',2,'Number',1);
+insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'امتیاز هر تراکنش','POINTS_PER_TRANSACTION',10,'Number',1);
+insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'مبلغ هر تراکنش','AMOUNT_PER_TRANSACTION',50000,'Number',1);

@@ -55,7 +55,7 @@ public class Biz_04_TransactionSave {
         		}
         		
         		int minAmount = Integer.parseInt(futAmount.result().getString("VALUE"));
-        		int point = amount/ minAmount;
+        		int point = (amount/ minAmount) * Integer.parseInt(futPoint.result().getString("VALUE"));
         		
         		Future<Integer> futTransaction = DAO_Transaction.saveTransaction(sqlConnection, point, amount, futUser.result().getInteger("ID"), applicationCode, invoiceId, description, date);
         		Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futUser.result().getInteger("ID")).put("AMOUNT", amount).put("POINT", point));

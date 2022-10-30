@@ -385,7 +385,7 @@ public class CallCompetition extends AbstractVerticle {
 	
 	public void competitionPointCalculation(WebClient client) {
 		JsonObject joInput = new JsonObject();
-		joInput.put("competitionId", 1);
+		joInput.put("competitionId", 31);
 		
 		System.out.println("joInput:" + joInput);
 		try {

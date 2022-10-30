@@ -60,7 +60,10 @@ public class Biz_05_ReportCalculateCompetition {
             	for (JsonObject joOdds : futOdds.result()) {
 					if(joOdds.getInteger("QUESTION_ID").intValue() == joQuestion.getInteger("ID").intValue()) {
 						if(joResult.size() < 4) {
-							joResult.put(joOdds.getString("ANSWER"), joOdds.getInteger("COUNT") / totalCount);
+							
+//							System.out.println("QID: " + joOdds.getInteger("QUESTION_ID").intValue() + ", COUNT: " + joOdds.getInteger("COUNT") + ", totalCount:" + totalCount + ", Result:" + joOdds.getInteger("COUNT") * 100 / totalCount);
+							
+							joResult.put(joOdds.getString("ANSWER"), joOdds.getInteger("COUNT") * 100 / totalCount);
 						}
 					}
 				}

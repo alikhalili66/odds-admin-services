@@ -325,7 +325,7 @@ public final class CompetitionInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			
 			joResult.put("leagueId", leagueId);
-			joResult.put("leagueId", leagueId);
+			joResult.put("groupId", groupId);
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());

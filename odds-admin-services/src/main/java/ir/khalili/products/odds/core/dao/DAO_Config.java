@@ -192,7 +192,9 @@ public class DAO_Config {
 //		params.add(new JsonArray().add("ضریب حداقل").add("MINIMUM_COEFFICIENT").add("2").add("Number").add(leagueId));
 		params.add(new JsonArray().add("امتیاز هر تراکنش").add("POINTS_PER_TRANSACTION").add("10").add("Number").add(leagueId));
 		params.add(new JsonArray().add("مبلغ هر تراکنش").add("AMOUNT_PER_TRANSACTION").add("50000").add("Number").add(leagueId));
+		params.add(new JsonArray().add("شناسه گروه پیشفرض").add("DEFAULT_GROUP_ID").add("1").add("Number").add(leagueId));
 
+		
 		sqlConnection.batchWithParams("insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,?,?,?,?,?)" , params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());

@@ -37,7 +37,9 @@ public class Biz_03_TransactionConfirm {
                 return;
             }
             
-            if(!futTransactionFetchByTransactionId.result().getString("STATUS").equals(TransactionStatus.pending.getStatus())) {
+            JsonObject joTransaction = futTransactionFetchByTransactionId.result();
+          
+            if(!joTransaction.getString("STATUS").equals(TransactionStatus.pending.getStatus())) {
             	logger.error("TRANSACTION_STATUS_FAILED");
            	 	resultHandler.handle(Future.failedFuture(new BIZEXCP_Transaction(-100, "وضعیت تراکنش در حال بررسی نمی باشد.")));
            	 	return;
@@ -46,7 +48,7 @@ public class Biz_03_TransactionConfirm {
             Future<String> futTransactionId;
             
             if(null == message.getString("transactionId")) {
-            	futTransactionId = HelperPayPod.checkTransaction(futTransactionFetchByTransactionId.result().getString("INVOICEID"));
+            	futTransactionId = HelperPayPod.checkTransaction(joTransaction.getString("INVOICEID"));
             }else {
             	futTransactionId = Helper.createFuture(message.getString("transactionId"));
             }
@@ -59,8 +61,8 @@ public class Biz_03_TransactionConfirm {
                     return;
                 }
             	
-            	Future<JsonObject> futFetchById = DAO_User.fetchById(sqlConnection, futTransactionFetchByTransactionId.result().getInteger("USER_ID"));
-            	Future<Void> futConfirmTransaction = HelperPayPod.confirmTransaction(futTransactionFetchByTransactionId.result().getString("INVOICEID"), futTransactionId.result());
+            	Future<JsonObject> futFetchById = DAO_User.fetchById(sqlConnection, joTransaction.getInteger("USER_ID"));
+            	Future<Void> futConfirmTransaction = HelperPayPod.confirmTransaction(joTransaction.getString("INVOICEID"), futTransactionId.result());
             	
             	CompositeFuture.all(futFetchById, futConfirmTransaction).onComplete(joinHandler03 -> {
                     if (joinHandler03.failed()) {
@@ -69,7 +71,7 @@ public class Biz_03_TransactionConfirm {
                         return;
                     }
                     
-                    Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futFetchById.result().getInteger("ID")).put("AMOUNT", futFetchById.result().getLong("AMOUNT")).put("POINT", futFetchById.result().getInteger("POINT")), "B");
+                    Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futFetchById.result().getInteger("ID")).put("AMOUNT", futFetchById.result().getLong("AMOUNT")).put("POINT", futFetchById.result().getInteger("POINT")), "B", joTransaction.getString("DESCRIPTION"));
                     Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, futFetchById.result().getInteger("POINT"), futFetchById.result().getLong("AMOUNT"), futFetchById.result().getInteger("ID"));
                     Future<Void> futUpdateTransactionStatus = DAO_Transaction.updateTransactionStatus(sqlConnection, id, futTransactionId.result(), TransactionStatus.confirm.getStatus());
                     

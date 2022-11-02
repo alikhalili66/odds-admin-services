@@ -59,9 +59,7 @@ public class Biz_04_TransactionSave {
         		
         		Future<Integer> futTransaction = DAO_Transaction.saveTransaction(sqlConnection, point, amount, futUser.result().getInteger("ID"), applicationCode, invoiceId, description, date);
         		
-        		String historyType = "A";
-        		
-        		Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futUser.result().getInteger("ID")).put("AMOUNT", amount).put("POINT", point), historyType);
+        		Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futUser.result().getInteger("ID")).put("AMOUNT", amount).put("POINT", point), "T", description);
         		Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, point, 0l, futUser.result().getInteger("ID"));
         		
         		CompositeFuture.all(futTransaction , futSaveUserPointHistory, futUpdateUserPointAndAmount).onComplete(joinHandler04 -> {

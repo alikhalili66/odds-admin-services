@@ -158,7 +158,7 @@ public class DAO_User {
         return promise.future();
     }
     
-    public static Future<Void> saveUserPointHistory(SQLConnection sqlConnection, JsonObject message, String historyType) {
+    public static Future<Void> saveUserPointHistory(SQLConnection sqlConnection, JsonObject message, String historyType, String historyDescription) {
 
     	Promise<Void> promise = Promise.promise();
 		
@@ -166,7 +166,7 @@ public class DAO_User {
 		params.add(message.getInteger("ID"));
 		params.add(message.getInteger("POINT"));
 		params.add(historyType);
-		params.add(null);
+		params.add(historyDescription);
 		params.add(message.getLong("AMOUNT"));
 		
 		sqlConnection.updateWithParams(""

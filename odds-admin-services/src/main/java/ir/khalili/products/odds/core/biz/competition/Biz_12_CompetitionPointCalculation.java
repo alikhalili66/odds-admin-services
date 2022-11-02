@@ -30,14 +30,18 @@ public class Biz_12_CompetitionPointCalculation {
         final Integer competitionId = message.getInteger("competitionId");
 
         logger.trace("CALCULATE_TOTAL_POINT_FOR_THIS_COMPETITION_PER_QUESTION_ID");
-        DAO_Competition.fetchOddsTotalPointByCompetitionId(sqlConnection, competitionId).onComplete(totalPointResult -> {
-            if (totalPointResult.failed()) {
-            	logger.error("Unable to complete totalPointResult: " + totalPointResult.cause());
-                resultHandler.handle(Future.failedFuture(totalPointResult.cause()));
+        
+        Future<JsonObject> futCompetition = DAO_Competition.fetchById(sqlConnection, competitionId);
+        Future<List<JsonObject>> futTtalPointResult = DAO_Competition.fetchOddsTotalPointByCompetitionId(sqlConnection, competitionId);
+        
+        CompositeFuture.join(futCompetition, futTtalPointResult).onComplete(joinHandler01 -> {
+            if (joinHandler01.failed()) {
+            	logger.error("Unable to complete joinHandler01: " + joinHandler01.cause());
+                resultHandler.handle(Future.failedFuture(joinHandler01.cause()));
                 return;
             }
             
-            List<JsonObject> totalPointList = totalPointResult.result();
+            List<JsonObject> totalPointList = futTtalPointResult.result();
             logger.trace("TOTAL_POINT_LIST : " + totalPointList);
             
             Map<Integer, Future<List<JsonObject>>> mapWinners = new HashMap<>();
@@ -117,6 +121,8 @@ public class Biz_12_CompetitionPointCalculation {
                     }
                 }
                 
+                final String historyDescription = "پیشبینی " + futCompetition.result().getString("TEAM1_NAME") + "-" + futCompetition.result().getString("TEAM2_NAME");
+                
                 CompositeFuture.all(futList2).onComplete(result2 -> {
                     if (result2.failed()) {
                     	logger.error("Unable to complete result2: " + result2.cause());
@@ -134,7 +140,7 @@ public class Biz_12_CompetitionPointCalculation {
             				JsonObject joWinnerUser = (JsonObject) obj2.next();
             				Future<Void> futUpdateRewardPointForWinners = DAO_Competition.updateUserPointForCalculation(sqlConnection, joTotalPoint.getInteger("QUESTION_ID"), competitionId, joWinnerUser.getInteger("USER_ID"));
             				futList3.add(futUpdateRewardPointForWinners);
-            				Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, mapWinnerUsers.get(joWinnerUser.getInteger("USER_ID")).result(), "W");
+            				Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, mapWinnerUsers.get(joWinnerUser.getInteger("USER_ID")).result(), "W", historyDescription);
             				futList3.add(futSaveUserPointHistory);
                         }
                         

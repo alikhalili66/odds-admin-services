@@ -8,6 +8,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import ir.khalili.products.odds.core.enums.AccessLockIn;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
 
 public final class TeamInputValidationUtil {
@@ -20,7 +21,7 @@ public final class TeamInputValidationUtil {
 
 	public static void validateSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TEAM_SAVE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -84,7 +85,7 @@ public final class TeamInputValidationUtil {
 
 	public static void validateImageUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TEAM_IMAGE_UPDATE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -135,7 +136,7 @@ public final class TeamInputValidationUtil {
 	
 	public static void validateUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TEAM_UPDATE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -199,7 +200,7 @@ public final class TeamInputValidationUtil {
 	
 	public static void validateDelete(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TEAM_DELETE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -242,7 +243,7 @@ public final class TeamInputValidationUtil {
 	
 	public static void validateMemberDelete(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TEAM_MEMBER_DELETE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -285,7 +286,7 @@ public final class TeamInputValidationUtil {
 	
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TEAM_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -329,7 +330,7 @@ public final class TeamInputValidationUtil {
 	
 	public static void validateFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TEAM_FETCH_BY_ID).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -370,9 +371,9 @@ public final class TeamInputValidationUtil {
 
     }
 	
-	public static void validateMemberFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+	public static void validateMemberFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TEAM_MEMBER_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -415,7 +416,7 @@ public final class TeamInputValidationUtil {
 	
 	public static void validateMemberUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TEAM_MEMBER_UPDATE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -487,7 +488,7 @@ public final class TeamInputValidationUtil {
 	
 	public static void validateMemberSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TEAM_MEMBER_SAVE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

@@ -517,18 +517,23 @@ public class DAO_Competition {
     }
     
     
-    public static Future<Void> updateRewardPointForCalculation(SQLConnection sqlConnection, int coefficient, Integer questionId, Integer competitionId, Integer userId) {
+    public static Future<Void> updateRewardPointForCalculation(SQLConnection sqlConnection, int coefficient, Integer questionId, Integer competitionId, List<Integer> winnerUserIdList) {
 
 		Promise<Void> promise = Promise.promise();
 		
-		JsonArray params = new JsonArray();
+		List<JsonArray> params = new ArrayList<>();
 		
-		params.add(coefficient);
-		params.add(questionId);
-		params.add(competitionId);
-		params.add(userId);
+		winnerUserIdList.forEach(id -> {
+			params.add(new JsonArray()
+					.add(coefficient)
+					.add(questionId)
+					.add(competitionId)
+					.add(id)
+					);
+		});
 		
-		sqlConnection.updateWithParams(""
+		
+		sqlConnection.batchWithParams(""
 				+ "update toppodds o set "
 				+ "o.rewardpoint= o.POINT * ? "
 				+ " where o.question_id=? and o.competition_id=? and o.user_id=?", params, resultHandler->{
@@ -546,18 +551,21 @@ public class DAO_Competition {
 		return promise.future();
 	}
     
-    public static Future<Void> updateUserPointForCalculation(SQLConnection sqlConnection, Integer questionId, Integer competitionId, Integer userId) {
+    public static Future<Void> updateUserPointForCalculation(SQLConnection sqlConnection, Integer questionId, Integer competitionId, List<Integer> winnerUserIdList) {
 
 		Promise<Void> promise = Promise.promise();
 		
-		JsonArray params = new JsonArray();
+		List<JsonArray> params = new ArrayList<>();
+		winnerUserIdList.forEach(id -> {
+			params.add(new JsonArray()
+					.add(competitionId)
+					.add(id)
+					.add(questionId)
+					.add(id));
+					
+		});
 		
-		params.add(competitionId);
-		params.add(userId);
-		params.add(questionId);
-		params.add(userId);
-		
-		sqlConnection.updateWithParams("UPDATE toppuser u " + 
+		sqlConnection.batchWithParams("UPDATE toppuser u " + 
 				"SET" + 
 				"    u.point = nvl(u.point + (" + 
 				"        SELECT" + 

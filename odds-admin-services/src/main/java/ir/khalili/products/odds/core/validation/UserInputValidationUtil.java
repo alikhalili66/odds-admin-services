@@ -8,6 +8,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import ir.khalili.products.odds.core.enums.AccessLockIn;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
 import ir.khalili.products.odds.core.utils.NationalNumberChecker;
 
@@ -21,7 +22,7 @@ public final class UserInputValidationUtil {
 
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_USER_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -92,7 +93,7 @@ public final class UserInputValidationUtil {
 	
 	public static void validateFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_USER_FETCH_BY_ID).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -135,7 +136,7 @@ public final class UserInputValidationUtil {
 	
 	public static void validateFetchOdds(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_USER_FETCH_ODDS).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -193,7 +194,7 @@ public final class UserInputValidationUtil {
 	
 	public static void validateUserFetchQuestionAnswer(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_USER_FETCH_QUESTION_ANSWER).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -241,7 +242,7 @@ public final class UserInputValidationUtil {
 	
 	public static void validateUserPointHistory(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_USER_FETCH_POINT_HISTORY).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

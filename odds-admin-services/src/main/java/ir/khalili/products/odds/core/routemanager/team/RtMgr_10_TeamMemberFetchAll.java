@@ -21,7 +21,7 @@ public class RtMgr_10_TeamMemberFetchAll   {
 	
 	public static void handler(RoutingContext context) {
 		
-		TeamInputValidationUtil.validateMemberFetchById(context, validateHandler->{
+		TeamInputValidationUtil.validateMemberFetchAll(context, validateHandler->{
 			
 			if(validateHandler.failed()) {
 

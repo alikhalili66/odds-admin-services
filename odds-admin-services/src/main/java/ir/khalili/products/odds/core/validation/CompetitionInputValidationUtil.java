@@ -11,6 +11,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import ir.khalili.products.odds.core.enums.AccessLockIn;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
 
 public final class CompetitionInputValidationUtil {
@@ -23,7 +24,7 @@ public final class CompetitionInputValidationUtil {
 	
 	public static void validateSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_COMPETITION_SAVE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -130,7 +131,7 @@ public final class CompetitionInputValidationUtil {
 	
 	public static void validateUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_COMPETITION_UPDATE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -244,7 +245,7 @@ public final class CompetitionInputValidationUtil {
 	
 	public static void validateDelete(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_COMPETITION_DELETE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -287,7 +288,7 @@ public final class CompetitionInputValidationUtil {
 	
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_COMPETITION_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -338,7 +339,7 @@ public final class CompetitionInputValidationUtil {
 	
 	public static void validateFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_COMPETITION_FETCH_BY_ID).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -369,50 +370,6 @@ public final class CompetitionInputValidationUtil {
 
 			final JsonObject joResult = new JsonObject();
 			joResult.put("competitionId", competitionId);
-			joResult.put("userId", joToken.getInteger("id"));
-			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
-			joResult.put("ip", context.request().remoteAddress().host());
-
-			resultHandler.handle(Future.succeededFuture(joResult));
-
-		});
-
-    }
-	
-	public static void validateGroupFetch(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
-
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
-
-			if (handler.failed()) {
-				resultHandler.handle(Future.failedFuture(handler.cause()));
-				return;
-			}
-
-			final JsonObject joToken = handler.result();
-
-			Integer competitionId;
-
-	        try {
-	            final JsonObject inputParameters = InputValidationUtil.validate(context);
-
-	            competitionId = inputParameters.getInteger("competitionId");
-	            
-	            if (null == competitionId || competitionId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
-	            }
-
-	        } catch (EXCP_RtMgr_Validation e) {
-				resultHandler.handle(Future.failedFuture(e));
-				return;
-			} catch (Exception e) {
-				logger.error("INPUT TYPE VALIDATION FAILED.", e);
-				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
-				return;
-			}
-
-			final JsonObject joResult = new JsonObject();
-			joResult.put("competitionId", competitionId);
-
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());
@@ -425,7 +382,7 @@ public final class CompetitionInputValidationUtil {
 	
 	public static void validateQuestionAssign(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_COMPETITION_QUESTION_ASSIGN).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -483,7 +440,7 @@ public final class CompetitionInputValidationUtil {
 	
 	public static void validateQuestionUnAssign(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_COMPETITION_QUESTION_UNASSIGN).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -534,7 +491,7 @@ public final class CompetitionInputValidationUtil {
 	
 	public static void validateQuestionFetch(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_COMPETITION_QUESTION_FETCH).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -578,7 +535,7 @@ public final class CompetitionInputValidationUtil {
 	
 	public static void validateResultRegister(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_COMPETITION_RESULT_REGISTER).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -629,7 +586,7 @@ public final class CompetitionInputValidationUtil {
 
 	public static void validateQuestionResultRegister(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_COMPETITION_QUESTION_RESULT_REGISTER).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -698,7 +655,7 @@ public final class CompetitionInputValidationUtil {
 
 	public static void validatePointCalculation(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_COMPETITION_POINT_CALCULATION).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

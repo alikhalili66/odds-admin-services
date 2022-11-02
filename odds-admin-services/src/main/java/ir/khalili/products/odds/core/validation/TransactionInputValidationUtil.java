@@ -10,6 +10,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import ir.khalili.products.odds.core.enums.AccessLockIn;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
 
 public final class TransactionInputValidationUtil {
@@ -23,7 +24,7 @@ public final class TransactionInputValidationUtil {
 
 	public static void validateTransactionConfirm(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TRANSACTION_CONFIRM).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -67,7 +68,7 @@ public final class TransactionInputValidationUtil {
 	
 	public static void validateTransactionReject(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TRANSACTION_REJECT).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -111,7 +112,7 @@ public final class TransactionInputValidationUtil {
 	
 	public static void validateTransactionFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TRANSACTION_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

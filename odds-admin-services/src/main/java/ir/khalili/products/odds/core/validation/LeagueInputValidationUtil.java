@@ -8,6 +8,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import ir.khalili.products.odds.core.enums.AccessLockIn;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
 
 public final class LeagueInputValidationUtil {
@@ -20,7 +21,7 @@ public final class LeagueInputValidationUtil {
 
 	public static void validateSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_LEAGUE_SAVE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -106,7 +107,7 @@ public final class LeagueInputValidationUtil {
 	
 	public static void validateUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_LEAGUE_UPDATE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -199,7 +200,7 @@ public final class LeagueInputValidationUtil {
 	
 	public static void validateDelete(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_LEAGUE_DELETE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -242,7 +243,7 @@ public final class LeagueInputValidationUtil {
 	
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_LEAGUE_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -264,7 +265,7 @@ public final class LeagueInputValidationUtil {
 	
 	public static void validateFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.OPP_LEAGUE_FETCH_BY_ID).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

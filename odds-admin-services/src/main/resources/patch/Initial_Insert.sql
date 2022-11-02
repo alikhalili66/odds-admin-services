@@ -20,3 +20,4 @@ insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.n
 --insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'ضریب حداقل','MINIMUM_COEFFICIENT',2,'Number',1);
 insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'امتیاز هر تراکنش','POINTS_PER_TRANSACTION',10,'Number',1);
 insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'مبلغ هر تراکنش','AMOUNT_PER_TRANSACTION',50000,'Number',1);
+insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,'شناسه گروه پیشفرض','DEFAULT_GROUP_ID',1,'Number',1);

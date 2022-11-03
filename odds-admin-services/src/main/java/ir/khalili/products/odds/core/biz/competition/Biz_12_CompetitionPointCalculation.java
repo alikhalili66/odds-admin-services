@@ -146,7 +146,7 @@ public class Biz_12_CompetitionPointCalculation {
                         }
                         Future<Void> futUpdateRewardPointForWinners = DAO_Competition.updateUserPointForCalculation(sqlConnection, joTotalPoint.getInteger("QUESTION_ID"), competitionId, winnerUserIdList);
                         futList3.add(futUpdateRewardPointForWinners);
-                        Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, winnerUsers, "W", historyDescription);
+                        Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, winnerUsers, "W", historyDescription, competitionId);
                         futList3.add(futSaveUserPointHistory);
                     }
                     

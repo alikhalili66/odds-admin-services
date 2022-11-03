@@ -561,24 +561,37 @@ public class DAO_Competition {
 					.add(competitionId)
 					.add(id)
 					.add(questionId)
-					.add(id));
+					.add(id)
+					.add(competitionId)
+					.add(id)
+					);
 					
 		});
 		
-		sqlConnection.batchWithParams("UPDATE toppuser u " + 
-				"SET" + 
-				"    u.point = nvl(u.point + (" + 
-				"        SELECT" + 
-				"            o.rewardpoint" + 
-				"        FROM" + 
-				"            toppodds o" + 
-				"        WHERE" + 
-				"            o.competition_id = ?" + 
-				"            AND o.user_id = ?" + 
-				"            AND o.question_id = ?" + 
-				"    ), u.point)" + 
-				"WHERE" + 
-				"    u.id =?", params, resultHandler->{
+		sqlConnection.batchWithParams("UPDATE TOPPUSER u " + 
+				"SET " + 
+				"    u.POINT = nvl((u.POINT +( " + 
+				"        SELECT " + 
+				"            o.REWARDPOINT " + 
+				"        FROM " + 
+				"            TOPPODDS o " + 
+				"        WHERE " + 
+				"            o.COMPETITION_ID = ? " + 
+				"            AND o.USER_ID = ? " + 
+				"            AND o.QUESTION_ID = ? " + 
+				"    )) - ( " + 
+				"        SELECT " + 
+				"            uph.POINT " + 
+				"        FROM " + 
+				"            TOPPUSERPOINTHISTORY uph " + 
+				"        WHERE " + 
+				"            uph.USER_ID = ? " + 
+				"            AND uph.COMPETITION_ID = ? " + 
+				"        ORDER BY " + 
+				"            uph.ID DESC FETCH FIRST ROW ONLY " + 
+				"    ), u.POINT) " + 
+				"WHERE " + 
+				"    u.ID = ?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

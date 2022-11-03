@@ -201,7 +201,7 @@ public class DAO_User {
 	}
 
     
-    public static Future<Void> saveUserPointHistory(SQLConnection sqlConnection, List<JsonObject> winnerUsers, String historyType, String historyDescription) {
+    public static Future<Void> saveUserPointHistory(SQLConnection sqlConnection, List<JsonObject> winnerUsers, String historyType, String historyDescription, Integer competitionId) {
 
     	Promise<Void> promise = Promise.promise();
 		
@@ -212,6 +212,7 @@ public class DAO_User {
 					.add(joUser.getInteger("POINT"))
 					.add(historyType)
 					.add(historyDescription)
+					.add(competitionId)
 					.add(joUser.getLong("AMOUNT")));
 					
 		});
@@ -224,6 +225,7 @@ public class DAO_User {
 				+ "HISTORYTYPE,"
 				+ "HISTORYDESCRIPTION,"
 				+ "HISTORYDATE,"
+				+ "COMPETITION_ID,"
 				+ "AMOUNT)"
 				+ "values("
 				+ "soppuserpointhistory.nextval,"
@@ -232,6 +234,7 @@ public class DAO_User {
 				+ "?,"
 				+ "?,"
 				+ "sysdate,"
+				+ "?,"
 				+ "?)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
@@ -297,6 +300,7 @@ public class DAO_User {
         		+ "u.user_id,"
         		+ "u.point,"
         		+ "u.amount,"
+        		+ "u.competition_Id,"
         		+ "u.historytype history_type,"
         		+ "u.historydescription history_description,"
         		+ "To_Char(u.historydate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') history_date, "

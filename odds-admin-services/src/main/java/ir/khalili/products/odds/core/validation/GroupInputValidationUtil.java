@@ -20,7 +20,7 @@ public final class GroupInputValidationUtil {
 
 	public static void validateSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_GROUP_SAVE).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_GROUP_SAVE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -85,7 +85,7 @@ public final class GroupInputValidationUtil {
 	
 	public static void validateUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_GROUP_UPDATE).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_GROUP_UPDATE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -157,7 +157,7 @@ public final class GroupInputValidationUtil {
 	
 	public static void validateDelete(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_GROUP_DELETE).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_GROUP_DELETE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -200,7 +200,7 @@ public final class GroupInputValidationUtil {
 	
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_GROUP_FETCH_ALL).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_GROUP_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -244,7 +244,7 @@ public final class GroupInputValidationUtil {
 	
 	public static void validateFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_GROUP_FETCH_BY_ID).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_GROUP_FETCH_BY_ID).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -287,7 +287,7 @@ public final class GroupInputValidationUtil {
 	
 	public static void validateTeamAssign(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_GROUP_TEAM_ASSIGN).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_GROUP_TEAM_ASSIGN).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -338,7 +338,7 @@ public final class GroupInputValidationUtil {
 	
 	public static void validateTeamUnAssign(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_GROUP_TEAM_UNASSIGN).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_GROUP_TEAM_UNASSIGN).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -389,7 +389,7 @@ public final class GroupInputValidationUtil {
 	
 	public static void validateTeamFetch(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_GROUP_TEAM_FETCH).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_GROUP_TEAM_FETCH).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -432,7 +432,7 @@ public final class GroupInputValidationUtil {
 		
 	public static void validateCompetitionFetch(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_GROUP_COMPETITION_FETCH).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_GROUP_COMPETITION_FETCH).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

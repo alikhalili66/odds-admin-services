@@ -21,7 +21,7 @@ public final class LocationInputValidationUtil {
 	
 	public static void validateSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_LOCATION_SAVE).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_LOCATION_SAVE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -80,7 +80,7 @@ public final class LocationInputValidationUtil {
 	
 	public static void validateUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_LOCATION_UPDATE).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_LOCATION_UPDATE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -145,7 +145,7 @@ public final class LocationInputValidationUtil {
 	
 	public static void validateDelete(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_LOCATION_DELETE).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_LOCATION_DELETE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -188,7 +188,7 @@ public final class LocationInputValidationUtil {
 	
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_LOCATION_FETCH_ALL).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_LOCATION_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

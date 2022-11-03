@@ -21,7 +21,7 @@ public final class ReportInputValidationUtil {
 
 	public static void validateOddsCount(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_REPORT_ODDS_COUNT).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_ODDS_COUNT).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -65,7 +65,7 @@ public final class ReportInputValidationUtil {
 	
 	public static void validateCompetitorUsersAmount(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_REPORT_COMPETITOR_USERS_AMOUNT).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_COMPETITOR_USERS_AMOUNT).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -109,7 +109,7 @@ public final class ReportInputValidationUtil {
 	
 	public static void validateCompetitorUsersCount(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_REPORT_COMPETITOR_USERS_COUNT).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_COMPETITOR_USERS_COUNT).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -153,7 +153,7 @@ public final class ReportInputValidationUtil {
 	
 	public static void validateRegisteredUsersCount(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_REPORT_REGISTERED_USERS_COUNT).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_REGISTERED_USERS_COUNT).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

@@ -20,7 +20,7 @@ public final class ConfigInputValidationUtil {
 
 	public static void validateUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_CONFIG_UPDATE).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_CONFIG_UPDATE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -71,7 +71,7 @@ public final class ConfigInputValidationUtil {
 	
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_CONFIG_FETCH_ALL).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_CONFIG_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -115,7 +115,7 @@ public final class ConfigInputValidationUtil {
 	
 	public static void validateFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_CONFIG_FETCH_BY_ID).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_CONFIG_FETCH_BY_ID).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -158,7 +158,7 @@ public final class ConfigInputValidationUtil {
 	
 	public static void validateFetchBySymbol(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_CONFIG_FETCH_BY_SYMBOL).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_CONFIG_FETCH_BY_SYMBOL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

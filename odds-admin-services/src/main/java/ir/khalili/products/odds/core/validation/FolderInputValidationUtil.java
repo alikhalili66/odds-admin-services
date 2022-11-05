@@ -20,7 +20,7 @@ public final class FolderInputValidationUtil {
 
 	public static void validateSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_FOLDER_SAVE).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_FOLDER_SAVE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -78,7 +78,7 @@ public final class FolderInputValidationUtil {
 	
 	public static void validateUpdate(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_FOLDER_UPDATE).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_FOLDER_UPDATE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -143,7 +143,7 @@ public final class FolderInputValidationUtil {
 	
 	public static void validateDelete(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_FOLDER_DELETE).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_FOLDER_DELETE).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -186,7 +186,7 @@ public final class FolderInputValidationUtil {
 	
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_FOLDER_FETCH_ALL).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_FOLDER_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -230,7 +230,7 @@ public final class FolderInputValidationUtil {
 	
 	public static void validateFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_FOLDER_FETCH_BY_ID).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_FOLDER_FETCH_BY_ID).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -273,7 +273,7 @@ public final class FolderInputValidationUtil {
 	
 	public static void validateQuestionAssign(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_FOLDER_QUESTION_ASSIGN).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_FOLDER_QUESTION_ASSIGN).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -324,7 +324,7 @@ public final class FolderInputValidationUtil {
 	
 	public static void validateQuestionUnAssign(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_FOLDER_QUESTION_UNASSIGN).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_FOLDER_QUESTION_UNASSIGN).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -375,7 +375,7 @@ public final class FolderInputValidationUtil {
 	
 	public static void validateQuestionFetch(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_FOLDER_QUESTION_FETCH).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_FOLDER_QUESTION_FETCH).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

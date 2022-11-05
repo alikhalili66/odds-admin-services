@@ -22,7 +22,7 @@ public final class UserInputValidationUtil {
 
 	public static void validateFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_USER_FETCH_ALL).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_USER_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -93,7 +93,7 @@ public final class UserInputValidationUtil {
 	
 	public static void validateFetchById(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_USER_FETCH_BY_ID).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_USER_FETCH_BY_ID).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -136,7 +136,7 @@ public final class UserInputValidationUtil {
 	
 	public static void validateFetchOdds(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_USER_FETCH_ODDS).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_USER_FETCH_ODDS).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -194,7 +194,7 @@ public final class UserInputValidationUtil {
 	
 	public static void validateUserFetchQuestionAnswer(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_USER_FETCH_QUESTION_ANSWER).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_USER_FETCH_QUESTION_ANSWER).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -242,7 +242,7 @@ public final class UserInputValidationUtil {
 	
 	public static void validateUserPointHistory(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_USER_FETCH_POINT_HISTORY).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_USER_FETCH_POINT_HISTORY).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

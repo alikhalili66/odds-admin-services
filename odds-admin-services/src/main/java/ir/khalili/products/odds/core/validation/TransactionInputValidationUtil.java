@@ -24,7 +24,7 @@ public final class TransactionInputValidationUtil {
 
 	public static void validateTransactionConfirm(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TRANSACTION_CONFIRM).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_TRANSACTION_CONFIRM).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -68,7 +68,7 @@ public final class TransactionInputValidationUtil {
 	
 	public static void validateTransactionReject(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TRANSACTION_REJECT).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_TRANSACTION_REJECT).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -112,7 +112,7 @@ public final class TransactionInputValidationUtil {
 	
 	public static void validateTransactionFetchAll(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.OPP_TRANSACTION_FETCH_ALL).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_TRANSACTION_FETCH_ALL).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

@@ -32,16 +32,16 @@ public class Biz_12_CompetitionPointCalculation {
         logger.trace("CALCULATE_TOTAL_POINT_FOR_THIS_COMPETITION_PER_QUESTION_ID");
         
         Future<JsonObject> futCompetition = DAO_Competition.fetchById(sqlConnection, competitionId);
-        Future<List<JsonObject>> futTtalPointResult = DAO_Competition.fetchOddsTotalPointByCompetitionId(sqlConnection, competitionId);
+        Future<List<JsonObject>> futTotalPointResult = DAO_Competition.fetchOddsTotalPointByCompetitionId(sqlConnection, competitionId);
         
-        CompositeFuture.join(futCompetition, futTtalPointResult).onComplete(joinHandler01 -> {
+        CompositeFuture.join(futCompetition, futTotalPointResult).onComplete(joinHandler01 -> {
             if (joinHandler01.failed()) {
             	logger.error("Unable to complete joinHandler01: " + joinHandler01.cause());
                 resultHandler.handle(Future.failedFuture(joinHandler01.cause()));
                 return;
             }
             
-            List<JsonObject> totalPointList = futTtalPointResult.result();
+            List<JsonObject> totalPointList = futTotalPointResult.result();
             logger.trace("TOTAL_POINT_LIST : " + totalPointList);
             
             Map<Integer, Future<List<JsonObject>>> mapWinners = new HashMap<>();
@@ -101,8 +101,7 @@ public class Biz_12_CompetitionPointCalculation {
     					
     					for (Iterator<JsonObject> obj2 = winnerUserList.iterator(); obj2.hasNext();) {
     						JsonObject joWinnerUser = (JsonObject) obj2.next();
-    						
-    						Future<JsonObject> futWinnerUser = DAO_User.fetchById(sqlConnection, joWinnerUser.getInteger("USER_ID"));
+    						Future<JsonObject> futWinnerUser = DAO_User.fetchById(sqlConnection, joWinnerUser.getInteger("USER_ID"), rewardPoint);
     						futList2.add(futWinnerUser);
     						mapWinnerUsers.put(joWinnerUser.getInteger("USER_ID"), futWinnerUser);
     						winnerUserIdList.add(joWinnerUser.getInteger("USER_ID"));

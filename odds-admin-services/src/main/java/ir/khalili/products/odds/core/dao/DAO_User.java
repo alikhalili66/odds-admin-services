@@ -78,7 +78,7 @@ public class DAO_User {
 
         return promise.future();
     }
-    
+
     public static Future<JsonObject> fetchById(SQLConnection sqlConnection, Integer userId) {
         Promise<JsonObject> promise = Promise.promise();
         JsonArray params = new JsonArray();
@@ -102,6 +102,40 @@ public class DAO_User {
                 } else {
                     logger.trace("fetchAllUserByIdSuccessful");
                     promise.complete(handler.result().getRows().get(0));
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+    
+    public static Future<JsonObject> fetchById(SQLConnection sqlConnection, Integer userId, Long rewardPoint) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(userId);
+        
+        sqlConnection.queryWithParams("SELECT "
+        		+ "u.id,"
+        		+ "u.UGID,"
+        		+ "u.NIKENAME,"
+        		+ "u.POINT,"
+        		+ "u.AMOUNT,"
+        		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date "
+        		+ "  FROM toppuser u where u.id=?", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchByIdNoDataFound");
+                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                } else {
+                    logger.trace("fetchAllUserByIdSuccessful");
+                    JsonObject output = handler.result().getRows().get(0);
+                    output.put("REWARD_POINT", rewardPoint);
+                    promise.complete(output);
                 }
             
             }
@@ -209,7 +243,7 @@ public class DAO_User {
 		winnerUsers.forEach(joUser -> {
 			params.add(new JsonArray()
 					.add(joUser.getInteger("ID"))
-					.add(joUser.getInteger("POINT"))
+					.add(joUser.getInteger("REWARD_POINT"))
 					.add(historyType)
 					.add(historyDescription)
 					.add(competitionId)

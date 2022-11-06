@@ -242,12 +242,12 @@ public class DAO_User {
 		List<JsonArray> params = new ArrayList<>();
 		winnerUsers.forEach(joUser -> {
 			params.add(new JsonArray()
-					.add(joUser.getInteger("ID"))
+					.add(joUser.getInteger("USER_ID"))
 					.add(joUser.getInteger("REWARD_POINT"))
 					.add(historyType)
 					.add(historyDescription)
 					.add(competitionId)
-					.add(joUser.getLong("AMOUNT")));
+					.add(0));
 					
 		});
 		
@@ -386,4 +386,35 @@ public class DAO_User {
 
         return promise.future();
     }
+    
+    public static Future<Void> deleteUserPointHistory(SQLConnection sqlConnection, List<JsonObject> winnerUsers, Integer competitionId) {
+
+    	Promise<Void> promise = Promise.promise();
+		
+		List<JsonArray> params = new ArrayList<>();
+		winnerUsers.forEach(joUser -> {
+			params.add(new JsonArray()
+					.add(joUser.getInteger("USER_ID"))
+					.add(competitionId)
+					);
+					
+		});
+		
+		sqlConnection.batchWithParams(""
+				+ "delete FROM TOPPUSERPOINTHISTORY where id = (SELECT id from (SELECT id, ROWNUM AS RN FROM TOPPUSERPOINTHISTORY where USER_ID=? and  COMPETITION_ID = ? ORDER BY ID DESC) WHERE RN = 2)"
+				, params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("deleteUserPointHistorySuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+    
 }

@@ -551,47 +551,25 @@ public class DAO_Competition {
 		return promise.future();
 	}
     
-    public static Future<Void> updateUserPointForCalculation(SQLConnection sqlConnection, Integer questionId, Integer competitionId, List<Integer> winnerUserIdList) {
+    public static Future<Void> updateUserPointForCalculation(SQLConnection sqlConnection, List<JsonObject> winnerUsers, Integer competitionId) {
 
 		Promise<Void> promise = Promise.promise();
 		
 		List<JsonArray> params = new ArrayList<>();
-		winnerUserIdList.forEach(id -> {
+		winnerUsers.forEach(joUser -> {
 			params.add(new JsonArray()
+					.add(joUser.getInteger("REWARD_POINT"))
 					.add(competitionId)
-					.add(id)
-					.add(questionId)
-					.add(id)
-					.add(competitionId)
-					.add(id)
+					.add(joUser.getInteger("USER_ID"))
 					);
-					
 		});
 		
-		sqlConnection.batchWithParams("UPDATE TOPPUSER u " + 
-				"SET " + 
-				"    u.POINT = nvl((u.POINT +( " + 
-				"        SELECT " + 
-				"            o.REWARDPOINT " + 
-				"        FROM " + 
-				"            TOPPODDS o " + 
-				"        WHERE " + 
-				"            o.COMPETITION_ID = ? " + 
-				"            AND o.USER_ID = ? " + 
-				"            AND o.QUESTION_ID = ? " + 
-				"    )) - ( " + 
-				"        SELECT " + 
-				"            uph.POINT " + 
-				"        FROM " + 
-				"            TOPPUSERPOINTHISTORY uph " + 
-				"        WHERE " + 
-				"            uph.USER_ID = ? " + 
-				"            AND uph.COMPETITION_ID = ? " + 
-				"        ORDER BY " + 
-				"            uph.ID DESC FETCH FIRST ROW ONLY " + 
-				"    ), u.POINT) " + 
-				"WHERE " + 
-				"    u.ID = ?", params, resultHandler->{
+		sqlConnection.batchWithParams(""
+				+ ""
+				+ " UPDATE TOPPUSER u " 
+				+ " SET u.POINT = u.POINT + ? - NVL( (SELECT uph.POINT FROM TOPPUSERPOINTHISTORY uph  WHERE uph.USER_ID = u.id AND uph.COMPETITION_ID = ?  ORDER BY uph.ID DESC  FETCH FIRST ROW ONLY ),0) " 
+				+ " WHERE u.id = ?"
+				+ "", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -626,5 +604,27 @@ public class DAO_Competition {
 		});
 		return promise.future();
 	}
+    
+    public static Future<List<JsonObject>> fetchTotalUserPointOfCompetition(SQLConnection sqlConnection, Integer competitionId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(competitionId);
+        
+        sqlConnection.queryWithParams("select USER_ID,sum(REWARDPOINT) REWARD_POINT from toppodds  where    competition_id=?   group by USER_ID HAVING  sum(REWARDPOINT) > 0", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchTotalUserPointOfCompetitionNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchTotalUserPointOfCompetitionSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            }
+        });
+        return promise.future();
+    }
     
 }

@@ -1,6 +1,7 @@
 package ir.khalili.products.odds.core.biz.competition;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -70,15 +71,15 @@ public class Biz_12_CompetitionPointCalculation {
 				
 			}
             
-            CompositeFuture.all(futList).onComplete(result1 -> {
-                if (result1.failed()) {
-                	logger.error("Unable to complete result1: " + result1.cause());
-                    resultHandler.handle(Future.failedFuture(result1.cause()));
+            CompositeFuture.all(futList).onComplete(joinHandler02 -> {
+                if (joinHandler02.failed()) {
+                	logger.error("Unable to complete result1: " + joinHandler02.cause());
+                    resultHandler.handle(Future.failedFuture(joinHandler02.cause()));
                     return;
                 }
                 
                 List<Future> futList2 = new ArrayList<>();
-                Map<Integer, Future<JsonObject>> mapWinnerUsers = new HashMap<>();
+//                Map<Integer, Future<JsonObject>> mapWinnerUsers = new HashMap<>();
                 
                 // Update reward point for winner and loser users that 0 will be set to loser users
                 for (Iterator<JsonObject> obj = totalPointList.iterator(); obj.hasNext();) {
@@ -89,10 +90,9 @@ public class Biz_12_CompetitionPointCalculation {
 						
     					long totalWinnerPoint = 0;
     					
-    					for (Iterator<JsonObject> obj2 = winnerUserList.iterator(); obj2.hasNext();) {
-    						JsonObject joWinnerUser = (JsonObject) obj2.next();
+    					for (JsonObject joWinnerUser : winnerUserList) {
     						totalWinnerPoint = totalWinnerPoint + joWinnerUser.getInteger("POINT");
-    					}
+						}
     					
     					Long rewardPoint = joTotalPoint.getLong("TOTAL_POINT").longValue() / totalWinnerPoint;
     					
@@ -101,68 +101,74 @@ public class Biz_12_CompetitionPointCalculation {
     					
     					for (Iterator<JsonObject> obj2 = winnerUserList.iterator(); obj2.hasNext();) {
     						JsonObject joWinnerUser = (JsonObject) obj2.next();
-    						Future<JsonObject> futWinnerUser = DAO_User.fetchById(sqlConnection, joWinnerUser.getInteger("USER_ID"), rewardPoint);
-    						futList2.add(futWinnerUser);
-    						mapWinnerUsers.put(joWinnerUser.getInteger("USER_ID"), futWinnerUser);
     						winnerUserIdList.add(joWinnerUser.getInteger("USER_ID"));
     					}
-    					Future<Void> futUpdateRewardPointForWinners = DAO_Competition.updateRewardPointForCalculation(sqlConnection, coefficient, joTotalPoint.getInteger("QUESTION_ID"), competitionId, winnerUserIdList);
-    					futList2.add(futUpdateRewardPointForWinners);
+    					futList2.add(DAO_Competition.updateRewardPointForCalculation(sqlConnection, coefficient, joTotalPoint.getInteger("QUESTION_ID"), competitionId, winnerUserIdList));
     					
 					}
                     List<JsonObject> loserUserList = mapLosers.get(joTotalPoint.getInteger("QUESTION_ID")).result();
-                    List<Integer> loserUserIdList = new ArrayList<>();
-                    for (Iterator<JsonObject> obj2 = loserUserList.iterator(); obj2.hasNext();) {
-        				JsonObject joLoserUser = (JsonObject) obj2.next();
-        				loserUserIdList.add(joLoserUser.getInteger("USER_ID"));
+                    if (loserUserList.size() > 0) {
+                    	List<Integer> loserUserIdList = new ArrayList<>();
+                    	for (JsonObject joLoserUser : loserUserList) {
+                    		loserUserIdList.add(joLoserUser.getInteger("USER_ID"));
+                    	}
+                    	futList2.add(DAO_Competition.updateRewardPointForCalculation(sqlConnection, 0, joTotalPoint.getInteger("QUESTION_ID"), competitionId, loserUserIdList));
                     }
-                    Future<Void> futUpdateRewardPointForLosers = DAO_Competition.updateRewardPointForCalculation(sqlConnection, 0, joTotalPoint.getInteger("QUESTION_ID"), competitionId, loserUserIdList);
-                    futList2.add(futUpdateRewardPointForLosers);
                 }
                 
                 final String historyDescription = "پیشبینی " + futCompetition.result().getString("TEAM1_NAME") + "-" + futCompetition.result().getString("TEAM2_NAME");
                 
-                CompositeFuture.all(futList2).onComplete(result2 -> {
-                    if (result2.failed()) {
-                    	logger.error("Unable to complete result2: " + result2.cause());
-                        resultHandler.handle(Future.failedFuture(result2.cause()));
+                CompositeFuture.all(futList2).onComplete(joinHandler03 -> {
+                	
+                    if (joinHandler03.failed()) {
+                    	logger.error("Unable to complete result2: " + joinHandler03.cause());
+                        resultHandler.handle(Future.failedFuture(joinHandler03.cause()));
                         return;
                     }
 
-                    // Update user point and save userPoint history
-                    List<Future> futList3 = new ArrayList<>();
-                    for (Iterator<JsonObject> obj = totalPointList.iterator(); obj.hasNext();) {
-        				JsonObject joTotalPoint = (JsonObject) obj.next();
-        				List<JsonObject> winnerUserList = mapWinners.get(joTotalPoint.getInteger("QUESTION_ID")).result();
-        				
-        				List<Integer> winnerUserIdList = new ArrayList<>();
-        				List<JsonObject> winnerUsers = new ArrayList<>();
-        				
-                        for (Iterator<JsonObject> obj2 = winnerUserList.iterator(); obj2.hasNext();) {
-            				JsonObject joWinnerUser = (JsonObject) obj2.next();
-            				winnerUserIdList.add(joWinnerUser.getInteger("USER_ID"));
-            				winnerUsers.add(mapWinnerUsers.get(joWinnerUser.getInteger("USER_ID")).result());
-                        }
-                        Future<Void> futUpdateRewardPointForWinners = DAO_Competition.updateUserPointForCalculation(sqlConnection, joTotalPoint.getInteger("QUESTION_ID"), competitionId, winnerUserIdList);
-                        futList3.add(futUpdateRewardPointForWinners);
-                        Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, winnerUsers, "W", historyDescription, competitionId);
-                        futList3.add(futSaveUserPointHistory);
-                    }
+                    Future<List<JsonObject>> futRewardPoint = DAO_Competition.fetchTotalUserPointOfCompetition(sqlConnection, competitionId);
                     
-                    CompositeFuture.all(futList3).onComplete(result3 -> {
-                        if (result3.failed()) {
-                        	logger.error("Unable to complete result3: " + result3.cause());
-                            resultHandler.handle(Future.failedFuture(result3.cause()));
+                    CompositeFuture.join(Arrays.asList(futRewardPoint)).onComplete(joinHandler04->{
+                    	
+                    	if (joinHandler03.failed()) {
+                        	logger.error("Unable to complete joinHandler04: " + joinHandler04.cause());
+                            resultHandler.handle(Future.failedFuture(joinHandler04.cause()));
                             return;
                         }
-                        
-                        logger.trace("COMPETITION_POINT_CALCULATION_SUCCESSFULL.");
-                        resultHandler.handle(Future.succeededFuture(
-                        		new JsonObject()
-                        		.put("resultCode", 1)
-                        		.put("resultMessage", "عملیات با موفقیت انجام شد.")
-                        		));
+                    	
+                    	// Update user point and save userPoint history
+                    	Future<Void> futHistory = DAO_User.saveUserPointHistory(sqlConnection, futRewardPoint.result(), "W", historyDescription, competitionId);
+                    	Future<Void> futCalculate = DAO_Competition.updateUserPointForCalculation(sqlConnection, futRewardPoint.result(), competitionId);
+                    	
+                        CompositeFuture.all(futHistory, futCalculate).onComplete(joinHandler05 -> {
+                            if (joinHandler05.failed()) {
+                            	logger.error("Unable to complete joinHandler05: " + joinHandler05.cause());
+                                resultHandler.handle(Future.failedFuture(joinHandler05.cause()));
+                                return;
+                            }
+                            
+                            Future<Void> futDelete = DAO_User.deleteUserPointHistory(sqlConnection, futRewardPoint.result(), competitionId);
+                            
+                            CompositeFuture.join(Arrays.asList(futDelete)).onComplete(joinHandler06->{
+                            	
+                            	if (joinHandler06.failed()) {
+                                	logger.error("Unable to complete joinHandler06: " + joinHandler06.cause());
+                                    resultHandler.handle(Future.failedFuture(joinHandler06.cause()));
+                                    return;
+                                }
+                            	
+                            	logger.trace("COMPETITION_POINT_CALCULATION_SUCCESSFULL.");
+                            	resultHandler.handle(Future.succeededFuture(
+                            			new JsonObject()
+                            			.put("resultCode", 1)
+                            			.put("resultMessage", "عملیات با موفقیت انجام شد.")
+                            			));
+                            });
+                            
+                        });
+                    	
                     });
+                    
                 });
             });
         });

@@ -62,7 +62,7 @@ public class Biz_03_TransactionConfirm {
                 }
             	
             	Future<JsonObject> futFetchById = DAO_User.fetchById(sqlConnection, joTransaction.getInteger("USER_ID"));
-            	Future<Void> futConfirmTransaction = HelperPayPod.confirmTransaction(joTransaction.getString("INVOICEID"), futTransactionId.result());
+            	Future<Void> futConfirmTransaction = HelperPayPod.confirmTransaction(joTransaction.getString("USERNAME"), futTransactionId.result());
             	
             	CompositeFuture.all(futFetchById, futConfirmTransaction).onComplete(joinHandler03 -> {
                     if (joinHandler03.failed()) {

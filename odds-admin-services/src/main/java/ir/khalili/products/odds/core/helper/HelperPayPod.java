@@ -42,7 +42,7 @@ public class HelperPayPod {
         CHECK = joLockin.getString("check");
     }
 
-    public static Future<Void> confirmTransaction(String invoiceId, String transactionId) {
+    public static Future<Void> confirmTransaction(String username, String transactionId) {
 
         Promise<Void> promise = Promise.promise();
 
@@ -51,8 +51,8 @@ public class HelperPayPod {
     		try {
 
     			JsonObject joInput = new JsonObject();
-    	        joInput.put("invoiceId", invoiceId);
-    	        joInput.put("transactionId", transactionId);
+    			joInput.put("userName", username);
+    			joInput.put("transactionId", transactionId);
     				  
     			HttpPost request = new HttpPost(CONFIRM);
     			request.setHeader("token", token);

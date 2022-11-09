@@ -89,6 +89,13 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_COMPETITOR_USERS_AMOUNT		= "nas.eb.core.srvc.report.competitor.users.amount";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ODDS_COUNT					= "nas.eb.core.srvc.report.odds.count";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_CALCULATE_COMPETITION		= "nas.eb.core.srvc.report.calculate.competition";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_USERS_WITH_MAXIMUM_ODDS		= "nas.eb.core.srvc.report.users.with.maximum.odds";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ODDS_COUNT_PER_COMPETITION	= "nas.eb.core.srvc.report.odds.count.per.competition";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_USERS_COUNT_WITH_ODDS		= "nas.eb.core.srvc.report.users.count.with.odds";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_QUESTION_STATISTIC_PER_COMPETITION = "nas.eb.core.srvc.report.question.statistic.per.competition";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_USERS_WITH_MAXIMUM_POINT		= "nas.eb.core.srvc.report.users.with.maximum.point";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_COMPETITION_WITH_MAXIMUM_ODDS= "nas.eb.core.srvc.report.competition.with.maximum.odds";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_COMPETITIONS_TOTAL_POINT		= "nas.eb.core.srvc.report.competitions.total.point";
 	
 	/***********************LOCATION*********************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_LOCATION_SAVE						= "nas.eb.core.srvc.location.save";

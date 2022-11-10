@@ -6,6 +6,7 @@ SELECT
     u.lastname,
     u.nikename,
     u.point total_point,
+    u.amount total_amount,
     COUNT(o.user_id) odds_count
 FROM
     toppuser   u,
@@ -16,6 +17,7 @@ GROUP BY
     u.lastname,
     u.nikename,
     u.point,
+    u.amount,
     o.user_id
 HAVING
     u.id = o.user_id

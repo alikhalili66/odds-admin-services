@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Report;
@@ -63,13 +64,17 @@ public class Biz_10_ReportUsersWithMaximumPoint {
                 return;
             }
             
+            JsonObject joReport = result0.result();
+            JsonArray jaResult = new JsonArray(joReport.getString("RESULT"));
+            joReport.put("RESULT", jaResult);
+            
             logger.trace("FETCH_REPORT_USERS_WITH_MAXIMUM_POINT_RESULT : " + result0.result());
             
 			resultHandler.handle(Future.succeededFuture(
 					new JsonObject()
 					.put("resultCode", 1)
 					.put("resultMessage", "عملیات با موفقیت انجام شد.")
-					.put("info", result0.result())
+					.put("info", joReport)
 					));            
             
         });

@@ -31,13 +31,13 @@ public class CallReport extends AbstractVerticle {
 //		reportOddsCount(client);
 //		reportRegisteredUsersCount(client);
 		
-		reportUsersWithMaximumOdds(client);
+//		reportUsersWithMaximumOdds(client);
 //		reportOddsCountPerCompetition(client);
 //		reportUsersCountWithOdds(client);
 //		reportQuestionStatisticPerCompetition(client);
 //		reportUsersWithMaximumPoint(client);
 //		reportCompetitionWithMaximumOdds(client);
-//		reportCompetitionsTotalPoint(client);
+		reportCompetitionsTotalPoint(client);
 		
 	}
 
@@ -170,7 +170,7 @@ public class CallReport extends AbstractVerticle {
 		try {
 			
 			JsonObject joInput = new JsonObject();
-			joInput.put("isLive", Boolean.TRUE);
+			joInput.put("isLive", Boolean.FALSE);
 			
 			client
 			.post(port, host, "/v1/service/odds/report/odds/users/maximum")
@@ -201,8 +201,8 @@ public class CallReport extends AbstractVerticle {
 		try {
 			
 			JsonObject joInput = new JsonObject();
-			joInput.put("isLive", Boolean.TRUE);
-			joInput.put("competitionId", 31);
+			joInput.put("isLive", Boolean.FALSE);
+			joInput.put("competitionId", 31); // Optional
 			
 			client
 			.post(port, host, "/v1/service/odds/report/odds/competition/count")
@@ -358,8 +358,8 @@ public class CallReport extends AbstractVerticle {
 		try {
 			
 			JsonObject joInput = new JsonObject();
-			joInput.put("isLive", Boolean.TRUE);
-			joInput.put("competitionId", 31);
+//			joInput.put("isLive", Boolean.TRUE);
+//			joInput.put("competitionId", 31); //Optional
 			
 			client
 			.post(port, host, "/v1/service/odds/report/odds/competition/point")

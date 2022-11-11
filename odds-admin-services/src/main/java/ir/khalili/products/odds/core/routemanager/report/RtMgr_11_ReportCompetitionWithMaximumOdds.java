@@ -34,7 +34,7 @@ public class RtMgr_11_ReportCompetitionWithMaximumOdds   {
     		
 			}
 			
-			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_USERS_WITH_MAXIMUM_ODDS, validateHandler.result(),replyHandler->{
+			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_COMPETITION_WITH_MAXIMUM_ODDS, validateHandler.result(),replyHandler->{
 				
 				if (replyHandler.succeeded()) {
 					logger.trace("jobs done:"+replyHandler.result().body());

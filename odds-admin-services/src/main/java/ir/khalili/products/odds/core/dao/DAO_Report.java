@@ -125,8 +125,8 @@ public class DAO_Report {
 		
 		params.add(message.getInteger("competitionId"));
 		params.add(message.getInteger("leagueId"));
-		params.add(message.getInteger("type"));
-		params.add(message.getInteger("result"));
+		params.add(message.getString("type"));
+		params.add(message.getString("result"));
 		
 		sqlConnection.updateWithParams(""
 				+ "INSERT INTO TOPPREPORT("
@@ -449,10 +449,9 @@ public class DAO_Report {
         Promise<JsonObject> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(type);
-        params.add(competitionId);
-        params.add(leagueId);
         
-        sqlConnection.queryWithParams("SELECT " + 
+        StringBuilder query = new StringBuilder();
+        query.append( "SELECT " + 
         		"    r.id, " + 
         		"    r.competition_id, " + 
         		"    r.league_id, " + 
@@ -462,13 +461,24 @@ public class DAO_Report {
         		"FROM " + 
         		"    toppreport r " + 
         		"WHERE " + 
-        		"    r.type = ? " + 
-        		"    AND r.competition_id = nvl(?, r.competition_id) " + 
-        		"    AND r.league_id = nvl(?, r.league_id) " + 
-        		"    AND r.dto IS NULL " + 
+        		"    r.type = ? ");
+        
+        if (competitionId != null) {
+        	params.add(competitionId);
+        	query.append("    AND r.competition_id = nvl(?, r.competition_id) ");
+		}
+        
+        if (leagueId != null) {
+        	params.add(leagueId);
+        	query.append("    AND r.league_id = nvl(?, r.league_id) ");
+		}
+        
+        query.append("    AND r.dto IS NULL " + 
         		"ORDER BY " + 
         		"    r.id DESC " + 
-        		"FETCH FIRST ROW ONLY", params, handler -> {
+        		"FETCH FIRST ROW ONLY");
+        
+        sqlConnection.queryWithParams(query.toString(), params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

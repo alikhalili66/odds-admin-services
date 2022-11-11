@@ -8,7 +8,6 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
-
 import ir.khalili.products.odds.core.dao.DAO_Competition;
 
 public class Biz_02_CompetitionUpdate {

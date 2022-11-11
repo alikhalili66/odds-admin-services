@@ -25,10 +25,10 @@ public class CallLeague extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-		leagueSave(client);
+//		leagueSave(client);
 //		leagueUpdate(client);
 //		leagueDelete(client);
-//		leagueFetchAll(client);
+		leagueFetchAll(client);
 //		leagueFetchById(client);
 	}
 

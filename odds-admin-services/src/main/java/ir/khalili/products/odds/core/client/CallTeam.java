@@ -29,20 +29,20 @@ public class CallTeam extends AbstractVerticle {
 //		teamUpdate(client);
 //		teamDelete(client);
 //		teamFetchAll(client);
-//		teamFetchById(client);
+		teamFetchById(client);
 //		teamImageUpdate(client);
 //		teamMemberSave(client);
 //		teamMemberUpdate(client);
 //		teamMemberDelete(client);
-		teamMemberFetchById(client);
+//		teamMemberFetchById(client);
 	}
 
 	public void teamSave(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("leagueId", 2);
-		joInput.put("name", "اکوادور");
-		joInput.put("symbol", "E");
+		joInput.put("leagueId", 1);
+		joInput.put("name", "تست");
+		joInput.put("symbol", "test");
 		joInput.put("image", "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAQAAAABYmaj5AAAA7ElEQVR42tXUsZHEIAwFUHk2cHZuQDO0QeaWTAN4twK3REYbzNAAyhww1ombvd1NbBHeMQS8CPERAH+MAn9YBWCBzAEGTcR13W8cZaEpoLdpiuA6tIb86JWhHnH1tq7vyk4l53MR3fu0p2pZzbJ8JXiqYtHP6H53uBAH3mKadpg0HRZhRrCZNBHzxnWIadBUbILRbK/KzkXxRhEHNpumMuLXLPOZ4IVoz4flA5LTlTzkO+CkqeU/Sgy65G59q92QptbXLIEZVhXQsblDlxZIy8iPDsmrIn5mdiWui/QCoKr2pq35CUPRf/nBPvUNct67nP2Y9j8AAAAASUVORK5CYII=");
 		
 		System.out.println("joInput:" + joInput);
@@ -75,10 +75,10 @@ public class CallTeam extends AbstractVerticle {
 	public void teamUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("teamId", 3);
-		joInput.put("leagueId", 2);
-		joInput.put("name", "اکوادور");
-		joInput.put("symbol", "اکواد");
+		joInput.put("teamId", 57);
+		joInput.put("leagueId", 1);
+		joInput.put("name", "تست");
+		joInput.put("symbol", "test");
 
 		System.out.println("joInput:" + joInput);
 
@@ -173,7 +173,7 @@ public class CallTeam extends AbstractVerticle {
 	public void teamFetchById(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("teamId", 10);
+		joInput.put("teamId", 57);
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -205,8 +205,8 @@ public class CallTeam extends AbstractVerticle {
 	public void teamImageUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("teamId", 10);
-		joInput.put("image", "image");
+		joInput.put("teamId", 57);
+		joInput.put("image", "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAQAAAABYmaj5AAAA7ElEQVR42tXUsZHEIAwFUHk2cHZuQDO0QeaWTAN4twK3REYbzNAAyhww1ombvd1NbBHeMQS8CPERAH+MAn9YBWCBzAEGTcR13W8cZaEpoLdpiuA6tIb86JWhHnH1tq7vyk4l53MR3fu0p2pZzbJ8JXiqYtHP6H53uBAH3mKadpg0HRZhRrCZNBHzxnWIadBUbILRbK/KzkXxRhEHNpumMuLXLPOZ4IVoz4flA5LTlTzkO+CkqeU/Sgy65G59q92QptbXLIEZVhXQsblDlxZIy8iPDsmrIn5mdiWui/QCoKr2pq35CUPRf/nBPvUNct67nP2Y9j8AAAAASUVORK5CYII=");
 
 		System.out.println("joInput:" + joInput);
 

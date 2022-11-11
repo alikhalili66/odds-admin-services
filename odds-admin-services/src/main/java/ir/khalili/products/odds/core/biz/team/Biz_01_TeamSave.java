@@ -9,8 +9,9 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
+import ir.khalili.products.odds.core.dao.DAO_League;
 import ir.khalili.products.odds.core.dao.DAO_Team;
-import ir.khalili.products.odds.core.helper.HelperImage;
+import ir.khalili.products.odds.core.service.ClientMinIO;
 
 public class Biz_01_TeamSave {
 
@@ -20,28 +21,41 @@ public class Biz_01_TeamSave {
 
         logger.trace("inputMessage:" + message);
 
-        HelperImage.saveImage(vertx, message.getString("image"), message.getString("symbol")).onComplete(result -> {
-            if (result.failed()) {
-            	logger.error("Unable to complete result: " + result.cause());
-                resultHandler.handle(Future.failedFuture(result.cause()));
+        DAO_League.fetchById(sqlConnection, message.getInteger("leagueId")).onComplete(leagueHandler->{
+        	
+        	if (leagueHandler.failed()) {
+            	logger.error("Unable to complete leagueHandler: " + leagueHandler.cause());
+                resultHandler.handle(Future.failedFuture(leagueHandler.cause()));
                 return;
             }
-            message.put("image", result.result());
-            DAO_Team.save(sqlConnection, message).onComplete(handler -> {
-            	if (handler.failed()) {
-            		logger.error("Unable to complete handler: " + handler.cause());
-            		resultHandler.handle(Future.failedFuture(handler.cause()));
-            		return;
-            	}
-            	
-            	resultHandler.handle(Future.succeededFuture(
-            			new JsonObject()
-            			.put("resultCode", 1)
-            			.put("resultMessage", "عملیات با موفقیت انجام شد.")
-            			));
-            	
-            });
+        	
+        	ClientMinIO.saveTeamImage(vertx, leagueHandler.result().getString("SYMBOL"), message.getString("symbol"), message.getString("image")).onComplete(minIOHandler -> {
+        		
+        		if (minIOHandler.failed()) {
+        			logger.error("Unable to complete minIOHandler: " + minIOHandler.cause());
+        			resultHandler.handle(Future.failedFuture(minIOHandler.cause()));
+        			return;
+        		}
+        		
+        		message.put("image", minIOHandler.result());
+        		
+        		DAO_Team.save(sqlConnection, message).onComplete(handler -> {
+        			if (handler.failed()) {
+        				logger.error("Unable to complete handler: " + handler.cause());
+        				resultHandler.handle(Future.failedFuture(handler.cause()));
+        				return;
+        			}
+        			
+        			resultHandler.handle(Future.succeededFuture(
+        					new JsonObject()
+        					.put("resultCode", 1)
+        					.put("resultMessage", "عملیات با موفقیت انجام شد.")
+        					));
+        			
+        		});
+        	});
         });
+        
     }
 
 }

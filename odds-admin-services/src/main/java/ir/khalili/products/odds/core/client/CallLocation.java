@@ -28,14 +28,14 @@ public class CallLocation extends AbstractVerticle {
 		WebClient client = WebClient.create(vertx);
 //		locationSave(client);
 //		locationUpdate(client);
-		locationDelete(client);
-//		locationFetchAll(client);
+//		locationDelete(client);
+		locationFetchAll(client);
 //		competitionLocationAssign(client);
 	}
 
 	public void locationSave(WebClient client) {
 		JsonObject joInput = new JsonObject();
-		
+		joInput.put("leagueId", 1);
 		joInput.put("name", "Location1");
 		joInput.put("description", "desc1");
 		joInput.put("image", "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAQAAAABYmaj5AAAA7ElEQVR42tXUsZHEIAwFUHk2cHZuQDO0QeaWTAN4twK3REYbzNAAyhww1ombvd1NbBHeMQS8CPERAH+MAn9YBWCBzAEGTcR13W8cZaEpoLdpiuA6tIb86JWhHnH1tq7vyk4l53MR3fu0p2pZzbJ8JXiqYtHP6H53uBAH3mKadpg0HRZhRrCZNBHzxnWIadBUbILRbK/KzkXxRhEHNpumMuLXLPOZ4IVoz4flA5LTlTzkO+CkqeU/Sgy65G59q92QptbXLIEZVhXQsblDlxZIy8iPDsmrIn5mdiWui/QCoKr2pq35CUPRf/nBPvUNct67nP2Y9j8AAAAASUVORK5CYII=");
@@ -67,7 +67,7 @@ public class CallLocation extends AbstractVerticle {
 	public void locationUpdate(WebClient client) {
 		
 		JsonObject joInput = new JsonObject();
-		joInput.put("locationId", 1);
+		joInput.put("locationId", 11);
 		joInput.put("name", "Location2");
 		joInput.put("description", "desc2");
 		joInput.put("image", "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAQAAAABYmaj5AAAA7ElEQVR42tXUsZHEIAwFUHk2cHZuQDO0QeaWTAN4twK3REYbzNAAyhww1ombvd1NbBHeMQS8CPERAH+MAn9YBWCBzAEGTcR13W8cZaEpoLdpiuA6tIb86JWhHnH1tq7vyk4l53MR3fu0p2pZzbJ8JXiqYtHP6H53uBAH3mKadpg0HRZhRrCZNBHzxnWIadBUbILRbK/KzkXxRhEHNpumMuLXLPOZ4IVoz4flA5LTlTzkO+CkqeU/Sgy65G59q92QptbXLIEZVhXQsblDlxZIy8iPDsmrIn5mdiWui/QCoKr2pq35CUPRf/nBPvUNct67nP2Y9j8AAAAASUVORK5CYII=");
@@ -126,11 +126,15 @@ public class CallLocation extends AbstractVerticle {
 	
 	public void locationFetchAll(WebClient client) {
 		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			
 			client
 			.post(port, host, "/v1/service/odds/location/all/fetch")
 			.putHeader("Authorization", CallAuth.token)
 			
-			.send(ar -> {
+			.sendJson(joInput, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());

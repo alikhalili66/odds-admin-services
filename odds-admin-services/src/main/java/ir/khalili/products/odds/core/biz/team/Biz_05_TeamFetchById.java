@@ -10,7 +10,6 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Team;
-import ir.khalili.products.odds.core.helper.HelperImage;
 
 public class Biz_05_TeamFetchById {
 
@@ -29,13 +28,13 @@ public class Biz_05_TeamFetchById {
 				return;
 			}
 
-            HelperImage.getImage(vertx, result.result().getString("IMAGE")).onComplete(result0 -> {
-                if (result0.failed()) {
-                	logger.error("Unable to complete result0: " + result0.cause());
-                    resultHandler.handle(Future.failedFuture(result0.cause()));
-                    return;
-                }
-                result.result().put("IMAGE", result0.result());
+//            HelperImage.getImage(vertx, result.result().getString("IMAGE")).onComplete(result0 -> {
+//                if (result0.failed()) {
+//                	logger.error("Unable to complete result0: " + result0.cause());
+//                    resultHandler.handle(Future.failedFuture(result0.cause()));
+//                    return;
+//                }
+//                result.result().put("IMAGE", result0.result());
                 
                 logger.trace("TEAM_FETCH_BY_ID_RESULT : " + result.result());
                 
@@ -44,7 +43,7 @@ public class Biz_05_TeamFetchById {
                 		.put("resultCode", 1)
                 		.put("resultMessage", "عملیات با موفقیت انجام شد.")
                 		.put("info", result.result())));
-            });
+//            });
 
 		});
     }

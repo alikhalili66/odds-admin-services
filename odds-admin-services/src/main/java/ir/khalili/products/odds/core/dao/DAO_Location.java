@@ -23,7 +23,7 @@ public class DAO_Location {
 		Promise<Void> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
-		
+		params.add(message.getInteger("leagueId"));
 		params.add(message.getString("name"));
 		params.add(message.getString("description"));
 		params.add(message.getString("image"));
@@ -32,6 +32,7 @@ public class DAO_Location {
 		sqlConnection.updateWithParams(""
 				+ "insert into topplocation("
 				+ "ID,"
+				+ "league_Id,"
 				+ "name,"
 				+ "description,"
 				+ "image,"
@@ -39,6 +40,7 @@ public class DAO_Location {
 				+ "createdBy_id)"
 				+ "values("
 				+ "sopplocation.nextval,"
+				+ "?,"
 				+ "?,"
 				+ "?,"
 				+ "?,"
@@ -110,23 +112,26 @@ public class DAO_Location {
     
     public static Future<List<JsonObject>> fetchAll(SQLConnection sqlConnection, JsonObject message) {
         Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(message.getInteger("leagueId"));
         
-        sqlConnection.query("SELECT "
-        		+ "l.id,"
-        		+ "l.name,"
-        		+ "l.description,"
-        		+ "l.image,"
-        		+ "To_Char(l.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
-        		+ "  FROM topplocation l WHERE l.dto is null", handler -> {
+        sqlConnection.queryWithParams("SELECT "
+        		+ "t.id,"
+        		+ "t.NAME,"
+        		+ "t.DESCRIPTION,"
+        		+ "t.IMAGE,"
+        		+ "t.LEAGUE_ID,"
+        		+ "To_Char(t.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "  FROM topplocation t WHERE t.LEAGUE_ID=nvl(?, t.LEAGUE_ID) and t.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                	logger.error("fetchAllLocationNoDataFound");
+                	logger.error("fetchAllTeamNoDataFound");
                 	promise.complete(new ArrayList<>());
                 } else {
-                    logger.trace("fetchAllLocationSuccessful");
+                    logger.trace("fetchAllCompetitionSuccessful");
                     promise.complete(handler.result().getRows());
                 }
             
@@ -136,34 +141,28 @@ public class DAO_Location {
         return promise.future();
     }
     
-    public static Future<JsonObject> fetchById(SQLConnection sqlConnection, Integer competitionId) {
+    public static Future<JsonObject> fetchById(SQLConnection sqlConnection, Integer locationId) {
         Promise<JsonObject> promise = Promise.promise();
         JsonArray params = new JsonArray();
-        params.add(competitionId);
+        params.add(locationId);
         
         sqlConnection.queryWithParams("SELECT "
-        		+ "c.id,"
-        		+ "c.LEAGUE_ID,"
-        		+ "c.TEAM1_ID,"
-        		+ "c.TEAM2_ID,"
-        		+ "c.GROUP_ID,"
-        		+ "c.RESULT,"
-        		+ "To_Char(c.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(c.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(c.ODDSFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_FROM,"
-        		+ "To_Char(c.ODDSTO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_TO,"
-        		+ "To_Char(c.COMPETITIONDATE,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') COMPETITION_DATE,"
-        		+ "To_Char(c.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
-        		+ "  FROM toppcompetition c WHERE c.id=? and c.dto is null", params, handler -> {
+        		+ "t.id,"
+        		+ "t.NAME,"
+        		+ "t.description,"
+        		+ "t.IMAGE,"
+        		+ "t.LEAGUE_ID,"
+        		+ "To_Char(t.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "  FROM topplocation t WHERE t.id=? and t.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                	logger.error("fetchLocationByIdNoDataFound");
+                	logger.error("fetchTeamByIdNoDataFound");
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
-                    logger.trace("fetchAllCompetitionByIdSuccessful");
+                    logger.trace("fetchAllTeamByIdSuccessful");
                     promise.complete(handler.result().getRows().get(0));
                 }
             

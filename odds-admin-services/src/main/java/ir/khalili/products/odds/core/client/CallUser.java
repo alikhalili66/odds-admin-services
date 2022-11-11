@@ -25,9 +25,9 @@ public class CallUser extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-		userFetchAll(client);
+//		userFetchAll(client);
 //		userFetchById(client);
-//		userFetchOdds(client);
+		userFetchOdds(client);
 //		userFetchQuestionAnswer(client);
 //		userFetchPointHistory(client);
 	}

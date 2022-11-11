@@ -316,8 +316,8 @@ public final class TeamInputValidationUtil {
 			}
 	        
 			final JsonObject joResult = new JsonObject();
-			
 			joResult.put("leagueId", leagueId);
+			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());

@@ -30,6 +30,7 @@ public final class LocationInputValidationUtil {
 
 			final JsonObject joToken = handler.result();
 
+			Integer leagueId;
 			String name;
 			String description;
 			String image;
@@ -37,10 +38,14 @@ public final class LocationInputValidationUtil {
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
+	            leagueId = inputParameters.getInteger("leagueId");
 	            name = inputParameters.getString("name");
 	            description = inputParameters.getString("description");
 	            image = inputParameters.getString("image");
 	            
+	            if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
 	            
 	            if (null == name || name.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد  نام موقعیت معتبر نمی باشد");
@@ -64,6 +69,7 @@ public final class LocationInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
+			joResult.put("leagueId", leagueId);
 			joResult.put("name", name);
 			joResult.put("description", description);
 			joResult.put("image", image);
@@ -197,7 +203,28 @@ public final class LocationInputValidationUtil {
 
 			final JsonObject joToken = handler.result();
 			
+			Integer leagueId;
+
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            leagueId = inputParameters.getInteger("leagueId");
+	            
+	            if (null != leagueId && leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
+
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+	        
 			final JsonObject joResult = new JsonObject();
+			joResult.put("leagueId", leagueId);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));

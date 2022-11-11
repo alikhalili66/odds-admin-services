@@ -22,7 +22,7 @@ public class DAO_Team {
 		Promise<Void> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
-		params.add(message.getString("leagueId"));
+		params.add(message.getInteger("leagueId"));
 		params.add(message.getString("name"));
 		params.add(message.getString("symbol"));
 		params.add(message.getString("image"));

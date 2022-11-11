@@ -237,5 +237,22 @@ public class DAO_Config {
 
         return promise.future();
     }
-    
+
+	public static Future<String> fetchSysdate(SQLConnection sqlConnection) {
+		Promise<String> promise = Promise.promise();
+
+		sqlConnection.query("SELECT To_Char(sysdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') X FROM DUAL", handler -> {
+			if (handler.failed()) {
+				logger.error("Unable to get accessQueryResult:", handler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+			} else {
+				logger.trace("fetchAllLeagueByIdSuccessful");
+				promise.complete(handler.result().getRows().get(0).getString("X"));
+			}
+		});
+
+		return promise.future();
+	}
+
+
 }

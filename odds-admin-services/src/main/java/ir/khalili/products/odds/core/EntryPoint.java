@@ -7,6 +7,8 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import ir.khalili.products.odds.core.routemanager.question.*;
+import ir.khalili.products.odds.core.verticle.question.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -65,11 +67,6 @@ import ir.khalili.products.odds.core.routemanager.location.RtMgr_01_LocationSave
 import ir.khalili.products.odds.core.routemanager.location.RtMgr_02_LocationUpdate;
 import ir.khalili.products.odds.core.routemanager.location.RtMgr_03_LocationDelete;
 import ir.khalili.products.odds.core.routemanager.location.RtMgr_04_LocationFetchAll;
-import ir.khalili.products.odds.core.routemanager.question.RtMgr_01_QuestionSave;
-import ir.khalili.products.odds.core.routemanager.question.RtMgr_02_QuestionUpdate;
-import ir.khalili.products.odds.core.routemanager.question.RtMgr_03_QuestionDelete;
-import ir.khalili.products.odds.core.routemanager.question.RtMgr_04_QuestionFetchAll;
-import ir.khalili.products.odds.core.routemanager.question.RtMgr_05_QuestionFetchById;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_01_ReportRegisteredUsersCount;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_02_ReportCompetitorUsersCount;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_03_ReportCompetitorUsersAmount;
@@ -136,11 +133,6 @@ import ir.khalili.products.odds.core.verticle.location.VRTCL_01_LocationSave;
 import ir.khalili.products.odds.core.verticle.location.VRTCL_02_LocationUpdate;
 import ir.khalili.products.odds.core.verticle.location.VRTCL_03_LocationDelete;
 import ir.khalili.products.odds.core.verticle.location.VRTCL_04_LocationFetchAll;
-import ir.khalili.products.odds.core.verticle.question.VRTCL_01_QuestionSave;
-import ir.khalili.products.odds.core.verticle.question.VRTCL_02_QuestionUpdate;
-import ir.khalili.products.odds.core.verticle.question.VRTCL_03_QuestionDelete;
-import ir.khalili.products.odds.core.verticle.question.VRTCL_04_QuestionFetchAll;
-import ir.khalili.products.odds.core.verticle.question.VRTCL_05_QuestionFetchById;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_01_ReportRegisteredUsersCount;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_02_ReportCompetitorUsersCount;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_03_ReportCompetitorUsersAmount;
@@ -252,7 +244,7 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_10_CompetitionResultRegister.class.getName());
     	vertx.deployVerticle(VRTCL_11_CompetitionQuestionResultRegister.class.getName());
     	vertx.deployVerticle(VRTCL_12_CompetitionPointCalculation.class.getName());
-    	
+
     	//CONFIG
     	vertx.deployVerticle(VRTCL_01_ConfigUpdate.class.getName());
     	vertx.deployVerticle(VRTCL_02_ConfigFetchAll.class.getName());
@@ -304,7 +296,8 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_03_QuestionDelete.class.getName());
     	vertx.deployVerticle(VRTCL_04_QuestionFetchAll.class.getName());
     	vertx.deployVerticle(VRTCL_05_QuestionFetchById.class.getName());
-    	
+    	vertx.deployVerticle(VRTCL_06_QuestionSaveResult.class.getName());
+
     	
     	//REPORT
     	vertx.deployVerticle(VRTCL_01_ReportRegisteredUsersCount.class.getName());
@@ -442,6 +435,7 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/question/delete")							.handler(RtMgr_03_QuestionDelete							:: handler);
         router.post		("/v1/service/odds/question/all/fetch")							.handler(RtMgr_04_QuestionFetchAll							:: handler);
         router.post		("/v1/service/odds/question/id/fetch")							.handler(RtMgr_05_QuestionFetchById							:: handler);
+        router.post		("/v1/service/odds/question/save/result")							.handler(RtMgr_06_QuestionSaveResult                    :: handler);
 
         //REPORT
         router.post		("/v1/service/odds/report/registered/users/count")				.handler(RtMgr_01_ReportRegisteredUsersCount				:: handler);

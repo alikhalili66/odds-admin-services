@@ -57,6 +57,7 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_QUESTION_DELETE						= "nas.eb.core.srvc.question.delete";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_QUESTION_ALL_FETCH					= "nas.eb.core.srvc.question.all.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_QUESTION_ID_FETCH					= "nas.eb.core.srvc.question.id.fetch";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_QUESTION_SAVE_RESULT				= "nas.eb.core.srvc.question.save.result";
 	
 	/***********************TEAM****************************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_TEAM_SAVE							= "nas.eb.core.srvc.team.save";

@@ -1,18 +1,17 @@
 package ir.khalili.products.odds.core.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.excp.dao.DAOEXCP_Internal;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DAO_Competition {
 
@@ -626,5 +625,58 @@ public class DAO_Competition {
         });
         return promise.future();
     }
-    
+
+	public static Future<List<JsonObject>> fetchCompetitionByLeagueId(SQLConnection sqlConnection, int leagueId, String currentDate) {
+		Promise<List<JsonObject>> promise = Promise.promise();
+		JsonArray params = new JsonArray();
+		params.add(leagueId);
+		params.add(currentDate);
+
+		sqlConnection.queryWithParams("SELECT * FROM TOPPCOMPETITION TC " +
+				"  WHERE TC.LEAGUE_ID = ? AND TRUNC(ACTIVETO) = TRUNC(TO_DATE(?,'YYYY-MM-DD')) AND RESULT IS NULL AND TC.dto is null ", params, resultHandler -> {
+			if (resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+			} else {
+				if (null == resultHandler.result() || null == resultHandler.result().getRows() || resultHandler.result().getRows().isEmpty()) {
+					promise.complete(new ArrayList<>());
+				} else {
+					logger.trace("fetchCompetitionAll");
+					promise.complete(resultHandler.result().getRows());
+				}
+			}
+		});
+
+		return promise.future();
+	}
+
+	public static Future<Void> saveQuestionCorrectAnswer(SQLConnection sqlConnection, JsonObject jsonObject) {
+
+		Promise<Void> promise = Promise.promise();
+		JsonArray params = new JsonArray();
+
+		params.add(jsonObject.getString("answer"));
+		params.add(jsonObject.getInteger("competitionId"));
+		params.add(jsonObject.getInteger("leadgueId"));
+		params.add(jsonObject.getInteger("competitionId"));
+		params.add(jsonObject.getString("symbol"));
+
+		sqlConnection.updateWithParams("UPDATE toppodds " +
+				" SET correctanswer = ? " +
+				" WHERE competition_id = ? AND league_id = ? " +
+				"    AND question_id = (SELECT q.id " +
+				"        FROM toppcompetitionquestion cq INNER JOIN toppquestion q ON cq.question_id = q.id " +
+				"        WHERE cq.competition_id = ? AND q.symbol = ? AND ROWNUM = 1)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			logger.trace("saveQuestionCorrectAnswer");
+			promise.complete();
+		});
+		return promise.future();
+	}
+
+
 }

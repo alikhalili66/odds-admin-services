@@ -19,6 +19,10 @@
 		"check": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/check",
 		"token": "UzBsUVQwUmZRVkJKWDFWVFJWST1fUzBsUVQwUkFJVUFqSkVBeE1qTTA="
 	},
+	"liveScore": {
+		"token": "UzBsUVQwUmZRVkJKWDFWVFJWST1fUzBsUVQwUkFJVUFqSkVBeE1qTTA=",
+		"score_result": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/check"
+	},
 	"jwt": {
 		"algorithm": "HS256",
 		"secretKey": "iUM d#v"

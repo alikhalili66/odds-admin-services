@@ -8,7 +8,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.report.Biz_01_ReportRegisteredUsersCount;
+import ir.khalili.products.odds.core.biz.report.Biz_10_ReportUsersWithMaximumPoint;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 
@@ -39,7 +39,7 @@ public class VRTCL_10_ReportUsersWithMaximumPoint extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_01_ReportRegisteredUsersCount.fetchRegisteredUsersCount(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_10_ReportUsersWithMaximumPoint.fetchReportUsersWithMaximumPoint(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

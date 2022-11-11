@@ -206,17 +206,13 @@ public final class ReportInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
-			Integer leagueId;
+			Boolean isLive;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            leagueId = inputParameters.getInteger("leagueId");
+	            isLive = inputParameters.getBoolean("isLive", null);
 	            
-	            if (null == leagueId || leagueId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
-	            }
-
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
 				return;
@@ -227,7 +223,7 @@ public final class ReportInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("leagueId", leagueId);
+			joResult.put("isLive", isLive);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -250,17 +246,20 @@ public final class ReportInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
-			Integer leagueId;
+			Integer competitionId;
+			Boolean isLive;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            leagueId = inputParameters.getInteger("leagueId");
-	            
-	            if (null == leagueId || leagueId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            competitionId = inputParameters.getInteger("competitionId");
+	            isLive = inputParameters.getBoolean("isLive", null);
+
+	            if (null != competitionId && competitionId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
 	            }
 
+	            
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
 				return;
@@ -271,7 +270,8 @@ public final class ReportInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("leagueId", leagueId);
+			joResult.put("competitionId", competitionId);
+			joResult.put("isLive", isLive);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -294,16 +294,12 @@ public final class ReportInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
-			Integer leagueId;
+			Boolean isLive;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            leagueId = inputParameters.getInteger("leagueId");
-	            
-	            if (null == leagueId || leagueId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
-	            }
+	            isLive = inputParameters.getBoolean("isLive", null);
 
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
@@ -315,7 +311,7 @@ public final class ReportInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("leagueId", leagueId);
+			joResult.put("isLive", isLive);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -338,16 +334,19 @@ public final class ReportInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
-			Integer leagueId;
+			Integer competitionId;
+			Boolean isLive;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            leagueId = inputParameters.getInteger("leagueId");
+	            competitionId = inputParameters.getInteger("competitionId");
+	            isLive = inputParameters.getBoolean("isLive", null);
 	            
-	            if (null == leagueId || leagueId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            if (null == competitionId || competitionId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
 	            }
+	            
 
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
@@ -359,7 +358,8 @@ public final class ReportInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("leagueId", leagueId);
+			joResult.put("competitionId", competitionId);
+			joResult.put("isLive", isLive);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -382,16 +382,12 @@ public final class ReportInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
-			Integer leagueId;
+			Boolean isLive;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            leagueId = inputParameters.getInteger("leagueId");
-	            
-	            if (null == leagueId || leagueId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
-	            }
+	            isLive = inputParameters.getBoolean("isLive", null);
 
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
@@ -403,7 +399,7 @@ public final class ReportInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("leagueId", leagueId);
+			joResult.put("isLive", isLive);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -426,17 +422,13 @@ public final class ReportInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
-			Integer leagueId;
+			Boolean isLive;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            leagueId = inputParameters.getInteger("leagueId");
+	            isLive = inputParameters.getBoolean("isLive", null);
 	            
-	            if (null == leagueId || leagueId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
-	            }
-
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
 				return;
@@ -447,7 +439,7 @@ public final class ReportInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("leagueId", leagueId);
+			joResult.put("isLive", isLive);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -470,15 +462,17 @@ public final class ReportInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
-			Integer leagueId;
+			Integer competitionId;
+			Boolean isLive;
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
-	            leagueId = inputParameters.getInteger("leagueId");
+	            competitionId = inputParameters.getInteger("competitionId");
+	            isLive = inputParameters.getBoolean("isLive", null);
 	            
-	            if (null == leagueId || leagueId < 1) {
-	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            if (null != competitionId && competitionId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
 	            }
 
 	        } catch (EXCP_RtMgr_Validation e) {
@@ -491,7 +485,8 @@ public final class ReportInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
-			joResult.put("leagueId", leagueId);
+			joResult.put("competitionId", competitionId);
+			joResult.put("isLive", isLive);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));

@@ -28,8 +28,17 @@ public class CallReport extends AbstractVerticle {
 		WebClient client = WebClient.create(vertx);
 //		reportCompetitorUsersAmount(client);
 //		reportCompetitorUsersCount(client);
-		reportOddsCount(client);
+//		reportOddsCount(client);
 //		reportRegisteredUsersCount(client);
+		
+		reportUsersWithMaximumOdds(client);
+//		reportOddsCountPerCompetition(client);
+//		reportUsersCountWithOdds(client);
+//		reportQuestionStatisticPerCompetition(client);
+//		reportUsersWithMaximumPoint(client);
+//		reportCompetitionWithMaximumOdds(client);
+//		reportCompetitionsTotalPoint(client);
+		
 	}
 
 	public void reportRegisteredUsersCount(WebClient client) {
@@ -133,6 +142,227 @@ public class CallReport extends AbstractVerticle {
 			
 			client
 			.post(port, host, "/v1/service/odds/report/odds/count")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	
+	public void reportUsersWithMaximumOdds(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("isLive", Boolean.TRUE);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/odds/users/maximum")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void reportOddsCountPerCompetition(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("isLive", Boolean.TRUE);
+			joInput.put("competitionId", 31);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/odds/competition/count")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void reportUsersCountWithOdds(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("isLive", Boolean.TRUE);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/odds/users/odds/count")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void reportQuestionStatisticPerCompetition(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("isLive", Boolean.TRUE);
+			joInput.put("competitionId", 31);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/odds/question/statistic")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void reportUsersWithMaximumPoint(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("isLive", Boolean.TRUE);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/odds/users/point/maximum")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void reportCompetitionWithMaximumOdds(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("isLive", Boolean.TRUE);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/odds/competition/odds/maximum")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void reportCompetitionsTotalPoint(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("isLive", Boolean.TRUE);
+			joInput.put("competitionId", 31);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/odds/competition/point")
 			.putHeader("Authorization", CallAuth.token)
 			
 			.sendJson(joInput, ar -> {

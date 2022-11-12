@@ -19,11 +19,11 @@ public class ClientMinIO {
 	public static MinioClient minioClient;
 	
     static {
-        JsonObject joLockin = EntryPoint.joConfig.getJsonObject("minio");
+        JsonObject joMinIO = EntryPoint.joConfig.getJsonObject("minio");
 
-        String accessKey = joLockin.getString("accessKey");
-        String secretKey = joLockin.getString("secretKey");
-        String endpoint = joLockin.getString("endpoint");
+        String accessKey = joMinIO.getString("accessKey");
+        String secretKey = joMinIO.getString("secretKey");
+        String endpoint = joMinIO.getString("endpoint");
         
         minioClient = MinioClient.builder().endpoint(endpoint).credentials(accessKey, secretKey).build();
     }

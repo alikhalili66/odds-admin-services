@@ -172,7 +172,7 @@ public class DAO_User {
         		+ "o.REWARDPOINT REWARD_POINT,"
         		+ "o.COUNT,"
         		+ "row_number() over (ORDER BY o.id desc) line_number"
-        		+ "  FROM toppodds o, toppleague l, toppgroup g, toppquestion q where o.QUESTION_ID=q.id and o.GROUP_ID=g.id and o.LEAGUE_ID=l.id and o.id=?) WHERE line_number BETWEEN ? AND ?", params, handler -> {
+        		+ "  FROM toppodds o, toppleague l, toppgroup g, toppquestion q where o.id=? and o.QUESTION_ID=q.id and o.GROUP_ID=g.id and o.LEAGUE_ID=l.id) WHERE line_number BETWEEN ? AND ?", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

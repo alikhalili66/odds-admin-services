@@ -1,11 +1,5 @@
 package ir.khalili.products.odds.core.biz.config;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.Date;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -14,8 +8,9 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.excp.BIZEXCP_Invalid;
 import ir.khalili.products.odds.core.dao.DAO_Config;
+import ir.khalili.products.odds.core.dao.DAO_League;
+import ir.khalili.products.odds.core.service.ClientMinIO;
 
 public class Biz_01_ConfigUpdate {
 
@@ -27,48 +22,44 @@ public class Biz_01_ConfigUpdate {
 
 		final Integer configId = message.getInteger("configId");
 		
-		DAO_Config.fetchById(sqlConnection, configId).onComplete(result -> {
-			if (result.failed()) {
-				logger.error("Unable to complete result: " + result.cause());
-				resultHandler.handle(Future.failedFuture(result.cause()));
+		DAO_Config.fetchById(sqlConnection, configId).onComplete(configHandler -> {
+			if (configHandler.failed()) {
+				logger.error("Unable to complete configHandler: " + configHandler.cause());
+				resultHandler.handle(Future.failedFuture(configHandler.cause()));
 				return;
 			}
 
-			logger.trace("CONFIG_FETCH_BY_ID_RESULT : " + result.result());
+			logger.trace("CONFIG_FETCH_BY_ID_RESULT : " + configHandler.result());
 
-			if(result.result().getString("TYPE").equals("File")) {
-            	
-                String fileName = "/app/odds/config/" + result.result().getInteger("LEAGUE_ID") + "/" + result.result().getString("SYMBOL")+ "_" + new Date().getTime() + ".txt";
-
-            	try {
-                	try(Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"))) {
-                	    out.write(message.getString("value"));
-                	} 
-                	message.put("value", fileName);
-                } catch (Exception e) {
-                	logger.error("ERROR_WHEN_CONVERTING_FILE");
-                    e.printStackTrace();
-                    resultHandler.handle(Future.failedFuture(new BIZEXCP_Invalid("خطای در تبدیل فایل. با راهبر سامانه تماس بگیرید.")));
+			JsonObject joConfig = configHandler.result();
+        	
+        	DAO_League.fetchById(sqlConnection, joConfig.getInteger("LEAGUE_ID")).onComplete(leagueHandler->{
+        		
+        		if (leagueHandler.failed()) {
+                	logger.error("Unable to complete leagueHandler: " + leagueHandler.cause());
+                    resultHandler.handle(Future.failedFuture(leagueHandler.cause()));
                     return;
                 }
-            	
-			}
-			
-	        DAO_Config.update(sqlConnection, configId, message.getString("value")).onComplete(handler -> {
-	            if (handler.failed()) {
-	            	logger.error("Unable to complete handler: " + handler.cause());
-	                resultHandler.handle(Future.failedFuture(handler.cause()));
-	                return;
-	            }
-	            
-				resultHandler.handle(Future.succeededFuture(
-						new JsonObject()
-						.put("resultCode", 1)
-						.put("resultMessage", "عملیات با موفقیت انجام شد.")
-						));
+        		
+    			if(joConfig.getString("TYPE").equals("File")) {
+                    message.put("value", ClientMinIO.saveFile(leagueHandler.result().getString("SYMBOL"), joConfig.getString("SYMBOL"), message.getString("value")));
+    			}
+    			
+    	        DAO_Config.update(sqlConnection, configId, message.getString("value")).onComplete(updateHandler -> {
+    	            if (updateHandler.failed()) {
+    	            	logger.error("Unable to complete handler: " + updateHandler.cause());
+    	                resultHandler.handle(Future.failedFuture(updateHandler.cause()));
+    	                return;
+    	            }
+    	            
+    				resultHandler.handle(Future.succeededFuture(
+    						new JsonObject()
+    						.put("resultCode", 1)
+    						.put("resultMessage", "عملیات با موفقیت انجام شد.")
+    						));
 
-	        });
-
+    	        });
+        	});
 		});
 		
     }

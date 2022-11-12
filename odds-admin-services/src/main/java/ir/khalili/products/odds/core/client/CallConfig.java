@@ -25,8 +25,8 @@ public class CallConfig extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-//		leagueUpdate(client);
-		leagueFetchAll(client);
+		leagueUpdate(client);
+//		leagueFetchAll(client);
 //		leagueFetchById(client);
 //		leagueFetchBySymbol(client);
 	}

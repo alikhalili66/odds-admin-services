@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ir.khalili.products.odds.core</groupId>
 	<artifactId>odds-admin-services</artifactId>
-	<version>BD20221112_0_0_0_0_0_2-fat</version>
+	<version>BD20221112_0_0_0_0_0_3-fat</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,18 +28,6 @@
 			<groupId>io.minio</groupId>
 			<artifactId>minio</artifactId>
 			<version>8.3.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.xml.ws</groupId>
-			<artifactId>jaxws-api</artifactId>
-			<version>2.3.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.sun.xml.ws</groupId>
-			<artifactId>rt</artifactId>
-			<version>2.3.1</version>
 		</dependency>
 
 		<dependency>
@@ -163,13 +151,6 @@
 			<groupId>jakarta.xml.ws</groupId>
 			<artifactId>jakarta.xml.ws-api</artifactId>
 			<version>2.3.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.sun.xml.ws</groupId>
-			<artifactId>jaxws-ri</artifactId>
-			<version>2.3.2</version>
-			<type>pom</type>
 		</dependency>
 
 	</dependencies>

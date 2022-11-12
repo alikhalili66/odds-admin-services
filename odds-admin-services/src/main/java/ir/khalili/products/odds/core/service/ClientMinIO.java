@@ -11,13 +11,23 @@ import io.minio.PutObjectArgs;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+import ir.khalili.products.odds.core.EntryPoint;
 
 public class ClientMinIO {
 
-	public static String accessKey = "paypod";
-	public static String secretKey = "paypod123!@#";
-	public static MinioClient minioClient = MinioClient.builder().endpoint("https://io.paypod.linuxservice.ir").credentials(accessKey, secretKey).build();
+	public static MinioClient minioClient;
 	
+    static {
+        JsonObject joLockin = EntryPoint.joConfig.getJsonObject("minio");
+
+        String accessKey = joLockin.getString("accessKey");
+        String secretKey = joLockin.getString("secretKey");
+        String endpoint = joLockin.getString("endpoint");
+        
+        minioClient = MinioClient.builder().endpoint(endpoint).credentials(accessKey, secretKey).build();
+    }
+    
 	public static Future<String> saveTeamImage(Vertx vertx, String league, String team, String base64Data) {
 		
 		return saveImage(vertx, league, "team", team, base64Data);

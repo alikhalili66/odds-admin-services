@@ -19,6 +19,8 @@ public class Biz_01_UserFetchAll {
 
     public static void fetchAll(SQLConnection sqlConnection, JsonObject message, Handler<AsyncResult<JsonObject>> resultHandler) {
 
+    	logger.trace("inputMessage:" + message);
+
     	Future<Integer> fetchCountAll = DAO_User.fetchCountAll(sqlConnection, message);
     	Future<List<JsonObject>> fetchAll = DAO_User.fetchAll(sqlConnection, message);
     	

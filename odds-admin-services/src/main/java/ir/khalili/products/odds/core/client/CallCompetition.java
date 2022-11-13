@@ -30,7 +30,7 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionSave(client);
 //		competitionUpdate(client);
 //		competitionDelete(client);
-//		competitionFetchAll(client);
+		competitionFetchAll(client);
 //		competitionFetchById(client);
 //		competitionGroupFetch(client);
 //		competitionQuestionAssign(client);
@@ -38,7 +38,7 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionQuestionFetch(client);
 //		competitionResultRegister(client);
 //		questionResultRegister(client);
-		competitionPointCalculation(client);
+//		competitionPointCalculation(client);
 	}
 
 	public void competitionSave(WebClient client) {

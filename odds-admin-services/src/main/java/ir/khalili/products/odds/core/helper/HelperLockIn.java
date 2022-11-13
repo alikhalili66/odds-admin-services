@@ -12,7 +12,6 @@ import io.vertx.ext.web.client.WebClient;
 import ir.khalili.products.odds.core.EntryPoint;
 import ir.khalili.products.odds.core.biz.excp.BIZEXCP_Group;
 import ir.khalili.products.odds.core.enums.AccessLockIn;
-import ir.khalili.products.odds.core.enums.UserType;
 import ir.khalili.products.odds.core.excp.validation.EXCP_RtMgr_Validation;
 
 public class HelperLockIn {
@@ -41,7 +40,7 @@ public class HelperLockIn {
         joLoginUser.put("username", username);
         joLoginUser.put("password", password);
 
-        client.post(PORT, HOST, "/v1/service/nas/user/login").putHeader("API-KEY", API).sendJson(joLoginUser, resHandler -> {
+        client.post(PORT, HOST, "/v1/service/odds/user/login").putHeader("API-KEY", API).sendJson(joLoginUser, resHandler -> {
 
             if (resHandler.succeeded()) {
                 logger.info(resHandler.result().bodyAsJsonObject());
@@ -71,7 +70,7 @@ public class HelperLockIn {
         sendOTP.put("cellphone", cellphone);
         sendOTP.put("code", code);
 
-        client.post(PORT, HOST, "/v1/service/nas/user/check/otp").putHeader("API-KEY", API).sendJson(sendOTP, resHandler -> {
+        client.post(PORT, HOST, "/v1/service/odds/user/check/otp").putHeader("API-KEY", API).sendJson(sendOTP, resHandler -> {
 
             if (resHandler.succeeded()) {
                 logger.info(resHandler.result().bodyAsJsonObject());
@@ -101,7 +100,7 @@ public class HelperLockIn {
         Promise<JsonObject> promise = Promise.promise();
 
         client
-                .post(PORT, HOST, "/v1/service/nas/user/check/token")
+                .post(PORT, HOST, "/v1/service/odds/user/check/token")
                 .putHeader("API-KEY", API)
                 .putHeader("Authorization", token)
                 .send(resHandler -> {
@@ -134,7 +133,7 @@ public class HelperLockIn {
 
         Promise<Void> promise = Promise.promise();
 
-        String url = String.format("/v1/service/nas/user/check/access?access=%s", access.name());
+        String url = String.format("/v1/service/odds/user/check/access?access=%s", access.name());
 
         client
                 .get(PORT, HOST, url)
@@ -168,125 +167,4 @@ public class HelperLockIn {
         return promise.future();
     }
 
-    public static Future<JsonObject> doSaveUser(String name, String lastname, String isActive, String username, String password, UserType userType) {
-
-        Promise<JsonObject> promise = Promise.promise();
-
-        JsonObject joSave = new JsonObject();
-        joSave.put("name", name);
-        joSave.put("lastname", lastname);
-        joSave.put("type", userType.getType());
-        joSave.put("status", isActive);
-        joSave.put("isOtpEnable", false);
-        joSave.put("username", username);
-        joSave.put("password", password);
-
-        client.post(PORT, HOST, "/v1/service/nas/user/save").putHeader("API-KEY", API).sendJson(joSave, resHandler -> {
-
-            if (resHandler.succeeded()) {
-                logger.info(resHandler.result().bodyAsJsonObject());
-                JsonObject result = resHandler.result().bodyAsJsonObject();
-                int resultCode = result.getInteger("resultCode");
-                if (resultCode == 1) {
-                    promise.complete(result.getJsonObject("info"));
-                } else {
-                    logger.error(resHandler.result().bodyAsJsonObject());
-                    promise.fail(new BIZEXCP_Group(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
-                }
-            } else {
-                logger.error(resHandler.cause());
-                promise.fail(resHandler.cause());
-            }
-
-        });
-
-        return promise.future();
-    }
-
-    public static Future<Void> doDeleteUser(int userId) {
-
-        Promise<Void> promise = Promise.promise();
-
-        JsonObject joDelete = new JsonObject();
-        joDelete.put("id", userId);
-
-        client.delete(PORT, HOST, "/v1/service/nas/user/delete").putHeader("API-KEY", API).sendJson(joDelete, resHandler -> {
-
-            if (resHandler.succeeded()) {
-                logger.info(resHandler.result().bodyAsJsonObject());
-                JsonObject result = resHandler.result().bodyAsJsonObject();
-                int resultCode = result.getInteger("resultCode");
-                if (resultCode == 1) {
-                    promise.complete();
-                } else {
-                    logger.error(resHandler.result().bodyAsJsonObject());
-                    promise.fail(new BIZEXCP_Group(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
-                }
-            } else {
-                logger.error(resHandler.cause());
-                promise.fail(resHandler.cause());
-            }
-
-        });
-
-        return promise.future();
-    }
-
-    public static Future<Void> doUpdateUser(int userId, String column, String value) {
-
-        Promise<Void> promise = Promise.promise();
-
-        JsonObject joUpdate = new JsonObject();
-        joUpdate.put("id", userId);
-        joUpdate.put("value", value);
-
-        client.put(PORT, HOST, "/v1/service/nas/user/update/" + column).putHeader("API-KEY", API).sendJson(joUpdate, resHandler -> {
-
-            if (resHandler.succeeded()) {
-                logger.info(resHandler.result().bodyAsJsonObject());
-                JsonObject result = resHandler.result().bodyAsJsonObject();
-                int resultCode = result.getInteger("resultCode");
-                if (resultCode == 1) {
-                    promise.complete();
-                } else {
-                    logger.error(resHandler.result().bodyAsJsonObject());
-                    promise.fail(new BIZEXCP_Group(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
-                }
-            } else {
-                logger.error(resHandler.cause());
-                promise.fail(resHandler.cause());
-            }
-
-        });
-
-        return promise.future();
-    }
-
-    public static Future<Void> doUpdatePassword(Integer lockInId, String password) {
-        Promise<Void> promise = Promise.promise();
-        JsonObject joSave = new JsonObject();
-        joSave.put("id", lockInId);
-        joSave.put("value", password);
-        client.put(PORT, HOST, "/v1/service/nas/user/update/password").putHeader("API-KEY", API).sendJson(joSave, resHandler -> {
-
-            if (resHandler.succeeded()) {
-                logger.info(resHandler.result().bodyAsJsonObject());
-                JsonObject result = resHandler.result().bodyAsJsonObject();
-                int resultCode = result.getInteger("resultCode");
-                if (resultCode == 1) {
-                    promise.complete();
-                } else {
-                    logger.error(resHandler.result().bodyAsJsonObject());
-                    promise.fail(new BIZEXCP_Group(-1, resHandler.result().bodyAsJsonObject().getString("resultMessage")));
-                }
-            } else {
-                logger.error(resHandler.cause());
-                promise.fail(resHandler.cause());
-            }
-
-        });
-
-        return promise.future();
-
-    }
 }

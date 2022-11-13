@@ -33,8 +33,8 @@ public class CallGroup extends AbstractVerticle {
 //		groupFetchById(client);
 //		groupTeamAssign(client);
 //		groupTeamUnAssign(client);
-//		groupTeamFetch(client);
-		groupCompetitionFetch(client);
+		groupTeamFetch(client);
+//		groupCompetitionFetch(client);
 	}
 
 	public void groupSave(WebClient client) {
@@ -275,7 +275,7 @@ public class CallGroup extends AbstractVerticle {
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/odds/group/fetch/team")
+			client.post(port, host, "/v1/service/odds/group/team/fetch")
 					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {

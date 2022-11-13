@@ -9,8 +9,9 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
+import ir.khalili.products.odds.core.dao.DAO_League;
 import ir.khalili.products.odds.core.dao.DAO_Location;
-import ir.khalili.products.odds.core.helper.HelperImage;
+import ir.khalili.products.odds.core.service.ClientMinIO;
 
 public class Biz_02_LocationUpdate {
 
@@ -20,28 +21,53 @@ public class Biz_02_LocationUpdate {
 
         logger.trace("inputMessage:" + message);
 
-        HelperImage.saveImage(vertx, message.getString("image"), message.getString("name")).onComplete(result -> {
-            if (result.failed()) {
-            	logger.error("Unable to complete result: " + result.cause());
-                resultHandler.handle(Future.failedFuture(result.cause()));
-                return;
-            }
-            message.put("image", result.result());
-            DAO_Location.update(sqlConnection, message).onComplete(handler -> {
-            	if (handler.failed()) {
-            		logger.error("Unable to complete handler: " + handler.cause());
-            		resultHandler.handle(Future.failedFuture(handler.cause()));
-            		return;
-            	}
-            	
-            	resultHandler.handle(Future.succeededFuture(
-            			new JsonObject()
-            			.put("resultCode", 1)
-            			.put("resultMessage", "عملیات با موفقیت انجام شد.")
-            			));
-            	
-            });
+        DAO_Location.fetchById(sqlConnection, message.getInteger("locationId")).onComplete(locationHandler -> {
+        	
+        	if (locationHandler.failed()) {
+        		logger.error("Unable to complete handler0: " + locationHandler.cause());
+        		resultHandler.handle(Future.failedFuture(locationHandler.cause()));
+        		return;
+        	}
+        	
+        	JsonObject joTeam = locationHandler.result();
+        	
+        	DAO_League.fetchById(sqlConnection, joTeam.getInteger("LEAGUE_ID")).onComplete(leagueHandler->{
+        		
+        		if (leagueHandler.failed()) {
+                	logger.error("Unable to complete leagueHandler: " + leagueHandler.cause());
+                    resultHandler.handle(Future.failedFuture(leagueHandler.cause()));
+                    return;
+                }
+        		
+            	ClientMinIO.saveLocationImage(vertx, leagueHandler.result().getString("SYMBOL"), message.getString("name"), message.getString("image")).onComplete(minIOHandler -> {
+            		
+            		if (minIOHandler.failed()) {
+            			logger.error("Unable to complete minIOHandler: " + minIOHandler.cause());
+            			resultHandler.handle(Future.failedFuture(minIOHandler.cause()));
+            			return;
+            		}
+            		
+            		message.put("image", minIOHandler.result());
+            		
+            		DAO_Location.update(sqlConnection, message).onComplete(handler -> {
+            			if (handler.failed()) {
+            				logger.error("Unable to complete handler: " + handler.cause());
+            				resultHandler.handle(Future.failedFuture(handler.cause()));
+            				return;
+            			}
+            			
+            			resultHandler.handle(Future.succeededFuture(
+            					new JsonObject()
+            					.put("resultCode", 1)
+            					.put("resultMessage", "عملیات با موفقیت انجام شد.")
+            					));
+            			
+            		});
+            	});
+        		
+        	});
         });
+        
     }
 
 }

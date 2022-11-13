@@ -28,7 +28,7 @@ public class HelperPayPod {
 	private static HttpClient httpClient = HttpClientBuilder.create()
 			.setDefaultRequestConfig(RequestConfig.custom().setConnectTimeout(20 * 1000).build()).build();
 	
-	private static final String token;
+//	private static final String token;
     private static final String REJECT;
     private static final String CONFIRM;
     private static final String CHECK;
@@ -36,7 +36,7 @@ public class HelperPayPod {
     static {
         JsonObject joLockin = EntryPoint.joConfig.getJsonObject("paypod");
         
-        token = joLockin.getString("token");
+//        token = joLockin.getString("token");
         REJECT = joLockin.getString("reject");
         CONFIRM = joLockin.getString("confirm");
         CHECK = joLockin.getString("check");
@@ -55,7 +55,7 @@ public class HelperPayPod {
     			joInput.put("transactionId", transactionId);
     				  
     			HttpPost request = new HttpPost(CONFIRM);
-    			request.setHeader("token", token);
+//    			request.setHeader("token", token);
     			request.setHeader("Content-Type", "application/json");
     			request.setEntity(new StringEntity(joInput.toString(), "UTF-8"));
 
@@ -113,7 +113,7 @@ public class HelperPayPod {
     			System.out.println(joInput);
     			
     			HttpPost request = new HttpPost(REJECT);
-    			request.setHeader("token", token);
+//    			request.setHeader("token", token);
     			request.setHeader("Content-Type", "application/json");
     			request.setEntity(new StringEntity(joInput.toString(), "UTF-8"));
 
@@ -169,7 +169,7 @@ public class HelperPayPod {
     			System.out.println(joInput);
     			
     			HttpPost request = new HttpPost(CHECK);
-    			request.setHeader("token", token);
+    			request.setHeader("token", null);
     			request.setHeader("Content-Type", "application/json");
     			request.setEntity(new StringEntity(joInput.toString(), "UTF-8"));
 

@@ -1,7 +1,13 @@
 {
 	"port": 9090,
-	"Access_Control_Allow_Origin": "http://localhost:3000",
 	"dbConfig": {
+		"username": "ODDS",
+		"password": "OddS#$2022",
+		"host": "94.101.184.27",
+		"serviceName": "opdb",
+		"port": 1521
+	},
+	"localdbConfig": {
 		"username": "sch_test",
 		"password": "Test#2022",
 		"host": "185.213.167.156",
@@ -11,7 +17,7 @@
 	"lockin": {
 		"port": 8080,
 		"host": "185.213.167.156",
-		"APIKEY": "cf012f1e9349bc4fdca0271144d51f885106865fd6f814f333097c95117f27f6bd173146be40e592fbacf433bc13d7c8"
+		"APIKEY": "8b57ba71636188520483af95ab82dc92166ab8f2b7bcb7cd0e60963409fd2bb64c3f09431073e433590c3c83f836c5230238eb1d5d41513e"
 	},
 	"paypod": {
 		"confirm": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/close",
@@ -22,6 +28,11 @@
 	"jwt": {
 		"algorithm": "HS256",
 		"secretKey": "iUM d#v"
+	},
+	"minio": {
+		"accessKey": "paypod",
+		"secretKey": "paypod123!@#",
+		"endpoint": "https://io.paypod.linuxservice.ir"
 	},
 	"fileManager": {
 		"root": "d:/odds"

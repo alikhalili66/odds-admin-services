@@ -458,15 +458,16 @@ public class DAO_Competition {
         sqlConnection.queryWithParams("SELECT" + 
         		"    o.user_id, " + 
         		"    o.POINT " + 
-        		"FROM" + 
+        		" FROM" + 
         		"    toppodds                  o," + 
         		"    toppcompetitionquestion   cq " + 
-        		"WHERE" + 
-        		"    o.competition_id = cq.competition_id" + 
-        		"    AND o.question_id = cq.question_id" + 
-        		"    AND o.answer = cq.result" + 
+        		" WHERE 1 = 1 " + 
         		"    AND o.question_id=?" + 
-        		"    AND o.competition_id=?", params, handler -> {
+        		"    AND o.competition_id=?" +
+        		"    AND o.question_id = cq.question_id" + 
+        		"    AND o.competition_id = cq.competition_id" + 
+        		"    AND o.answer = cq.result" + 
+        		"", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -491,15 +492,16 @@ public class DAO_Competition {
         
         sqlConnection.queryWithParams("SELECT" + 
         		"    o.user_id " + 
-        		"FROM" + 
+        		" FROM " + 
         		"    toppodds                  o," + 
         		"    toppcompetitionquestion   cq " + 
-        		"WHERE" + 
-        		"    o.competition_id = cq.competition_id" + 
-        		"    AND o.question_id = cq.question_id" + 
-        		"    AND o.answer != cq.result" + 
+        		" WHERE 1 = 1 " + 
         		"    AND o.question_id=?" + 
-        		"    AND o.competition_id=?", params, handler -> {
+        		"    AND o.competition_id=?"+
+        		"    AND o.question_id = cq.question_id" + 
+        		"    AND o.competition_id = cq.competition_id" + 
+        		"    AND o.answer != cq.result" + 
+        		" ", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

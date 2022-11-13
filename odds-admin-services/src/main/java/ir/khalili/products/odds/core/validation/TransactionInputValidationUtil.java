@@ -121,7 +121,7 @@ public final class TransactionInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
-			Integer leagueId = 1;
+			Integer leagueId;
 			String date = null;				// Optional
 			String username = null;			// Optional
 			String status = null;			// Optional
@@ -130,9 +130,8 @@ public final class TransactionInputValidationUtil {
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
-//TODO
-	            leagueId = inputParameters.getInteger("leagueId");
 
+	            leagueId = inputParameters.getInteger("leagueId", 1);
 	            date = inputParameters.getString("date");
 	            username = inputParameters.getString("username");
 	            status = inputParameters.getString("status");

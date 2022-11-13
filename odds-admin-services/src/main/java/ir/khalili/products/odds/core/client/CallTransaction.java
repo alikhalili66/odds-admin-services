@@ -26,10 +26,10 @@ public class CallTransaction extends AbstractVerticle {
 	public void start() throws Exception {
 
 		WebClient client = WebClient.create(vertx);
-//		transactionFetchAll(client);
+		transactionFetchAll(client);
 //		transactionReject(client);
 //		transactionConfirm(client);
-		transactionSave(client);
+//		transactionSave(client);
 	}
 
 	
@@ -69,7 +69,9 @@ public class CallTransaction extends AbstractVerticle {
 		try {
 			
 			JsonObject joInput = new JsonObject();
-//			joInput.put("date", "2022-10-01");
+			joInput.put("leagueId", 4);
+
+			joInput.put("date", "2022-11-12T20:30:00Z");
 //			joInput.put("userId", 23);
 //			joInput.put("status", 'R');
 			joInput.put("startIndex", 1);
@@ -104,7 +106,7 @@ public class CallTransaction extends AbstractVerticle {
 		try {
 			
 			JsonObject joInput = new JsonObject();
-			joInput.put("id", 1);
+			joInput.put("id", 18);
 			
 			client
 			.post(port, host, "/v1/service/odds/transaction/confirm")

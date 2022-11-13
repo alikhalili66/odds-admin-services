@@ -120,14 +120,15 @@ public class DAO_Transaction {
 		Promise<Integer> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
-		
-		params.add(null == message.getString("date") ? null : message.getString("date").split(" ")[0]);
+		params.add(message.getInteger("leagueId"));
+		params.add(null == message.getString("date") ? null : message.getString("date").split("T")[0]);
 		params.add(message.getString("username"));
 		params.add(message.getString("status"));
 		
 		sqlConnection.queryWithParams("select count(*) CNT " +
 				" FROM topptransaction t " +
 				" where 1=1 "
+				+ " and LEAGUE_ID = ? "
 				+ " and trunc(CREATIONDATE) = nvl(TO_DATE(?, 'YYYY-MM-DD'),trunc(CREATIONDATE)) "
 				+ " and t.username=nvl(?,t.username) "
 				+ " and t.status=nvl(?,t.status) " +
@@ -158,7 +159,7 @@ public class DAO_Transaction {
 		
 		JsonArray params = new JsonArray();
 		params.add(message.getInteger("leagueId"));
-		params.add(null == message.getString("date") ? null : message.getString("date").split(" ")[0]);
+		params.add(null == message.getString("date") ? null : message.getString("date").split("T")[0]);
 		params.add(message.getString("username"));
 		params.add(message.getString("status"));
 		params.add(message.getInteger("startIndex"));

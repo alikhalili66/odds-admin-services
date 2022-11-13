@@ -121,6 +121,7 @@ public final class TransactionInputValidationUtil {
 			
 			final JsonObject joToken = handler.result();
 
+			Integer leagueId = 1;
 			String date = null;				// Optional
 			String username = null;			// Optional
 			String status = null;			// Optional
@@ -129,12 +130,18 @@ public final class TransactionInputValidationUtil {
 
 	        try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+//TODO
+	            leagueId = inputParameters.getInteger("leagueId");
 
 	            date = inputParameters.getString("date");
 	            username = inputParameters.getString("username");
 	            status = inputParameters.getString("status");
 				startIndex = inputParameters.getInteger("startIndex");
 				endIndex = inputParameters.getInteger("endIndex");
+				
+				if (null == leagueId || leagueId < 1) {
+	            	throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
 				
 //	            if (null != transactionId && transactionId < 1) {
 //	                throw new EXCP_RtMgr_Validation(-603, "شناسه تراکنش معتبر نمی باشد");
@@ -166,6 +173,7 @@ public final class TransactionInputValidationUtil {
 			}
 
 			final JsonObject joResult = new JsonObject();
+			joResult.put("leagueId", leagueId);
 			joResult.put("date", date);
 			joResult.put("username", username);
 			joResult.put("status", status);

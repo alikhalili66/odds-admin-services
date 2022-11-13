@@ -184,70 +184,82 @@ public final class TransactionInputValidationUtil {
 	
 	public static void validateTransactionSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-        String applicationCode;
-        Integer amount;
-        String invoiceId;
-        String description;
-        String userId;
-        String date;
-		
-        try {
-            final JsonObject inputParameters = InputValidationUtil.validate(context);
-            applicationCode = inputParameters.getString("applicationCode");
-            amount = inputParameters.getInteger("amount");
-            invoiceId = inputParameters.getString("invoiceId");
-            description = inputParameters.getString("description");
-            userId = inputParameters.getString("userId");
-            date = inputParameters.getString("date");
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_TRANSACTION_FETCH_ALL).onComplete(handler -> {
 
-            if (null == applicationCode || applicationCode.isEmpty() || applicationCode.length() > 100) {
-                throw new EXCP_RtMgr_Validation(-603, "کد برنامه صحیح نمی باشد.");
-            }
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+			
+//			final JsonObject joToken = handler.result();
+			
+	        String applicationCode;
+	        Integer amount;
+	        String invoiceId;
+	        String description;
+	        String userId;
+	        String date;
+			
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+	            applicationCode = inputParameters.getString("applicationCode");
+	            amount = inputParameters.getInteger("amount");
+	            invoiceId = inputParameters.getString("invoiceId");
+	            description = inputParameters.getString("description");
+	            userId = inputParameters.getString("userId");
+	            date = inputParameters.getString("date");
 
-            if (null == amount || amount < 1 || amount > 999999999) {
-                throw new EXCP_RtMgr_Validation(-603, "مبلغ معتبر نمی باشد");
-            }
+	            if (null == applicationCode || applicationCode.isEmpty() || applicationCode.length() > 100) {
+	                throw new EXCP_RtMgr_Validation(-603, "کد برنامه صحیح نمی باشد.");
+	            }
 
-            if (null == description || description.isEmpty() || description.length() > 200) {
-                throw new EXCP_RtMgr_Validation(-603, "توضیحات نوع تراکنش معتبر نمی باشد");
-            }
+	            if (null == amount || amount < 1 || amount > 999999999) {
+	                throw new EXCP_RtMgr_Validation(-603, "مبلغ معتبر نمی باشد");
+	            }
 
-            if (null == invoiceId || invoiceId.isEmpty() || invoiceId.length() > 100) {
-                throw new EXCP_RtMgr_Validation(-603, "شناسه صورتحساب معتبر نمی باشد");
-            }
+	            if (null == description || description.isEmpty() || description.length() > 200) {
+	                throw new EXCP_RtMgr_Validation(-603, "توضیحات نوع تراکنش معتبر نمی باشد");
+	            }
 
-            if (null == userId || userId.isEmpty()) {
-                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر صحیح نمی باشد.");
-            }
-            
-            if (null == date || date.isEmpty()) {
-                throw new EXCP_RtMgr_Validation(-603, "زمان وارد شده تراکنش صحیح نمی باشد.");
-            }
+	            if (null == invoiceId || invoiceId.isEmpty() || invoiceId.length() > 100) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه صورتحساب معتبر نمی باشد");
+	            }
 
-            sdf.parse(date);
-            
-        } catch (EXCP_RtMgr_Validation e) {
-			resultHandler.handle(Future.failedFuture(e));
-			return;
-		} catch (Exception e) {
-			logger.error("INPUT TYPE VALIDATION FAILED.", e);
-			resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
-			return;
-		}
+	            if (null == userId || userId.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر صحیح نمی باشد.");
+	            }
+	            
+	            if (null == date || date.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "زمان وارد شده تراکنش صحیح نمی باشد.");
+	            }
 
-        final JsonObject joResult = new JsonObject();
-        joResult.put("applicationCode", applicationCode);
-        joResult.put("amount", amount);
-        joResult.put("invoiceId", invoiceId);
-        joResult.put("description", description);
-        joResult.put("userId", userId);
-        joResult.put("date", date);
-		
-		joResult.put("clientInfo", context.request().getHeader("User-Agent"));
-		joResult.put("ip", context.request().remoteAddress().host());
+	            sdf.parse(date);
+	            
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
 
-		resultHandler.handle(Future.succeededFuture(joResult));
+	        final JsonObject joResult = new JsonObject();
+	        joResult.put("applicationCode", applicationCode);
+	        joResult.put("amount", amount);
+	        joResult.put("invoiceId", invoiceId);
+	        joResult.put("description", description);
+	        joResult.put("userId", userId);
+	        joResult.put("date", date);
+			
+//	        joResult.put("userId", joToken.getInteger("id"));
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
 
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+			
+		});
 	
     }
 }

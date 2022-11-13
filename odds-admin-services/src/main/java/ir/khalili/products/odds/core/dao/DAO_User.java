@@ -362,7 +362,7 @@ public class DAO_User {
         Promise<JsonObject> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(leagueId);
-        params.add(UGID);
+//        params.add(UGID);
 
         sqlConnection.queryWithParams("SELECT " +
                 "  TU.ID , " +
@@ -370,7 +370,7 @@ public class DAO_User {
                 "  TU.POINT, " +
                 "  TU.AMOUNT   " +
                 "  FROM TOPPUSER TU " +
-                "  WHERE LEAGUE_ID = ? and TU.UGID    = ? ", params, resultHandler -> {
+                "  WHERE LEAGUE_ID = ? and TU.UGID    = '" + UGID+ "'", params, resultHandler -> {
             if (resultHandler.failed()) {
                 logger.error("Unable to get accessQueryResult:", resultHandler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

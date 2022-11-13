@@ -11,6 +11,7 @@ import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Config;
 import ir.khalili.products.odds.core.dao.DAO_League;
 import ir.khalili.products.odds.core.service.ClientMinIO;
+import ir.khalili.products.odds.core.utils.Helper;
 
 public class Biz_01_ConfigUpdate {
 
@@ -33,7 +34,14 @@ public class Biz_01_ConfigUpdate {
 
 			JsonObject joConfig = configHandler.result();
         	
-        	DAO_League.fetchById(sqlConnection, joConfig.getInteger("LEAGUE_ID")).onComplete(leagueHandler->{
+			Future<JsonObject> futLeague;
+			if(null != joConfig.getInteger("LEAGUE_ID")) {
+				futLeague = DAO_League.fetchById(sqlConnection, joConfig.getInteger("LEAGUE_ID"));
+			}else {
+				futLeague = Helper.createFuture(new JsonObject().put("SYMBOL", "LEAGUE"));
+			}
+			
+			futLeague.onComplete(leagueHandler->{
         		
         		if (leagueHandler.failed()) {
                 	logger.error("Unable to complete leagueHandler: " + leagueHandler.cause());

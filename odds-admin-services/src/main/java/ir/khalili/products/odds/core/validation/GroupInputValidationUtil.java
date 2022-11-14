@@ -50,11 +50,11 @@ public final class GroupInputValidationUtil {
 	            	throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeFrom || activeFrom.isEmpty() || !activeFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == activeFrom || activeFrom.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeTo || activeTo.isEmpty() || !activeTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == activeTo || activeTo.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
 	            }
 
@@ -70,8 +70,8 @@ public final class GroupInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("name", name);
 			joResult.put("leagueId", leagueId);
-			joResult.put("activeFrom", activeFrom);
-			joResult.put("activeTo", activeTo);
+			joResult.put("activeFrom", activeFrom.replace(" GMT+0330", ""));
+			joResult.put("activeTo", activeTo.replace(" GMT+0330", ""));
 
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -121,11 +121,11 @@ public final class GroupInputValidationUtil {
 	            	throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeFrom || activeFrom.isEmpty() || !activeFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == activeFrom || activeFrom.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeTo || activeTo.isEmpty() || !activeTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == activeTo || activeTo.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
 	            }
 
@@ -142,8 +142,8 @@ public final class GroupInputValidationUtil {
 			joResult.put("groupId", groupId);
 			joResult.put("name", name);
 			joResult.put("leagueId", leagueId);
-			joResult.put("activeFrom", activeFrom);
-			joResult.put("activeTo", activeTo);
+			joResult.put("activeFrom", activeFrom.replace(" GMT+0330", ""));
+			joResult.put("activeTo", activeTo.replace(" GMT+0330", ""));
 
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));

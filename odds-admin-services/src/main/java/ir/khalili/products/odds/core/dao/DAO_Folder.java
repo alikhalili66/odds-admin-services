@@ -110,7 +110,7 @@ public class DAO_Folder {
         		+ "f.PARENT_ID,"
         		+ "f.LEAGUE_ID,"
         		+ "f.NAME,"
-        		+ "To_Char(f.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(f.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppfolder f WHERE f.LEAGUE_ID=nvl(?, f.LEAGUE_ID) and f.dto is null CONNECT BY PRIOR f.id = f.parent_id", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -140,7 +140,7 @@ public class DAO_Folder {
         		+ "f.PARENT_ID,"
         		+ "f.LEAGUE_ID,"
         		+ "f.NAME,"
-        		+ "To_Char(f.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(f.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppfolder f WHERE f.id=? and f.dto is null CONNECT BY PRIOR f.id = f.parent_id", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());

@@ -137,7 +137,7 @@ public class DAO_Question {
         		+ "q.symbol,"
         		+ "q.TYPE,"
         		+ "q.MINPOINT,"
-        		+ "To_Char(q.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(q.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppquestion q WHERE q.LEAGUE_ID=nvl(?, q.LEAGUE_ID) and q.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -169,7 +169,7 @@ public class DAO_Question {
         		+ "q.symbol,"
         		+ "q.TYPE,"
         		+ "q.MINPOINT,"
-        		+ "To_Char(q.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(q.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppquestion q WHERE q.id=? and q.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());

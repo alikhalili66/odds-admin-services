@@ -30,7 +30,7 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionSave(client);
 //		competitionUpdate(client);
 //		competitionDelete(client);
-		competitionFetchAll(client);
+//		competitionFetchAll(client);
 //		competitionFetchById(client);
 //		competitionGroupFetch(client);
 //		competitionQuestionAssign(client);
@@ -38,7 +38,7 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionQuestionFetch(client);
 //		competitionResultRegister(client);
 //		questionResultRegister(client);
-//		competitionPointCalculation(client);
+		competitionPointCalculation(client);
 	}
 
 	public void competitionSave(WebClient client) {
@@ -385,7 +385,7 @@ public class CallCompetition extends AbstractVerticle {
 	
 	public void competitionPointCalculation(WebClient client) {
 		JsonObject joInput = new JsonObject();
-		joInput.put("competitionId", 31);
+		joInput.put("competitionId", 55);
 		
 		System.out.println("joInput:" + joInput);
 		try {

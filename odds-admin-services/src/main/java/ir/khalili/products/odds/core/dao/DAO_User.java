@@ -418,7 +418,7 @@ public class DAO_User {
 		});
 		
 		sqlConnection.batchWithParams(""
-				+ "delete FROM TOPPUSERPOINTHISTORY where id = (SELECT id from (SELECT id, ROWNUM AS RN FROM TOPPUSERPOINTHISTORY where USER_ID=? and  COMPETITION_ID = ? ORDER BY ID DESC) WHERE RN = 2)"
+				+ "delete FROM TOPPUSERPOINTHISTORY where id = (SELECT id from (SELECT id, ROWNUM AS RN FROM TOPPUSERPOINTHISTORY where USER_ID=? and  COMPETITION_ID = ? ORDER BY ID DESC) WHERE RN = 1)"
 				, params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());

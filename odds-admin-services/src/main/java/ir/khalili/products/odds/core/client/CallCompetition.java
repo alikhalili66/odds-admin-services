@@ -12,9 +12,9 @@ import io.vertx.ext.web.client.WebClient;
  */
 public class CallCompetition extends AbstractVerticle {
 
-	private static final int port = 9090;
-	private static final String host  ="127.0.0.1";
-//	private static final String host  ="185.213.167.156";
+	private static final int port = 6060;
+//	private static final String host  ="127.0.0.1";
+	private static final String host  ="185.213.167.156";
 	
 	public static void main(String[] args) {
 
@@ -30,7 +30,7 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionSave(client);
 //		competitionUpdate(client);
 //		competitionDelete(client);
-//		competitionFetchAll(client);
+		competitionFetchAll(client);
 //		competitionFetchById(client);
 //		competitionGroupFetch(client);
 //		competitionQuestionAssign(client);
@@ -38,7 +38,7 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionQuestionFetch(client);
 //		competitionResultRegister(client);
 //		questionResultRegister(client);
-		competitionPointCalculation(client);
+//		competitionPointCalculation(client);
 	}
 
 	public void competitionSave(WebClient client) {
@@ -49,11 +49,11 @@ public class CallCompetition extends AbstractVerticle {
 		joInput.put("teamId2",2);
 		joInput.put("groupId",1);
 		joInput.put("locationId",1);
-		joInput.put("activeFrom", "2022-09-30T10:10:10Z");
-		joInput.put("activeTo", "2022-09-30T10:10:10Z");
-		joInput.put("oddsFrom", "2022-09-30T10:10:10Z");
-		joInput.put("oddsTo", "2022-09-30T10:10:10Z");
-		joInput.put("competitionDate", "2022-09-30T10:10:10Z");
+		joInput.put("activeFrom", "Sun Nov 14 2021 14:55:00 GMT+0330");
+		joInput.put("activeTo", "Sun Nov 14 2021 14:55:00 GMT+0330");
+		joInput.put("oddsFrom", "Sun Nov 14 2021 14:55:00 GMT+0330");
+		joInput.put("oddsTo", "Sun Nov 14 2021 14:55:00 GMT+0330");
+		joInput.put("competitionDate", "Sun Nov 14 2021 14:55:00 GMT+0330");
 		
 		System.out.println("joInput:" + joInput);
 		try {

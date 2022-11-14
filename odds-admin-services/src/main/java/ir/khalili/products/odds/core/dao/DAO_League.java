@@ -65,10 +65,10 @@ public class DAO_League {
 				+ "?,"
 				+ "?,"
 				+ "?,"
-				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
 				+ "sysdate,"
 				+ "?)", params, resultHandler->{
 			if(resultHandler.failed()) {
@@ -114,10 +114,10 @@ public class DAO_League {
 				+ "l.NAME=?,"
 				+ "l.SYMBOL=?,"
 				+ "l.IMAGE=?,"
-				+ "l.ACTIVEFROM=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "l.ACTIVETO=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "l.oddsfrom=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "l.oddsTo=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') "
+				+ "l.ACTIVEFROM=TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "l.ACTIVETO=TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "l.oddsfrom=TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "l.oddsTo=TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS') "
 				+ " where l.id=? ", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
@@ -169,11 +169,11 @@ public class DAO_League {
         		+ "l.NAME,"
         		+ "l.SYMBOL,"
         		+ "l.IMAGE,"
-        		+ "To_Char(l.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(l.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(l.oddsfrom,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_FROM,"
-        		+ "To_Char(l.oddsTo,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_TO,"
-        		+ "To_Char(l.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(l.ACTIVEFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_FROM,"
+        		+ "To_Char(l.ACTIVETO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_TO,"
+        		+ "To_Char(l.oddsfrom, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_FROM,"
+        		+ "To_Char(l.oddsTo, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_TO,"
+        		+ "To_Char(l.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppleague l WHERE l.dto is null", handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -203,11 +203,11 @@ public class DAO_League {
         		+ "l.NAME,"
         		+ "l.SYMBOL,"
         		+ "l.IMAGE,"
-        		+ "To_Char(l.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(l.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(l.oddsfrom,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_FROM,"
-        		+ "To_Char(l.oddsTo,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_TO,"
-        		+ "To_Char(l.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(l.ACTIVEFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_FROM,"
+        		+ "To_Char(l.ACTIVETO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_TO,"
+        		+ "To_Char(l.oddsfrom, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_FROM,"
+        		+ "To_Char(l.oddsTo, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_TO,"
+        		+ "To_Char(l.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppleague l WHERE l.id=? and l.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -237,11 +237,11 @@ public class DAO_League {
         		+ "l.NAME,"
         		+ "l.SYMBOL,"
         		+ "l.IMAGE,"
-        		+ "To_Char(l.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(l.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(l.oddsfrom,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_FROM,"
-        		+ "To_Char(l.oddsTo,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_TO,"
-        		+ "To_Char(l.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(l.ACTIVEFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_FROM,"
+        		+ "To_Char(l.ACTIVETO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_TO,"
+        		+ "To_Char(l.oddsfrom, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_FROM,"
+        		+ "To_Char(l.oddsTo, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_TO,"
+        		+ "To_Char(l.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppleague l WHERE l.id=? and sysdate > ACTIVEFROM and sysdate < ACTIVETO and l.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());

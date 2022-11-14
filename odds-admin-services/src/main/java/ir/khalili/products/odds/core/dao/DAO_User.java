@@ -61,7 +61,7 @@ public class DAO_User {
         		+ "u.lastname,"
         		+ "u.POINT,"
         		+ "u.AMOUNT,"
-        		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date, "
+        		+ "To_Char(u.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date, "
         		+ "row_number() over (ORDER BY u.id desc) line_number"
         		+ "  FROM toppuser u where u.league_Id = ? and u.username = nvl(?, u.username)) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
             if (handler.failed()) {
@@ -93,7 +93,7 @@ public class DAO_User {
         		+ "u.NIKENAME,"
         		+ "u.POINT,"
         		+ "u.AMOUNT,"
-        		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date "
+        		+ "To_Char(u.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date "
         		+ "  FROM toppuser u where u.id=?", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -125,7 +125,7 @@ public class DAO_User {
         		+ "u.NIKENAME,"
         		+ "u.POINT,"
         		+ "u.AMOUNT,"
-        		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date "
+        		+ "To_Char(u.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date "
         		+ "  FROM toppuser u where u.id=?", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -354,7 +354,7 @@ public class DAO_User {
         		+ "u.competition_Id,"
         		+ "u.historytype history_type,"
         		+ "u.historydescription history_description,"
-        		+ "To_Char(u.historydate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') history_date, "
+        		+ "To_Char(u.historydate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' history_date, "
         		+ "row_number() over (ORDER BY u.id desc) line_number"
         		+ "  FROM toppuserpointhistory u where u.user_id=?) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
             if (handler.failed()) {

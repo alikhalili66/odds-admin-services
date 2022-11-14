@@ -17,6 +17,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Competition;
+import ir.khalili.products.odds.core.dao.DAO_Odds;
 import ir.khalili.products.odds.core.dao.DAO_User;
 
 public class Biz_12_CompetitionPointCalculation {
@@ -139,8 +140,9 @@ public class Biz_12_CompetitionPointCalculation {
                     	// Update user point and save userPoint history
                     	Future<Void> futHistory = DAO_User.saveUserPointHistory(sqlConnection, futRewardPoint.result(), "W", historyDescription, competitionId);
                     	Future<Void> futCalculate = DAO_Competition.updateUserPointForCalculation(sqlConnection, futRewardPoint.result(), competitionId);
-                    	
-                        CompositeFuture.all(futHistory, futCalculate).onComplete(joinHandler05 -> {
+                    	Future<Void> futUpdateCorrectAnswers = DAO_Odds.updateCorrectAnswers(sqlConnection, competitionId);
+
+                        CompositeFuture.all(futHistory, futCalculate, futUpdateCorrectAnswers).onComplete(joinHandler05 -> {
                             if (joinHandler05.failed()) {
                             	logger.error("Unable to complete joinHandler05: " + joinHandler05.cause());
                                 resultHandler.handle(Future.failedFuture(joinHandler05.cause()));

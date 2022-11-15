@@ -35,9 +35,11 @@ public class Biz_02_TransactionReject {
                 return;
             }
             
-            logger.trace("transaction:" + futTransactionFetchByTransactionId.result());
+            JsonObject joTransaction = futTransactionFetchByTransactionId.result();
             
-            if(!futTransactionFetchByTransactionId.result().getString("STATUS").equals(TransactionStatus.pending.getStatus())) {
+            logger.trace("transaction:" + joTransaction);
+            
+            if(!joTransaction.getString("STATUS").equals(TransactionStatus.pending.getStatus())) {
             	logger.error("TRANSACTION_STATUS_FAILED");
             	resultHandler.handle(Future.failedFuture(new BIZEXCP_Transaction(-100, "وضعیت تراکنش در حال بررسی نمی باشد.")));
                 return;
@@ -45,10 +47,10 @@ public class Biz_02_TransactionReject {
             
             Future<String> futTransactionId;
             
-            if(null == message.getString("transactionId")) {
-            	futTransactionId = HelperPayPod.checkTransaction(futTransactionFetchByTransactionId.result().getString("INVOICEID"));
+            if(null == joTransaction.getString("TRANSACTIONID")) {
+            	futTransactionId = HelperPayPod.checkTransaction(joTransaction.getString("INVOICEID"), joTransaction.getString("USERNAME"));
             }else {
-            	futTransactionId = Helper.createFuture(message.getString("transactionId"));
+            	futTransactionId = Helper.createFuture(joTransaction.getString("TRANSACTIONID"));
             }
             
             futTransactionId.onComplete(joinHandler02->{
@@ -58,7 +60,7 @@ public class Biz_02_TransactionReject {
                     return;
                 }
             	
-            	HelperPayPod.rejectTransaction(futTransactionFetchByTransactionId.result().getString("USERNAME"), futTransactionId.result()).onComplete(joinHandler03 -> {
+            	HelperPayPod.rejectTransaction(joTransaction.getString("USERNAME"), futTransactionId.result()).onComplete(joinHandler03 -> {
                    
             		if (joinHandler03.failed()) {
             			logger.error("Unable to complete joinHandler03: " + joinHandler03.cause());

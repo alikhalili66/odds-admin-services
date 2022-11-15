@@ -15,7 +15,7 @@ public class CallAuth extends AbstractVerticle {
 	private static final String host  ="127.0.0.1";
 //	private static final String host  ="185.213.167.156";
 	
-	public static String token = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExMjEsImV4cCI6MTY2ODU4ODM0NSwiaXAiOiIxNTEuMjQ0LjE2MS4yNDkiLCJwcm9qZWN0SWQiOjM0MSwidHlwZSI6IkEiLCJpc0NoYW5nZVBhc3MiOmZhbHNlLCJpYXQiOjE2Njg1MDE5NDV9.tvGMlda5wMP-x82_Rh2ApvwvhAW-8h0UUPZHggf8dqA";
+	public static String token = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjExMjEsImV4cCI6MTY2ODYxNDY2MCwiaXAiOiIyLjE3OC4yNTIuMjU1IiwicHJvamVjdElkIjozNDEsInR5cGUiOiJBIiwiaXNDaGFuZ2VQYXNzIjpmYWxzZSwiaWF0IjoxNjY4NTI4MjYwfQ.TUZBwN7_8amKC2su-5FOnb_luTZxRVTWJxGpd1sgBDU";
 
 	public static void main(String[] args) {
 

@@ -224,25 +224,4 @@ public class DAO_Transaction {
 		return promise.future();
     }
     
-    public static Future<Void> updateTransactionStatus(SQLConnection sqlConnection, Integer id, String status, String transactionId) {
-        Promise<Void> promise = Promise.promise();
-        JsonArray params = new JsonArray();
-        params.add(status);
-        params.add(transactionId);
-        params.add(id);
-        
-        sqlConnection.updateWithParams("update topptransaction set status=?, transactionId=? WHERE id=?", params, handler -> {
-			if(handler.failed()) {
-				logger.error("Unable to get accessQueryResult:", handler.cause());
-				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
-				return;
-			}
-			
-			logger.trace("updateTransactionStatus");
-			promise.complete();
-			
-		});
-		return promise.future();
-    }
-    
 }

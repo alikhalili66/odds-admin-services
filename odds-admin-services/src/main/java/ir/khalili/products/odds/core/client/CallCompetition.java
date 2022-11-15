@@ -12,9 +12,9 @@ import io.vertx.ext.web.client.WebClient;
  */
 public class CallCompetition extends AbstractVerticle {
 
-	private static final int port = 6060;
-//	private static final String host  ="127.0.0.1";
-	private static final String host  ="185.213.167.156";
+	private static final int port = 9090;
+	private static final String host  ="127.0.0.1";
+//	private static final String host  ="185.213.167.156";
 	
 	public static void main(String[] args) {
 
@@ -27,10 +27,10 @@ public class CallCompetition extends AbstractVerticle {
 	public void start() throws Exception {
 
 		WebClient client = WebClient.create(vertx);
-//		competitionSave(client);
+		competitionSave(client);
 //		competitionUpdate(client);
 //		competitionDelete(client);
-		competitionFetchAll(client);
+//		competitionFetchAll(client);
 //		competitionFetchById(client);
 //		competitionGroupFetch(client);
 //		competitionQuestionAssign(client);

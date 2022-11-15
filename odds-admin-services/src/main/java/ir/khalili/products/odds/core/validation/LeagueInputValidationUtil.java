@@ -90,10 +90,10 @@ public final class LeagueInputValidationUtil {
 			joResult.put("name", name);
 			joResult.put("symbol", symbol);
 			joResult.put("image", image);
-			joResult.put("activeFrom", activeFrom.replace(" GMT+0330", ""));
-			joResult.put("activeTo", activeTo.replace(" GMT+0330", ""));
-			joResult.put("oddsFrom", oddsFrom.replace(" GMT+0330", ""));
-			joResult.put("oddsTo", oddsTo.replace(" GMT+0330", ""));
+			joResult.put("activeFrom", activeFrom.split(" GMT")[0]);
+			joResult.put("activeTo", activeTo.split(" GMT")[0]);
+			joResult.put("oddsFrom", oddsFrom.split(" GMT")[0]);
+			joResult.put("oddsTo", oddsTo.split(" GMT")[0]);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -183,10 +183,10 @@ public final class LeagueInputValidationUtil {
 			joResult.put("name", name);
 			joResult.put("symbol", symbol);
 			joResult.put("image", image);
-			joResult.put("activeFrom", activeFrom.replace(" GMT+0330", ""));
-			joResult.put("activeTo", activeTo.replace(" GMT+0330", ""));
-			joResult.put("oddsFrom", oddsFrom.replace(" GMT+0330", ""));
-			joResult.put("oddsTo", oddsTo.replace(" GMT+0330", ""));
+			joResult.put("activeFrom", activeFrom.split(" GMT")[0]);
+			joResult.put("activeTo", activeTo.split(" GMT")[0]);
+			joResult.put("oddsFrom", oddsFrom.split(" GMT")[0]);
+			joResult.put("oddsTo", oddsTo.split(" GMT")[0]);
 			
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));

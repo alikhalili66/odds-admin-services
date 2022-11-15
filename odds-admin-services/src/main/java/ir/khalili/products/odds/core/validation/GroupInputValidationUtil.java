@@ -70,8 +70,8 @@ public final class GroupInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("name", name);
 			joResult.put("leagueId", leagueId);
-			joResult.put("activeFrom", activeFrom.replace(" GMT+0330", ""));
-			joResult.put("activeTo", activeTo.replace(" GMT+0330", ""));
+			joResult.put("activeFrom", activeFrom.split(" GMT")[0]);
+			joResult.put("activeTo", activeTo.split(" GMT")[0]);
 
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -142,8 +142,8 @@ public final class GroupInputValidationUtil {
 			joResult.put("groupId", groupId);
 			joResult.put("name", name);
 			joResult.put("leagueId", leagueId);
-			joResult.put("activeFrom", activeFrom.replace(" GMT+0330", ""));
-			joResult.put("activeTo", activeTo.replace(" GMT+0330", ""));
+			joResult.put("activeFrom", activeFrom.split(" GMT")[0]);
+			joResult.put("activeTo", activeTo.split(" GMT")[0]);
 
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));

@@ -241,7 +241,7 @@ public class DAO_Config {
 	public static Future<String> fetchSysdate(SQLConnection sqlConnection) {
 		Promise<String> promise = Promise.promise();
 
-		sqlConnection.query("SELECT To_Char(sysdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') X FROM DUAL", handler -> {
+		sqlConnection.query("SELECT To_Char(sysdate,'YYYY-MM-DD') X FROM DUAL", handler -> {
 			if (handler.failed()) {
 				logger.error("Unable to get accessQueryResult:", handler.cause());
 				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

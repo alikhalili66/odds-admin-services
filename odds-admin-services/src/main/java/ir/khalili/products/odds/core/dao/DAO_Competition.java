@@ -658,7 +658,7 @@ public class DAO_Competition {
 		params.add(jsonObject.getString("answer"));
 		params.add(jsonObject.getInteger("competitionId"));
 		params.add(jsonObject.getInteger("leadgueId"));
-		params.add(jsonObject.getInteger("competitionId"));
+		params.add(jsonObject.getInteger("competitionID"));
 		params.add(jsonObject.getString("symbol"));
 
 		sqlConnection.updateWithParams("UPDATE toppodds " +

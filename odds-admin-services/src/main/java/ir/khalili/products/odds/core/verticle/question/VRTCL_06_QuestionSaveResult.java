@@ -5,7 +5,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.question.Biz_05_QuestionFetchById;
+import ir.khalili.products.odds.core.biz.question.Biz_06_QuestionSaveResult;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 import org.apache.log4j.LogManager;
@@ -45,7 +45,7 @@ public class VRTCL_06_QuestionSaveResult extends AbstractVerticle {
 
                     SQLConnection sqlConnection = connection.result();
 
-                    Biz_05_QuestionFetchById.fetchById(sqlConnection, (JsonObject) (message.body()), resultHandler -> {
+                    Biz_06_QuestionSaveResult.fetch(sqlConnection, (JsonObject) (message.body()), resultHandler -> {
 
                         if (resultHandler.succeeded()) {
                             logger.trace("AVTCL08,Succeeded:" + resultHandler.result());

@@ -35,9 +35,9 @@ public class Biz_06_QuestionSaveResult {
 
         Future<JsonObject> futLeague = DAO_League.fetchValidLeagueById(sqlConnection, leagueId);
         Future<String> futDate = DAO_Config.fetchSysdate(sqlConnection);
-        Future<List<JsonObject>> futCompetitions = DAO_Competition.fetchCompetitionByLeagueId(sqlConnection, leagueId, futDate.result());
+//        Future<List<JsonObject>> futCompetitions = DAO_Competition.fetchCompetitionByLeagueId(sqlConnection, leagueId, futDate.result());
 
-        CompositeFuture.join(futLeague, futDate, futCompetitions).onComplete(joinHandler -> {
+        CompositeFuture.join(futLeague, futDate).onComplete(joinHandler -> {
 
             if (joinHandler.failed()) {
                 logger.error("Unable to complete joinHandler: " + joinHandler.cause());
@@ -45,60 +45,73 @@ public class Biz_06_QuestionSaveResult {
                 return;
             }
 
-            for (JsonObject entries : futCompetitions.result()) {
-                LiveScoreHelper.liveScore(entries.getString("identifier")).onComplete(liveResult ->{
+            DAO_Competition.fetchCompetitionByLeagueId(sqlConnection, leagueId, futDate.result()).onComplete(competitionResult -> {
 
-                    if (liveResult.failed()) {
-                        logger.error("Unable to complete joinHandler: " + liveResult.cause());
-                        resultHandler.handle(Future.failedFuture(liveResult.cause()));
-                        return;
-                    }
+                if (competitionResult.failed()) {
+                    logger.error("Unable to complete joinHandler: " + competitionResult.cause());
+                    resultHandler.handle(Future.failedFuture(competitionResult.cause()));
+                    return;
+                }
 
-                    JsonObject joUpdOdd = new JsonObject();
-                    joUpdOdd.put("leadgueId",leagueId);
-                    joUpdOdd.put("competitionId",entries.getInteger("COMPETITION_ID"));
 
-                    Map<String, String> liveScore = getLiveScore(liveResult);
-                    for (String s : liveScore.keySet()) {
-                        joUpdOdd.put("symbol",s);
-                        joUpdOdd.put("answer",liveScore.get(s));
-                        DAO_Competition.saveQuestionCorrectAnswer(sqlConnection,joUpdOdd);
-                    }
-                });
-            }
+                for (JsonObject entries : competitionResult.result()) {
+                    LiveScoreHelper.liveScore(entries.getString("IDENTIFIER")).onComplete(liveResult -> {
 
-            resultHandler.handle(Future.succeededFuture(
-                    new JsonObject()
-                            .put("resultCode", 1)
-                            .put("resultMessage", "عملیات با موفقیت انجام شد.")
-                            .put("info", new JsonObject())
-                            .put("date", futDate.result())
-            ));
+                        if (liveResult.failed()) {
+                            logger.error("Unable to complete joinHandler: " + liveResult.cause());
+                            resultHandler.handle(Future.failedFuture(liveResult.cause()));
+                            return;
+                        }
 
+                        JsonObject joUpdOdd = new JsonObject();
+                        joUpdOdd.put("leadgueId", leagueId);
+                        joUpdOdd.put("competitionId", entries.getInteger("ID"));
+                        joUpdOdd.put("competitionID", entries.getInteger("ID"));
+
+                        Map<String, String> liveScore = getLiveScore(liveResult);
+                        for (String s : liveScore.keySet()) {
+                            joUpdOdd.put("symbol", s);
+                            joUpdOdd.put("answer", liveScore.get(s));
+                            DAO_Competition.saveQuestionCorrectAnswer(sqlConnection, joUpdOdd).onComplete(resultUpd ->{
+                               //TODO throws exception ????
+                                logger.trace("record update");
+                            });
+                        }
+                    });
+                }
+
+                resultHandler.handle(Future.succeededFuture(
+                        new JsonObject()
+                                .put("resultCode", 1)
+                                .put("resultMessage", "عملیات با موفقیت انجام شد.")
+                                .put("info", new JsonObject())
+                                .put("date", futDate.result())
+                ));
+            });
         });
     }
 
-    private static Map<String,String> getLiveScore(AsyncResult<JsonObject> liveResult) {
+    private static Map<String, String> getLiveScore(AsyncResult<JsonObject> liveResult) {
         JsonObject liveScore = liveResult.result().getJsonObject("data");
-        Map<String,String> liveScoreMap = new HashMap<>();
-        liveScoreMap.put("yellow_cards",liveScore.getString("yellow_cards"));
-        liveScoreMap.put("red_cards",liveScore.getString("red_cards"));
-        liveScoreMap.put("substitutions",liveScore.getString("substitutions"));
-        liveScoreMap.put("possesion",liveScore.getString("possesion"));
-        liveScoreMap.put("free_kicks",liveScore.getString("free_kicks"));
-        liveScoreMap.put("goal_kicks",liveScore.getString("goal_kicks"));
-        liveScoreMap.put("throw_ins",liveScore.getString("throw_ins"));
-        liveScoreMap.put("offsides",liveScore.getString("offsides"));
-        liveScoreMap.put("corners",liveScore.getString("corners"));
-        liveScoreMap.put("shots_on_target",liveScore.getString("shots_on_target"));
-        liveScoreMap.put("attempts_on_goal",liveScore.getString("attempts_on_goal"));
-        liveScoreMap.put("saves",liveScore.getString("saves"));
-        liveScoreMap.put("fauls",liveScore.getString("fauls"));
-        liveScoreMap.put("treatments",liveScore.getString("treatments"));
-        liveScoreMap.put("penalties",liveScore.getString("penalties"));
-        liveScoreMap.put("shots_blocked",liveScore.getString("shots_blocked"));
-        liveScoreMap.put("dangerous_attacks",liveScore.getString("dangerous_attacks"));
-        liveScoreMap.put("attacks",liveScore.getString("attacks"));
+        Map<String, String> liveScoreMap = new HashMap<>();
+        liveScoreMap.put("yellow_cards", liveScore.getString("yellow_cards"));
+        liveScoreMap.put("red_cards", liveScore.getString("red_cards"));
+        liveScoreMap.put("substitutions", liveScore.getString("substitutions"));
+        liveScoreMap.put("possesion", liveScore.getString("possesion"));
+        liveScoreMap.put("free_kicks", liveScore.getString("free_kicks"));
+        liveScoreMap.put("goal_kicks", liveScore.getString("goal_kicks"));
+        liveScoreMap.put("throw_ins", liveScore.getString("throw_ins"));
+        liveScoreMap.put("offsides", liveScore.getString("offsides"));
+        liveScoreMap.put("corners", liveScore.getString("corners"));
+        liveScoreMap.put("shots_on_target", liveScore.getString("shots_on_target"));
+        liveScoreMap.put("attempts_on_goal", liveScore.getString("attempts_on_goal"));
+        liveScoreMap.put("saves", liveScore.getString("saves"));
+        liveScoreMap.put("fauls", liveScore.getString("fauls"));
+        liveScoreMap.put("treatments", liveScore.getString("treatments"));
+        liveScoreMap.put("penalties", liveScore.getString("penalties"));
+        liveScoreMap.put("shots_blocked", liveScore.getString("shots_blocked"));
+        liveScoreMap.put("dangerous_attacks", liveScore.getString("dangerous_attacks"));
+        liveScoreMap.put("attacks", liveScore.getString("attacks"));
         return liveScoreMap;
     }
 }

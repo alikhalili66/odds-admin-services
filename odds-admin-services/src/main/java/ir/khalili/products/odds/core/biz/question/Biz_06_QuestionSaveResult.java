@@ -72,6 +72,7 @@ public class Biz_06_QuestionSaveResult {
                         for (String s : liveScore.keySet()) {
                             joUpdOdd.put("symbol", s);
                             joUpdOdd.put("answer", liveScore.get(s));
+                            // in this loop get connection close exception ????
                             DAO_Competition.saveQuestionCorrectAnswer(sqlConnection, joUpdOdd).onComplete(resultUpd ->{
                                //TODO throws exception ????
                                 logger.trace("record update");

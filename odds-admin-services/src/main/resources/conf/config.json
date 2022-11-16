@@ -22,8 +22,9 @@
 	"paypod": {
 		"confirm": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/close",
 		"reject": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/cancel",
-		"check": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/check",
-		"token": "UzBsUVQwUmZRVkJKWDFWVFJWST1fUzBsUVQwUkFJVUFqSkVBeE1qTTA="
+		"check": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/pay/check",
+		"token": "https://test.kipaad.ir/8086/megaKipaad/api/app/user/refreshToken",
+		"refreshToken": "377206f104a94051aee52f87dbc8c975.XzIwMjIxMQ"
 	},
 	"jwt": {
 		"algorithm": "HS256",

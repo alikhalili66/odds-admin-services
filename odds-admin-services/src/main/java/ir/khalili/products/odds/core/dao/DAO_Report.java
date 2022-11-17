@@ -481,10 +481,11 @@ public class DAO_Report {
         	query.append(" AND r.creationdate > sysdate - 2");
 		}
         
-        
         if (competitionId != null) {
         	params.add(competitionId);
         	query.append("    AND r.competition_id = nvl(?, r.competition_id) ");
+		} else {
+			query.append("    AND r.competition_id is null ");
 		}
         
         if (leagueId != null) {
@@ -495,11 +496,15 @@ public class DAO_Report {
         if (groupId != null) {
         	params.add(groupId);
         	query.append("    AND r.group_id = nvl(?, r.group_id) ");
+		} else {
+			query.append("    AND r.group_id is null ");
 		}
         
         if (questionId != null) {
         	params.add(questionId);
         	query.append("    AND r.question_id = nvl(?, r.question_id) ");
+		} else {
+			query.append("    AND r.question_id is null ");
 		}
         
         query.append("    AND r.dto IS NULL " + 
@@ -694,5 +699,85 @@ public class DAO_Report {
         return promise.future();
     }
  
- 
+    public static Future<List<JsonObject>> fetchReportThreeSectionUsersWithMaximumPoint(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Integer groupId, Integer questionId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        params.add(groupId);
+        
+        StringBuilder query = new StringBuilder();
+        
+        query.append("SELECT " + 
+        		"    * " + 
+        		"FROM " + 
+        		"    ( " + 
+        		"        SELECT DISTINCT " + 
+        		"            o.user_id , " + 
+        		"            u.name, " + 
+        		"            u.lastname, " + 
+        		"            u.nikename, " + 
+        		"            SUM(o.rewardpoint) total_point " + 
+        		"        FROM " + 
+        		"            toppodds   o, " + 
+        		"            toppuser   u " + 
+        		"        GROUP BY " + 
+        		"            u.id, " + 
+        		"            u.league_id, " + 
+        		"            u.name, " + 
+        		"            u.lastname, " + 
+        		"            u.nikename, " + 
+        		"            ( o.user_id ), " + 
+        		"            o.rewardpoint, " + 
+        		"            o.league_id, " + 
+        		"            o.group_id ");
+        
+        if (questionId != null) {
+        	query.append(",o.question_id");
+		}
+
+        if (competitionId != null) {
+        	query.append(",o.competition_id ");
+		}
+        
+        query.append(" HAVING o.league_id = ? " + 
+        		"               AND o.group_id =? ");
+        
+        if (competitionId != null) {
+        	params.add(competitionId);
+        	query.append(" AND o.competition_id=? ");
+        }
+        
+        if (questionId != null) {
+        	params.add(questionId);
+        	query.append(" AND o.question_id = ? ");
+		}
+
+        query.append(" AND u.id = o.user_id " + 
+        		"        ORDER BY " + 
+        		"            total_point DESC " + 
+        		"    ) " + 
+        		"WHERE " + 
+        		"    ROWNUM < 31 and total_point is not null");
+        
+        sqlConnection.queryWithParams(query.toString(), params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportUsersWithMaximumPointNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchReportUsersWithMaximumPointSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+    
 }

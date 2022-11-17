@@ -8,12 +8,12 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.report.Biz_09_ReportAllSectionCorrectOddsCountAndOddsPercentage;
+import ir.khalili.products.odds.core.biz.report.Biz_10_ReportThreeSectionUsersWithMaximumPoint;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 
-public class VRTCL_09_ReportAllSectionCorrectOddsCountAndOddsPercentage extends AbstractVerticle {
-	private Logger logger = LogManager.getLogger(VRTCL_09_ReportAllSectionCorrectOddsCountAndOddsPercentage.class);
+public class VRTCL_10_ReportThreeSectionUsersWithMaximumPoint extends AbstractVerticle {
+	private Logger logger = LogManager.getLogger(VRTCL_10_ReportThreeSectionUsersWithMaximumPoint.class);
 	
 	@Override
     public void start(Promise<Void> startPromise) throws Exception {
@@ -24,9 +24,9 @@ public class VRTCL_09_ReportAllSectionCorrectOddsCountAndOddsPercentage extends 
     	try {
     		JDBCClient ircJDBC = JDBCClient.createShared(vertx, Configuration.getDataBaseConfig(),AppConstants.APP_DS_ODDS);
     		
-        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ALL_SECTION_CORRECT_ODDS_COUNT_AND_ODDS_PERCENTAGE, message -> {
+        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_THREE_SECTION_USERS_WITH_MAXIMUM_POINT, message -> {
         		
-        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ALL_SECTION_CORRECT_ODDS_COUNT_AND_ODDS_PERCENTAGE+" recieved with message:"+((JsonObject)(message.body())));
+        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_THREE_SECTION_USERS_WITH_MAXIMUM_POINT+" recieved with message:"+((JsonObject)(message.body())));
     				
         		ircJDBC.getConnection(connection -> {
 					
@@ -39,7 +39,7 @@ public class VRTCL_09_ReportAllSectionCorrectOddsCountAndOddsPercentage extends 
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_09_ReportAllSectionCorrectOddsCountAndOddsPercentage.fetchReportAllSectionCorrectOddsCountAndOddsPercentage(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_10_ReportThreeSectionUsersWithMaximumPoint.fetchReportThreeSectionUsersWithMaximumPoint(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());
@@ -58,7 +58,7 @@ public class VRTCL_09_ReportAllSectionCorrectOddsCountAndOddsPercentage extends 
 		    		});
 				});
         	});
-        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ALL_SECTION_CORRECT_ODDS_COUNT_AND_ODDS_PERCENTAGE+" ready to reply.");
+        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_THREE_SECTION_USERS_WITH_MAXIMUM_POINT+" ready to reply.");
         	startPromise.complete();
 		} catch (Exception e) {
 			logger.error("EXCEPTION DETECTED STARTING",e);

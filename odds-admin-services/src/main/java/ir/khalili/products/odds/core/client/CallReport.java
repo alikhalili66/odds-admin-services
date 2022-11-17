@@ -30,10 +30,11 @@ public class CallReport extends AbstractVerticle {
 //		reportCompetitorUsersCount(client);
 //		reportOddsCount(client);
 //		reportRegisteredUsersCount(client);
-		reportLeagueUsersWithMaximumPoint(client);
+//		reportLeagueUsersWithMaximumPoint(client);
 //		reportLeagueBlockedAmount(client);
 //		reportAllSectionOddsCountParticipantCountTotalPoint(client);
 //		reportAllSectionCorrectOddsCountAndOddsPercentage(client);
+//		reportThreeSectionUsersWithMaximumPoint(client);
 		
 	}
 
@@ -264,7 +265,7 @@ public class CallReport extends AbstractVerticle {
 			joInput.put("leagueId", 1);
 //			joInput.put("competitionId", 31); // Optional
 //			joInput.put("groupId", 28); // Optional
-			joInput.put("questionId", 1); // Optional
+//			joInput.put("questionId", 1); // Optional
 			
 			client
 			.post(port, host, "/v1/service/odds/report/odds/correct/percentage/count")
@@ -290,6 +291,41 @@ public class CallReport extends AbstractVerticle {
 			System.exit(0);
 		}
 	}
+	
+	public void reportThreeSectionUsersWithMaximumPoint(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			joInput.put("groupId", 28); 
+//			joInput.put("competitionId", 31); // Optional
+//			joInput.put("questionId", 1); // Optional
+			
+			client
+			.post(port, host, "/v1/service/odds/report/odds/users/point/maximum")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
 		
 	
 }

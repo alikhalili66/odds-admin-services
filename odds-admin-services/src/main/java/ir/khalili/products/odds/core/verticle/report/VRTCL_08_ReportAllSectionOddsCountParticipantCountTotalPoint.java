@@ -8,12 +8,12 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.report.Biz_12_ReportCompetitionsTotalPoint;
+import ir.khalili.products.odds.core.biz.report.Biz_08_ReportAllSectionOddsCountParticipantCountTotalPoint;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 
-public class VRTCL_12_ReportCompetitionsTotalPoint extends AbstractVerticle {
-	private Logger logger = LogManager.getLogger(VRTCL_12_ReportCompetitionsTotalPoint.class);
+public class VRTCL_08_ReportAllSectionOddsCountParticipantCountTotalPoint extends AbstractVerticle {
+	private Logger logger = LogManager.getLogger(VRTCL_08_ReportAllSectionOddsCountParticipantCountTotalPoint.class);
 	
 	@Override
     public void start(Promise<Void> startPromise) throws Exception {
@@ -24,9 +24,9 @@ public class VRTCL_12_ReportCompetitionsTotalPoint extends AbstractVerticle {
     	try {
     		JDBCClient ircJDBC = JDBCClient.createShared(vertx, Configuration.getDataBaseConfig(),AppConstants.APP_DS_ODDS);
     		
-        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_COMPETITIONS_TOTAL_POINT, message -> {
+        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT, message -> {
         		
-        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_COMPETITIONS_TOTAL_POINT+" recieved with message:"+((JsonObject)(message.body())));
+        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT+" recieved with message:"+((JsonObject)(message.body())));
     				
         		ircJDBC.getConnection(connection -> {
 					
@@ -39,7 +39,7 @@ public class VRTCL_12_ReportCompetitionsTotalPoint extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_12_ReportCompetitionsTotalPoint.fetchReportCompetitionsTotalPoint(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_08_ReportAllSectionOddsCountParticipantCountTotalPoint.fetchReportAllSectionOddsCountParticipantCountTotalPoint(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());
@@ -58,7 +58,7 @@ public class VRTCL_12_ReportCompetitionsTotalPoint extends AbstractVerticle {
 		    		});
 				});
         	});
-        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_COMPETITIONS_TOTAL_POINT+" ready to reply.");
+        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT+" ready to reply.");
         	startPromise.complete();
 		} catch (Exception e) {
 			logger.error("EXCEPTION DETECTED STARTING",e);

@@ -8,12 +8,12 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.report.Biz_06_ReportUsersWithMaximumOdds;
+import ir.khalili.products.odds.core.biz.report.Biz_07_ReportLeagueBlockedAmount;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 
-public class VRTCL_06_ReportUsersWithMaximumOdds extends AbstractVerticle {
-	private Logger logger = LogManager.getLogger(VRTCL_06_ReportUsersWithMaximumOdds.class);
+public class VRTCL_07_ReportLeagueBlockedAmount extends AbstractVerticle {
+	private Logger logger = LogManager.getLogger(VRTCL_07_ReportLeagueBlockedAmount.class);
 	
 	@Override
     public void start(Promise<Void> startPromise) throws Exception {
@@ -24,9 +24,9 @@ public class VRTCL_06_ReportUsersWithMaximumOdds extends AbstractVerticle {
     	try {
     		JDBCClient ircJDBC = JDBCClient.createShared(vertx, Configuration.getDataBaseConfig(),AppConstants.APP_DS_ODDS);
     		
-        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_USERS_WITH_MAXIMUM_ODDS, message -> {
+        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_LEAGUE_BLOCKED_AMOUNT, message -> {
         		
-        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_USERS_WITH_MAXIMUM_ODDS+" recieved with message:"+((JsonObject)(message.body())));
+        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_LEAGUE_BLOCKED_AMOUNT+" recieved with message:"+((JsonObject)(message.body())));
     				
         		ircJDBC.getConnection(connection -> {
 					
@@ -39,7 +39,7 @@ public class VRTCL_06_ReportUsersWithMaximumOdds extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_06_ReportUsersWithMaximumOdds.fetchReportUsersWithMaximumOdds(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_07_ReportLeagueBlockedAmount.fetchReportLeagueBlockedAmount(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());
@@ -58,7 +58,7 @@ public class VRTCL_06_ReportUsersWithMaximumOdds extends AbstractVerticle {
 		    		});
 				});
         	});
-        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_USERS_WITH_MAXIMUM_ODDS+" ready to reply.");
+        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_LEAGUE_BLOCKED_AMOUNT+" ready to reply.");
         	startPromise.complete();
 		} catch (Exception e) {
 			logger.error("EXCEPTION DETECTED STARTING",e);

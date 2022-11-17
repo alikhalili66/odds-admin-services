@@ -26,18 +26,14 @@ public class CallReport extends AbstractVerticle {
 	public void start() throws Exception {
 
 		WebClient client = WebClient.create(vertx);
-//		reportCompetitorUsersAmount(client);
-//		reportCompetitorUsersCount(client);
-//		reportOddsCount(client);
-//		reportRegisteredUsersCount(client);
-		
-//		reportUsersWithMaximumOdds(client);
-//		reportOddsCountPerCompetition(client);
-//		reportUsersCountWithOdds(client);
-//		reportQuestionStatisticPerCompetition(client);
-//		reportUsersWithMaximumPoint(client);
-//		reportCompetitionWithMaximumOdds(client);
-		reportCompetitionsTotalPoint(client);
+		reportCompetitorUsersAmount(client);
+		reportCompetitorUsersCount(client);
+		reportOddsCount(client);
+		reportRegisteredUsersCount(client);
+		reportLeagueUsersWithMaximumPoint(client);
+		reportLeagueBlockedAmount(client);
+		reportAllSectionOddsCountParticipantCountTotalPoint(client);
+		reportAllSectionCorrectOddsCountAndOddsPercentage(client);
 		
 	}
 
@@ -165,15 +161,45 @@ public class CallReport extends AbstractVerticle {
 		}
 	}
 
-	
-	public void reportUsersWithMaximumOdds(WebClient client) {
+	public void reportLeagueUsersWithMaximumPoint(WebClient client) {
 		try {
 			
 			JsonObject joInput = new JsonObject();
-			joInput.put("isLive", Boolean.FALSE);
+			joInput.put("leagueId", 1);
 			
 			client
-			.post(port, host, "/v1/service/odds/report/odds/users/maximum")
+			.post(port, host, "/v1/service/odds/report/league/odds/users/point/maximum")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void reportLeagueBlockedAmount(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/league/blocked/amount")
 			.putHeader("Authorization", CallAuth.token)
 			
 			.sendJson(joInput, ar -> {
@@ -197,15 +223,17 @@ public class CallReport extends AbstractVerticle {
 		}
 	}
 	
-	public void reportOddsCountPerCompetition(WebClient client) {
+	public void reportAllSectionOddsCountParticipantCountTotalPoint(WebClient client) {
 		try {
 			
 			JsonObject joInput = new JsonObject();
-			joInput.put("isLive", Boolean.FALSE);
-			joInput.put("competitionId", 31); // Optional
+			joInput.put("leagueId", 1);
+//			joInput.put("competitionId", 31); // Optional
+//			joInput.put("groupId", 28); // Optional
+//			joInput.put("question", 1); // Optional
 			
 			client
-			.post(port, host, "/v1/service/odds/report/odds/competition/count")
+			.post(port, host, "/v1/service/odds/report/odds/participant/point/count")
 			.putHeader("Authorization", CallAuth.token)
 			
 			.sendJson(joInput, ar -> {
@@ -229,14 +257,17 @@ public class CallReport extends AbstractVerticle {
 		}
 	}
 	
-	public void reportUsersCountWithOdds(WebClient client) {
+	public void reportAllSectionCorrectOddsCountAndOddsPercentage(WebClient client) {
 		try {
 			
 			JsonObject joInput = new JsonObject();
-			joInput.put("isLive", Boolean.TRUE);
+			joInput.put("leagueId", 1);
+//			joInput.put("competitionId", 31); // Optional
+//			joInput.put("groupId", 28); // Optional
+//			joInput.put("question", 1); // Optional
 			
 			client
-			.post(port, host, "/v1/service/odds/report/odds/users/odds/count")
+			.post(port, host, "/v1/service/odds/report/odds/correct/percentage/count")
 			.putHeader("Authorization", CallAuth.token)
 			
 			.sendJson(joInput, ar -> {
@@ -259,131 +290,6 @@ public class CallReport extends AbstractVerticle {
 			System.exit(0);
 		}
 	}
-	
-	public void reportQuestionStatisticPerCompetition(WebClient client) {
-		try {
-			
-			JsonObject joInput = new JsonObject();
-			joInput.put("isLive", Boolean.TRUE);
-			joInput.put("competitionId", 31);
-			
-			client
-			.post(port, host, "/v1/service/odds/report/odds/question/statistic")
-			.putHeader("Authorization", CallAuth.token)
-			
-			.sendJson(joInput, ar -> {
-				try {
-					if (ar.succeeded()) {
-						JsonObject response = new JsonObject(ar.result().bodyAsString());
-						System.out.println(Json.encodePrettily(response));
-					} else {
-						System.out.println(ar.cause());
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-
-					System.exit(0);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
-	
-	public void reportUsersWithMaximumPoint(WebClient client) {
-		try {
-			
-			JsonObject joInput = new JsonObject();
-			joInput.put("isLive", Boolean.TRUE);
-			
-			client
-			.post(port, host, "/v1/service/odds/report/odds/users/point/maximum")
-			.putHeader("Authorization", CallAuth.token)
-			
-			.sendJson(joInput, ar -> {
-				try {
-					if (ar.succeeded()) {
-						JsonObject response = new JsonObject(ar.result().bodyAsString());
-						System.out.println(Json.encodePrettily(response));
-					} else {
-						System.out.println(ar.cause());
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-
-					System.exit(0);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
-	
-	public void reportCompetitionWithMaximumOdds(WebClient client) {
-		try {
-			
-			JsonObject joInput = new JsonObject();
-			joInput.put("isLive", Boolean.TRUE);
-			
-			client
-			.post(port, host, "/v1/service/odds/report/odds/competition/odds/maximum")
-			.putHeader("Authorization", CallAuth.token)
-			
-			.sendJson(joInput, ar -> {
-				try {
-					if (ar.succeeded()) {
-						JsonObject response = new JsonObject(ar.result().bodyAsString());
-						System.out.println(Json.encodePrettily(response));
-					} else {
-						System.out.println(ar.cause());
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-
-					System.exit(0);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
-	
-	public void reportCompetitionsTotalPoint(WebClient client) {
-		try {
-			
-			JsonObject joInput = new JsonObject();
-//			joInput.put("isLive", Boolean.TRUE);
-//			joInput.put("competitionId", 31); //Optional
-			
-			client
-			.post(port, host, "/v1/service/odds/report/odds/competition/point")
-			.putHeader("Authorization", CallAuth.token)
-			
-			.sendJson(joInput, ar -> {
-				try {
-					if (ar.succeeded()) {
-						JsonObject response = new JsonObject(ar.result().bodyAsString());
-						System.out.println(Json.encodePrettily(response));
-					} else {
-						System.out.println(ar.cause());
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-
-					System.exit(0);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
+		
 	
 }

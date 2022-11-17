@@ -15,13 +15,13 @@ import ir.khalili.products.odds.core.validation.ReportInputValidationUtil;
 /**
  * @author A.KH
  */
-public class RtMgr_10_ReportUsersWithMaximumPoint   {
+public class RtMgr_09_ReportAllSectionCorrectOddsCountAndOddsPercentage   {
 	
-	private static								Logger 			logger 								= LogManager.getLogger(RtMgr_10_ReportUsersWithMaximumPoint.class);
+	private static								Logger 			logger 								= LogManager.getLogger(RtMgr_09_ReportAllSectionCorrectOddsCountAndOddsPercentage.class);
 	
 	public static void handler(RoutingContext context) {
 		
-		ReportInputValidationUtil.validateUsersWithMaximumPoint(context, validateHandler->{
+		ReportInputValidationUtil.validateAllSectionCorrectOddsCountAndOddsPercentage(context, validateHandler->{
 			
 			if(validateHandler.failed()) {
 
@@ -34,7 +34,7 @@ public class RtMgr_10_ReportUsersWithMaximumPoint   {
     		
 			}
 			
-			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_USERS_WITH_MAXIMUM_POINT, validateHandler.result(),replyHandler->{
+			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT, validateHandler.result(),replyHandler->{
 				
 				if (replyHandler.succeeded()) {
 					logger.trace("jobs done:"+replyHandler.result().body());

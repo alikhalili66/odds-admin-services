@@ -15,13 +15,13 @@ import ir.khalili.products.odds.core.validation.ReportInputValidationUtil;
 /**
  * @author A.KH
  */
-public class RtMgr_08_ReportUsersCountWithOdds   {
+public class RtMgr_07_ReportLeagueBlockedAmount   {
 	
-	private static								Logger 			logger 								= LogManager.getLogger(RtMgr_08_ReportUsersCountWithOdds.class);
+	private static								Logger 			logger 								= LogManager.getLogger(RtMgr_07_ReportLeagueBlockedAmount.class);
 	
 	public static void handler(RoutingContext context) {
 		
-		ReportInputValidationUtil.validateUsersCountWithOdds(context, validateHandler->{
+		ReportInputValidationUtil.validateLeagueBlockedAmount(context, validateHandler->{
 			
 			if(validateHandler.failed()) {
 
@@ -34,7 +34,7 @@ public class RtMgr_08_ReportUsersCountWithOdds   {
     		
 			}
 			
-			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_USERS_COUNT_WITH_ODDS, validateHandler.result(),replyHandler->{
+			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_LEAGUE_BLOCKED_AMOUNT, validateHandler.result(),replyHandler->{
 				
 				if (replyHandler.succeeded()) {
 					logger.trace("jobs done:"+replyHandler.result().body());

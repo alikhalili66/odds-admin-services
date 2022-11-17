@@ -1,9 +1,11 @@
 CREATE TABLE toppreport (
-    id               NUMBER(38)             NOT NULL,
-    competition_id   NUMBER(38),
+    id               NUMBER(38) NOT NULL,
     league_id        NUMBER(38),
+    group_id         NUMBER(38),
+    competition_id   NUMBER(38),
+    question_id      NUMBER(38),
     type             VARCHAR2(100 CHAR),
-    result           VARCHAR2(2000 CHAR)    NOT NULL,
+    result           VARCHAR2(2000 CHAR) NOT NULL,
     creationdate     DATE,
     dto              DATE,
     CONSTRAINT pk_report PRIMARY KEY ( id )

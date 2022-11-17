@@ -4,13 +4,19 @@ import static ir.khalili.products.odds.core.EntryPoint.vertx;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -28,20 +34,69 @@ public class HelperPayPod {
 	private static HttpClient httpClient = HttpClientBuilder.create()
 			.setDefaultRequestConfig(RequestConfig.custom().setConnectTimeout(20 * 1000).build()).build();
 	
-	private static final String token;
-    private static final String REJECT;
-    private static final String CONFIRM;
-    private static final String CHECK;
+	private static final String refreshToken;
+    private static final String rejectURL;
+    private static final String confirmURL;
+    private static final String checkURL;
+    private static final String tokenURL;
+    private static String token;
+    private static Date date = new Date(new Date().getTime() + 10 * 60 * 1000);
     
     static {
         JsonObject joLockin = EntryPoint.joConfig.getJsonObject("paypod");
         
-        token = joLockin.getString("token");
-        REJECT = joLockin.getString("reject");
-        CONFIRM = joLockin.getString("confirm");
-        CHECK = joLockin.getString("check");
+        refreshToken = joLockin.getString("refreshToken");
+        rejectURL = joLockin.getString("reject");
+        confirmURL = joLockin.getString("confirm");
+        checkURL = joLockin.getString("check");
+        tokenURL = joLockin.getString("token");
+
     }
 
+    private static String getToken() {
+
+        if(null == token ||  new Date().after(date)) {
+        	
+        }else {
+        	return token;
+        }
+        
+		try {
+
+			List<NameValuePair> params = new ArrayList<NameValuePair>(2);
+			params.add(new BasicNameValuePair("userName", "09104083004"));
+			params.add(new BasicNameValuePair("refreshToken", refreshToken));
+			
+			HttpPost request = new HttpPost(tokenURL);
+			request.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+
+			HttpResponse response = httpClient.execute(request);
+			BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+			StringBuffer sbResult = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				sbResult.append(line);
+			}
+
+			System.out.println("getToken:" + sbResult.toString());
+
+			JsonObject joResponse = new JsonObject(sbResult.toString());
+
+            if (!joResponse.getBoolean("hasError") && joResponse.getJsonObject("data") != null && !joResponse.getJsonObject("data").isEmpty()) {
+            	token = joResponse.getJsonObject("data").getString("access_token");
+            } else {
+                logger.error(joResponse);
+            }
+            
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+        return token;
+    
+    }
+    
     public static Future<Void> confirmTransaction(String username, String transactionId) {
 
         Promise<Void> promise = Promise.promise();
@@ -51,11 +106,12 @@ public class HelperPayPod {
     		try {
 
     			JsonObject joInput = new JsonObject();
-    			joInput.put("userName", username);
+    			joInput.put("userName", "09104083004");
     			joInput.put("transactionId", transactionId);
-    				  
-    			HttpPost request = new HttpPost(CONFIRM);
-    			request.setHeader("token", token);
+    			joInput.put("purchaseUserName", username);  
+
+    			HttpPost request = new HttpPost(confirmURL);
+    			request.setHeader("token", getToken());
     			request.setHeader("Content-Type", "application/json");
     			request.setEntity(new StringEntity(joInput.toString(), "UTF-8"));
 
@@ -68,7 +124,7 @@ public class HelperPayPod {
     				sbResult.append(line);
     			}
 
-    			System.out.println(sbResult.toString());
+    			System.out.println("confirm:"+sbResult.toString());
 
     			JsonObject joResponse = new JsonObject(sbResult.toString());
 
@@ -107,13 +163,14 @@ public class HelperPayPod {
     		try {
 
     			JsonObject joInput = new JsonObject();
-    			joInput.put("userName", username);
+    			joInput.put("userName", "09104083004");
     			joInput.put("transactionId", transactionId);
-    				  
-    			System.out.println(joInput);
+    			joInput.put("purchaseUserName", username);  
     			
-    			HttpPost request = new HttpPost(REJECT);
-    			request.setHeader("token", token);
+    			System.out.println("reject:" + joInput);
+    			
+    			HttpPost request = new HttpPost(rejectURL);
+    			request.setHeader("token", getToken());
     			request.setHeader("Content-Type", "application/json");
     			request.setEntity(new StringEntity(joInput.toString(), "UTF-8"));
 
@@ -155,7 +212,7 @@ public class HelperPayPod {
         return promise.future();
     }
     
-    public static Future<String> checkTransaction(String invoiceId) {
+    public static Future<String> checkTransaction(String invoiceId, String username) {
 
         Promise<String> promise = Promise.promise();
 
@@ -165,11 +222,12 @@ public class HelperPayPod {
 
     			JsonObject joInput = new JsonObject();
     			joInput.put("invoiceId", invoiceId);
-    				  
-    			System.out.println(joInput);
+    			joInput.put("userName", "09104083004");
+    			joInput.put("purchaseUserName", username);  
     			
-    			HttpPost request = new HttpPost(CHECK);
-    			request.setHeader("token", token);
+    			
+    			HttpPost request = new HttpPost(checkURL);
+    			request.setHeader("token", getToken());
     			request.setHeader("Content-Type", "application/json");
     			request.setEntity(new StringEntity(joInput.toString(), "UTF-8"));
 
@@ -182,7 +240,7 @@ public class HelperPayPod {
     				sbResult.append(line);
     			}
 
-    			System.out.println(sbResult.toString());
+    			System.out.println("check:" + sbResult.toString());
 
     			JsonObject joResponse = new JsonObject(sbResult.toString());
 

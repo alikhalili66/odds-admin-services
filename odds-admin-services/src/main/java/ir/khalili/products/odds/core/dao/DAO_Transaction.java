@@ -120,14 +120,15 @@ public class DAO_Transaction {
 		Promise<Integer> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
-		
-		params.add(null == message.getString("date") ? null : message.getString("date").split(" ")[0]);
+		params.add(message.getInteger("leagueId"));
+		params.add(null == message.getString("date") ? null : message.getString("date").split("T")[0]);
 		params.add(message.getString("username"));
 		params.add(message.getString("status"));
 		
 		sqlConnection.queryWithParams("select count(*) CNT " +
 				" FROM topptransaction t " +
 				" where 1=1 "
+				+ " and LEAGUE_ID = ? "
 				+ " and trunc(CREATIONDATE) = nvl(TO_DATE(?, 'YYYY-MM-DD'),trunc(CREATIONDATE)) "
 				+ " and t.username=nvl(?,t.username) "
 				+ " and t.status=nvl(?,t.status) " +
@@ -157,8 +158,8 @@ public class DAO_Transaction {
 		Promise<List<JsonObject>> promise = Promise.promise();
 		
 		JsonArray params = new JsonArray();
-		
-		params.add(null == message.getString("date") ? null : message.getString("date").split(" ")[0]);
+		params.add(message.getInteger("leagueId"));
+		params.add(null == message.getString("date") ? null : message.getString("date").split("T")[0]);
 		params.add(message.getString("username"));
 		params.add(message.getString("status"));
 		params.add(message.getInteger("startIndex"));
@@ -179,6 +180,7 @@ public class DAO_Transaction {
 				" row_number() over (ORDER BY t.id desc) line_number" +
 				" FROM topptransaction t " +
 				" where 1=1 "
+				+ " and LEAGUE_ID = ? "
 				+ " and trunc(CREATIONDATE) = nvl(TO_DATE(?, 'YYYY-MM-DD'),trunc(CREATIONDATE)) "
 				+ " and t.username=nvl(?,t.username) "
 				+ " and t.status=nvl(?,t.status) " +
@@ -216,27 +218,6 @@ public class DAO_Transaction {
 			}
 			
 			logger.trace("doUpdateTransactionStatusSuccessful");
-			promise.complete();
-			
-		});
-		return promise.future();
-    }
-    
-    public static Future<Void> updateTransactionStatus(SQLConnection sqlConnection, Integer id, String status, String transactionId) {
-        Promise<Void> promise = Promise.promise();
-        JsonArray params = new JsonArray();
-        params.add(status);
-        params.add(transactionId);
-        params.add(id);
-        
-        sqlConnection.updateWithParams("update topptransaction set status=?, transactionId=? WHERE id=?", params, handler -> {
-			if(handler.failed()) {
-				logger.error("Unable to get accessQueryResult:", handler.cause());
-				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
-				return;
-			}
-			
-			logger.trace("updateTransactionStatus");
 			promise.complete();
 			
 		});

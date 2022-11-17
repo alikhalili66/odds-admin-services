@@ -54,6 +54,9 @@ public class Biz_04_TransactionSave {
         			return;
         		}
         		
+    			logger.trace("AMOUNT_PER_TRANSACTION:" + futAmount.result().getString("VALUE") + ",POINTS_PER_TRANSACTION:"+ futPoint.result().getString("VALUE"));
+
+        		
         		int minAmount = Integer.parseInt(futAmount.result().getString("VALUE"));
         		int point = (amount/ minAmount) * Integer.parseInt(futPoint.result().getString("VALUE"));
         		

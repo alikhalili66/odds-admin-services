@@ -121,7 +121,7 @@ public class DAO_Location {
         		+ "t.DESCRIPTION,"
         		+ "t.IMAGE,"
         		+ "t.LEAGUE_ID,"
-        		+ "To_Char(t.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(t.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM topplocation t WHERE t.LEAGUE_ID=nvl(?, t.LEAGUE_ID) and t.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -152,7 +152,7 @@ public class DAO_Location {
         		+ "t.description,"
         		+ "t.IMAGE,"
         		+ "t.LEAGUE_ID,"
-        		+ "To_Char(t.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(t.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM topplocation t WHERE t.id=? and t.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -268,12 +268,12 @@ public class DAO_Location {
         		+ "(select image from toppteam t where t.id=c.TEAM2_ID) TEAM2_image,"
         		+ "c.GROUP_ID,"
         		+ "c.RESULT,"
-        		+ "To_Char(c.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(c.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(c.ODDSFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_FROM,"
-        		+ "To_Char(c.ODDSTO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_TO,"
-        		+ "To_Char(c.COMPETITIONDATE,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') COMPETITION_DATE,"
-        		+ "To_Char(c.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(c.ACTIVEFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_FROM,"
+        		+ "To_Char(c.ACTIVETO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_TO,"
+        		+ "To_Char(c.ODDSFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_FROM,"
+        		+ "To_Char(c.ODDSTO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_TO,"
+        		+ "To_Char(c.COMPETITIONDATE, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' COMPETITION_DATE,"
+        		+ "To_Char(c.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppcompetition c WHERE c.GROUP_ID = ? and c.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());

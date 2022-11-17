@@ -74,7 +74,7 @@ public class Biz_05_ReportCalculateCompetition {
             			.add(joQuestion.getInteger("ID"))	
             			.add(joQuestion.getString("QUESTION"))	
             			.add(joQuestion.getString("TYPE"))	
-            			.add(joQuestion.getInteger("norder"))	
+            			.add(joQuestion.getInteger("NORDER"))	
             			.add(joResult.toString())
             					);
 			}

@@ -38,7 +38,7 @@ public class DAO_Group {
 				+ "ACTIVETO,"
 				+ "creationDate,"
 				+ "createdBy_id)"
-				+ "values(soppgroup.nextval,?,?,TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),sysdate,?)", params, resultHandler->{
+				+ "values(soppgroup.nextval,?,?,TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),sysdate,?)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
 				if(resultHandler.cause().getMessage().toUpperCase().contains("UN_GROUP_NAME")) {
@@ -78,8 +78,8 @@ public class DAO_Group {
 				+ "update toppgroup g set "
 				+ "LEAGUE_ID=?,"
 				+ "NAME=?,"
-				+ "ACTIVEFROM=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "ACTIVETO=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') "
+				+ "ACTIVEFROM=TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "ACTIVETO=TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS') "
 				+ " where g.id=?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
@@ -132,9 +132,9 @@ public class DAO_Group {
         		+ "g.id,"
         		+ "g.LEAGUE_ID,"
         		+ "g.NAME,"
-        		+ "To_Char(g.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(g.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(g.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(g.ACTIVEFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_FROM,"
+        		+ "To_Char(g.ACTIVETO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_TO,"
+        		+ "To_Char(g.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppgroup g WHERE g.LEAGUE_ID=nvl(?, g.LEAGUE_ID) and g.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -163,9 +163,9 @@ public class DAO_Group {
         		+ "g.id,"
         		+ "g.LEAGUE_ID,"
         		+ "g.NAME,"
-        		+ "To_Char(g.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(g.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(g.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(g.ACTIVEFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_FROM,"
+        		+ "To_Char(g.ACTIVETO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_TO,"
+        		+ "To_Char(g.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppgroup g WHERE g.id=? and g.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());

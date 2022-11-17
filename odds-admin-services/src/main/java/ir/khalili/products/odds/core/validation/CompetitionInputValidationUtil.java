@@ -78,23 +78,23 @@ public final class CompetitionInputValidationUtil {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه محل برگزاری معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeFrom || activeFrom.isEmpty() || !activeFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == activeFrom || activeFrom.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeTo || activeTo.isEmpty() || !activeTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == activeTo || activeTo.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
 	            }
 	            
-	            if (null == oddsFrom || oddsFrom.isEmpty() || !oddsFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == oddsFrom || oddsFrom.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'شروع پیش بینی' معتبر نمی باشد");
 	            }
 	            
-	            if (null == oddsTo || oddsTo.isEmpty() || !oddsTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == oddsTo || oddsTo.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'پایان پیش بینی' معتبر نمی باشد");
 	            }
 
-	            if (null == competitionDate || competitionDate.isEmpty() || !competitionDate.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == competitionDate || competitionDate.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'تاریخ مسابقه' معتبر نمی باشد");
 	            }
 	            
@@ -113,11 +113,11 @@ public final class CompetitionInputValidationUtil {
 			joResult.put("teamId2", teamId2);
 			joResult.put("groupId", groupId);
 			joResult.put("locationId", locationId);
-			joResult.put("activeFrom", activeFrom);
-			joResult.put("activeTo", activeTo);
-			joResult.put("oddsFrom", oddsFrom);
-			joResult.put("oddsTo", oddsTo);
-			joResult.put("competitionDate", competitionDate);
+			joResult.put("activeFrom", activeFrom.split(" GMT")[0]);
+			joResult.put("activeTo", activeTo.split(" GMT")[0]);
+			joResult.put("oddsFrom", oddsFrom.split(" GMT")[0]);
+			joResult.put("oddsTo", oddsTo.split(" GMT")[0]);
+			joResult.put("competitionDate", competitionDate.split(" GMT")[0]);
 
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
@@ -191,23 +191,23 @@ public final class CompetitionInputValidationUtil {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه محل برگزاری معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeFrom || activeFrom.isEmpty() || !activeFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == activeFrom || activeFrom.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال از' معتبر نمی باشد");
 	            }
 	            
-	            if (null == activeTo || activeTo.isEmpty() || !activeTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == activeTo || activeTo.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'فعال تا' معتبر نمی باشد");
 	            }
 	            
-	            if (null == oddsFrom || oddsFrom.isEmpty() || !oddsFrom.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == oddsFrom || oddsFrom.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'شروع پیش بینی' معتبر نمی باشد");
 	            }
 	            
-	            if (null == oddsTo || oddsTo.isEmpty() || !oddsTo.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == oddsTo || oddsTo.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'پایان پیش بینی' معتبر نمی باشد");
 	            }
 
-	            if (null == competitionDate || competitionDate.isEmpty() || !competitionDate.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")) {
+	            if (null == competitionDate || competitionDate.isEmpty()) {
 	                throw new EXCP_RtMgr_Validation(-603, "فیلد 'تاریخ مسابقه' معتبر نمی باشد");
 	            }
 	            
@@ -227,11 +227,11 @@ public final class CompetitionInputValidationUtil {
 			joResult.put("teamId2", teamId2);
 			joResult.put("groupId", groupId);
 			joResult.put("locationId", locationId);
-			joResult.put("activeFrom", activeFrom);
-			joResult.put("activeTo", activeTo);
-			joResult.put("oddsFrom", oddsFrom);
-			joResult.put("oddsTo", oddsTo);
-			joResult.put("competitionDate", competitionDate);
+			joResult.put("activeFrom", activeFrom.split(" GMT")[0]);
+			joResult.put("activeTo", activeTo.split(" GMT")[0]);
+			joResult.put("oddsFrom", oddsFrom.split(" GMT")[0]);
+			joResult.put("oddsTo", oddsTo.split(" GMT")[0]);
+			joResult.put("competitionDate", competitionDate.split(" GMT")[0]);
 
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));

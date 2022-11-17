@@ -243,7 +243,7 @@ public class DAO_Team {
         		+ "t.SYMBOL,"
         		+ "t.IMAGE,"
         		+ "t.LEAGUE_ID,"
-        		+ "To_Char(t.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(t.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppteam t WHERE t.LEAGUE_ID=nvl(?, t.LEAGUE_ID) and t.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -274,7 +274,7 @@ public class DAO_Team {
         		+ "t.SYMBOL,"
         		+ "t.IMAGE,"
         		+ "t.LEAGUE_ID,"
-        		+ "To_Char(t.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(t.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppteam t WHERE t.id=? and t.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -304,7 +304,7 @@ public class DAO_Team {
         		+ "t.NAME,"
         		+ "t.count,"
         		+ "t.position,"
-        		+ "To_Char(t.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(t.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM tOPPTeamMember t WHERE t.team_Id=? and t.dto is null order by count asc", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());

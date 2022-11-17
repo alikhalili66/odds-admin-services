@@ -47,10 +47,10 @@ public class Biz_03_TransactionConfirm {
             
             Future<String> futTransactionId;
             
-            if(null == message.getString("transactionId")) {
-            	futTransactionId = HelperPayPod.checkTransaction(joTransaction.getString("INVOICEID"));
+            if(null == joTransaction.getString("TRANSACTIONID")) {
+            	futTransactionId = HelperPayPod.checkTransaction(joTransaction.getString("INVOICEID"), joTransaction.getString("USERNAME"));
             }else {
-            	futTransactionId = Helper.createFuture(message.getString("transactionId"));
+            	futTransactionId = Helper.createFuture(joTransaction.getString("TRANSACTIONID"));
             }
             
             futTransactionId.onComplete(joinHandler02->{
@@ -78,7 +78,7 @@ public class Biz_03_TransactionConfirm {
                     
                     Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, joUserInfo, "B", joTransaction.getString("DESCRIPTION"));
                     Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, futFetchById.result().getInteger("POINT"), futFetchById.result().getLong("AMOUNT"), futFetchById.result().getInteger("ID"));
-                    Future<Void> futUpdateTransactionStatus = DAO_Transaction.updateTransactionStatus(sqlConnection, id, futTransactionId.result(), TransactionStatus.confirm.getStatus());
+                    Future<Void> futUpdateTransactionStatus = DAO_Transaction.updateTransactionStatus(sqlConnection, id, TransactionStatus.confirm.getStatus());
                     
                 	CompositeFuture.all(futSaveUserPointHistory, futUpdateUserPointAndAmount, futUpdateTransactionStatus).onComplete(joinHandler04 -> {
                 		if (joinHandler04.failed()) {

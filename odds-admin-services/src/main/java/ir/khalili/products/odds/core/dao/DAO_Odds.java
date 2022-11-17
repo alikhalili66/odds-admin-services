@@ -67,4 +67,28 @@ public class DAO_Odds {
         return promise.future();
     }
     
+    public static Future<Void> updateCorrectAnswers(SQLConnection sqlConnection, Integer competitionId) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+        params.add(competitionId);
+		
+		sqlConnection.updateWithParams(""
+				+ "update toppodds o set o.CORRECTANSWER  = (SELECT cq.RESULT FROM TOPPCOMPETITIONQUESTION cq where cq.COMPETITION_ID = o.COMPETITION_ID and o.QUESTION_ID = cq.QUESTION_ID) where o.COMPETITION_ID = ?"
+				+ "", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("updateCorrectAnswersSuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+    
 }

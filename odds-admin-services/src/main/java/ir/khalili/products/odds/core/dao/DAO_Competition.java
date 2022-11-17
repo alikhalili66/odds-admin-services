@@ -57,11 +57,11 @@ public class DAO_Competition {
 				+ "?,"
 				+ "?,"
 				+ "?,"
-				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
 				+ "sysdate,"
 				+ "?)", params, resultHandler->{
 			if(resultHandler.failed()) {
@@ -103,11 +103,11 @@ public class DAO_Competition {
 				+ "c.TEAM2_ID=?,"
 				+ "c.GROUP_ID=?,"
 				+ "c.LOCATION_ID=?,"
-				+ "c.ACTIVEFROM=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "c.ACTIVETO=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "c.ODDSFROM=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "c.ODDSTO=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),"
-				+ "c.COMPETITIONDATE=TO_DATE(?,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') "
+				+ "c.ACTIVEFROM=TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "c.ACTIVETO=TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "c.ODDSFROM=TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "c.ODDSTO=TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "c.COMPETITIONDATE=TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS') "
 				+ " where c.id=?", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
@@ -162,12 +162,12 @@ public class DAO_Competition {
         		+ "c.LOCATION_ID,"
         		+ "(select l.name from tOPPLocation l where l.id=c.LOCATION_ID) LOCATION_name,"
         		+ "c.RESULT,"
-        		+ "To_Char(c.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(c.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(c.ODDSFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_FROM,"
-        		+ "To_Char(c.ODDSTO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_TO,"
-        		+ "To_Char(c.COMPETITIONDATE,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') COMPETITION_DATE,"
-        		+ "To_Char(c.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(c.ACTIVEFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_FROM,"
+        		+ "To_Char(c.ACTIVETO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_TO,"
+        		+ "To_Char(c.ODDSFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_FROM,"
+        		+ "To_Char(c.ODDSTO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_TO,"
+        		+ "To_Char(c.COMPETITIONDATE, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' COMPETITION_DATE,"
+        		+ "To_Char(c.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppcompetition c WHERE c.LEAGUE_ID=nvl(?, c.LEAGUE_ID) and c.GROUP_ID=nvl(?, c.GROUP_ID) and c.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -203,12 +203,12 @@ public class DAO_Competition {
         		+ "c.LOCATION_ID,"
         		+ "c.LEAGUE_ID,"
         		+ "c.RESULT,"
-        		+ "To_Char(c.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(c.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(c.ODDSFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_FROM,"
-        		+ "To_Char(c.ODDSTO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_TO,"
-        		+ "To_Char(c.COMPETITIONDATE,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') COMPETITION_DATE,"
-        		+ "To_Char(c.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(c.ACTIVEFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_FROM,"
+        		+ "To_Char(c.ACTIVETO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_TO,"
+        		+ "To_Char(c.ODDSFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_FROM,"
+        		+ "To_Char(c.ODDSTO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_TO,"
+        		+ "To_Char(c.COMPETITIONDATE, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' COMPETITION_DATE,"
+        		+ "To_Char(c.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppcompetition c WHERE c.id=? and c.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -328,12 +328,12 @@ public class DAO_Competition {
         		+ "c.LOCATION_ID,"
         		+ "(select l.name from tOPPLocation l where l.id=c.LOCATION_ID) LOCATION_name,"
         		+ "c.RESULT,"
-        		+ "To_Char(c.ACTIVEFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_FROM,"
-        		+ "To_Char(c.ACTIVETO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ACTIVE_TO,"
-        		+ "To_Char(c.ODDSFROM,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_FROM,"
-        		+ "To_Char(c.ODDSTO,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') ODDS_TO,"
-        		+ "To_Char(c.COMPETITIONDATE,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') COMPETITION_DATE,"
-        		+ "To_Char(c.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date"
+        		+ "To_Char(c.ACTIVEFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_FROM,"
+        		+ "To_Char(c.ACTIVETO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_TO,"
+        		+ "To_Char(c.ODDSFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_FROM,"
+        		+ "To_Char(c.ODDSTO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_TO,"
+        		+ "To_Char(c.COMPETITIONDATE, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' COMPETITION_DATE,"
+        		+ "To_Char(c.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
         		+ "  FROM toppcompetition c WHERE c.GROUP_ID = ? and c.dto is null", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -457,15 +457,16 @@ public class DAO_Competition {
         sqlConnection.queryWithParams("SELECT" + 
         		"    o.user_id, " + 
         		"    o.POINT " + 
-        		"FROM" + 
+        		" FROM" + 
         		"    toppodds                  o," + 
         		"    toppcompetitionquestion   cq " + 
-        		"WHERE" + 
-        		"    o.competition_id = cq.competition_id" + 
-        		"    AND o.question_id = cq.question_id" + 
-        		"    AND o.answer = cq.result" + 
+        		" WHERE 1 = 1 " + 
         		"    AND o.question_id=?" + 
-        		"    AND o.competition_id=?", params, handler -> {
+        		"    AND o.competition_id=?" +
+        		"    AND o.question_id = cq.question_id" + 
+        		"    AND o.competition_id = cq.competition_id" + 
+        		"    AND o.answer = cq.result" + 
+        		"", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -490,15 +491,16 @@ public class DAO_Competition {
         
         sqlConnection.queryWithParams("SELECT" + 
         		"    o.user_id " + 
-        		"FROM" + 
+        		" FROM " + 
         		"    toppodds                  o," + 
         		"    toppcompetitionquestion   cq " + 
-        		"WHERE" + 
-        		"    o.competition_id = cq.competition_id" + 
-        		"    AND o.question_id = cq.question_id" + 
-        		"    AND o.answer != cq.result" + 
+        		" WHERE 1 = 1 " + 
         		"    AND o.question_id=?" + 
-        		"    AND o.competition_id=?", params, handler -> {
+        		"    AND o.competition_id=?"+
+        		"    AND o.question_id = cq.question_id" + 
+        		"    AND o.competition_id = cq.competition_id" + 
+        		"    AND o.answer != cq.result" + 
+        		" ", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

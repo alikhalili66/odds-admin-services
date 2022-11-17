@@ -21,8 +21,10 @@ public class DAO_User {
         Promise<Integer> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(message.getInteger("leagueId"));
+        params.add(message.getString("username"));
+
         
-        sqlConnection.queryWithParams("SELECT count(*) CNT FROM toppuser u where u.league_Id = ? ",params,  handler -> {
+        sqlConnection.queryWithParams("SELECT count(*) CNT FROM toppuser u where u.league_Id = ? and u.username = nvl(?, u.username) ",params,  handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -46,6 +48,7 @@ public class DAO_User {
         Promise<List<JsonObject>> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(message.getInteger("leagueId"));
+        params.add(message.getString("username"));
         params.add(message.getInteger("startIndex"));
         params.add(message.getInteger("endIndex"));
         
@@ -58,9 +61,9 @@ public class DAO_User {
         		+ "u.lastname,"
         		+ "u.POINT,"
         		+ "u.AMOUNT,"
-        		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date, "
+        		+ "To_Char(u.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date, "
         		+ "row_number() over (ORDER BY u.id desc) line_number"
-        		+ "  FROM toppuser u where u.league_Id = ?) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
+        		+ "  FROM toppuser u where u.league_Id = ? and u.username = nvl(?, u.username)) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -90,7 +93,7 @@ public class DAO_User {
         		+ "u.NIKENAME,"
         		+ "u.POINT,"
         		+ "u.AMOUNT,"
-        		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date "
+        		+ "To_Char(u.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date "
         		+ "  FROM toppuser u where u.id=?", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -122,7 +125,7 @@ public class DAO_User {
         		+ "u.NIKENAME,"
         		+ "u.POINT,"
         		+ "u.AMOUNT,"
-        		+ "To_Char(u.creationdate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date "
+        		+ "To_Char(u.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date "
         		+ "  FROM toppuser u where u.id=?", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
@@ -151,28 +154,42 @@ public class DAO_User {
         params.add(message.getInteger("startIndex"));
         params.add(message.getInteger("endIndex"));
         
-        sqlConnection.queryWithParams("SELECT * FROM (SELECT "
-        		+ "o.id,"
-        		+ "o.LEAGUE_ID,"
-        		+ "l.name league_name,"
-        		+ "o.COMPETITION_ID,"
-        		+ "o.TEAM1_ID,"
-        		+ "(select name from toppteam t where t.id=o.TEAM1_ID) TEAM1_name,"
-        		+ "(select image from toppteam t where t.id=o.TEAM1_ID) TEAM1_image,"
-        		+ "o.TEAM2_ID,"
-        		+ "(select name from toppteam t where t.id=o.TEAM2_ID) TEAM2_name,"
-        		+ "(select image from toppteam t where t.id=o.TEAM2_ID) TEAM2_image,"
-        		+ "o.GROUP_ID,"
-        		+ "g.name group_name,"
-        		+ "o.QUESTION_ID,"
-        		+ "q.question,"
-        		+ "o.ANSWER,"
-        		+ "o.POINT,"
-        		+ "o.CORRECTANSWER CORRECT_ANSWER,"
-        		+ "o.REWARDPOINT REWARD_POINT,"
-        		+ "o.COUNT,"
-        		+ "row_number() over (ORDER BY o.id desc) line_number"
-        		+ "  FROM toppodds o, toppleague l, toppgroup g, toppquestion q where o.QUESTION_ID=q.id and o.GROUP_ID=g.id and o.LEAGUE_ID=l.id and o.id=?) WHERE line_number BETWEEN ? AND ?", params, handler -> {
+        String query =
+        		""
+                		+ ""
+                		+ " SELECT id, LEAGUE_ID, league_name, TEAM1_ID, TEAM1_name, TEAM1_image, TEAM2_ID, TEAM2_name, TEAM2_image, GROUP_ID, group_name, COMPETITION_ID, POINT,  REWARD_POINT     FROM ( " + 
+                		"  SELECT t1.*, t2.*, row_number() over (ORDER BY t1.COMPETITIONDATE DESC) line_number " + 
+                		"  FROM " + 
+                		"    (SELECT c.id, " + 
+                		"      c.LEAGUE_ID, " + 
+                		"      l.name league_name, " + 
+                		"      c.TEAM1_ID, " + 
+                		"      (SELECT name FROM toppteam t WHERE t.id=c.TEAM1_ID ) TEAM1_name, " + 
+                		"      (SELECT image FROM toppteam t WHERE t.id=c.TEAM1_ID ) TEAM1_image, " + 
+                		"      c.TEAM2_ID, " + 
+                		"      (SELECT name FROM toppteam t WHERE t.id=c.TEAM2_ID ) TEAM2_name, " + 
+                		"      (SELECT image FROM toppteam t WHERE t.id=c.TEAM2_ID ) TEAM2_image, " + 
+                		"      c.GROUP_ID, " + 
+                		"      c.COMPETITIONDATE, " + 
+                		"      g.name group_name " + 
+                		"    FROM toppCOMPETITION c, toppleague l, toppgroup g " + 
+                		"    WHERE c.GROUP_ID=g.id AND c.LEAGUE_ID =l.id ) t1, " + 
+                		"    (SELECT o.COMPETITION_ID, " + 
+                		"      SUM(o.POINT) POINT , " + 
+                		"      NVL(SUM(REWARDPOINT),0) REWARD_POINT " + 
+                		"    FROM toppodds o " + 
+                		"    WHERE o.user_id=? " + 
+                		"    GROUP BY COMPETITION_ID " + 
+                		"    ) t2 " + 
+                		"  WHERE t1.id = t2.COMPETITION_ID " + 
+                		"  ) " + 
+                		" WHERE line_number BETWEEN ? AND ? "
+                		+ ""
+                		+ "";
+        
+        System.out.println(query);
+        
+        sqlConnection.queryWithParams(query, params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -337,7 +354,7 @@ public class DAO_User {
         		+ "u.competition_Id,"
         		+ "u.historytype history_type,"
         		+ "u.historydescription history_description,"
-        		+ "To_Char(u.historydate,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') history_date, "
+        		+ "To_Char(u.historydate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' history_date, "
         		+ "row_number() over (ORDER BY u.id desc) line_number"
         		+ "  FROM toppuserpointhistory u where u.user_id=?) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
             if (handler.failed()) {
@@ -362,7 +379,7 @@ public class DAO_User {
         Promise<JsonObject> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(leagueId);
-        params.add(UGID);
+//        params.add(UGID);
 
         sqlConnection.queryWithParams("SELECT " +
                 "  TU.ID , " +
@@ -370,7 +387,7 @@ public class DAO_User {
                 "  TU.POINT, " +
                 "  TU.AMOUNT   " +
                 "  FROM TOPPUSER TU " +
-                "  WHERE LEAGUE_ID = ? and TU.UGID    = ? ", params, resultHandler -> {
+                "  WHERE LEAGUE_ID = ? and TU.UGID    = '" + UGID+ "'", params, resultHandler -> {
             if (resultHandler.failed()) {
                 logger.error("Unable to get accessQueryResult:", resultHandler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -401,7 +418,7 @@ public class DAO_User {
 		});
 		
 		sqlConnection.batchWithParams(""
-				+ "delete FROM TOPPUSERPOINTHISTORY where id = (SELECT id from (SELECT id, ROWNUM AS RN FROM TOPPUSERPOINTHISTORY where USER_ID=? and  COMPETITION_ID = ? ORDER BY ID DESC) WHERE RN = 2)"
+				+ "delete FROM TOPPUSERPOINTHISTORY where id = (SELECT id from (SELECT id, ROWNUM AS RN FROM TOPPUSERPOINTHISTORY where USER_ID=? and  COMPETITION_ID = ? ORDER BY ID DESC) WHERE RN = 1)"
 				, params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());

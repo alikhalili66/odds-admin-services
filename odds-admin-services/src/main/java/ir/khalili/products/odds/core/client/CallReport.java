@@ -26,14 +26,14 @@ public class CallReport extends AbstractVerticle {
 	public void start() throws Exception {
 
 		WebClient client = WebClient.create(vertx);
-		reportCompetitorUsersAmount(client);
-		reportCompetitorUsersCount(client);
-		reportOddsCount(client);
-		reportRegisteredUsersCount(client);
+//		reportCompetitorUsersAmount(client);
+//		reportCompetitorUsersCount(client);
+//		reportOddsCount(client);
+//		reportRegisteredUsersCount(client);
 		reportLeagueUsersWithMaximumPoint(client);
-		reportLeagueBlockedAmount(client);
-		reportAllSectionOddsCountParticipantCountTotalPoint(client);
-		reportAllSectionCorrectOddsCountAndOddsPercentage(client);
+//		reportLeagueBlockedAmount(client);
+//		reportAllSectionOddsCountParticipantCountTotalPoint(client);
+//		reportAllSectionCorrectOddsCountAndOddsPercentage(client);
 		
 	}
 
@@ -196,7 +196,7 @@ public class CallReport extends AbstractVerticle {
 		try {
 			
 			JsonObject joInput = new JsonObject();
-			joInput.put("leagueId", 1);
+			joInput.put("leagueId", 123);
 			
 			client
 			.post(port, host, "/v1/service/odds/report/league/blocked/amount")
@@ -230,7 +230,7 @@ public class CallReport extends AbstractVerticle {
 			joInput.put("leagueId", 1);
 //			joInput.put("competitionId", 31); // Optional
 //			joInput.put("groupId", 28); // Optional
-//			joInput.put("question", 1); // Optional
+//			joInput.put("questionId", 1); // Optional
 			
 			client
 			.post(port, host, "/v1/service/odds/report/odds/participant/point/count")
@@ -264,7 +264,7 @@ public class CallReport extends AbstractVerticle {
 			joInput.put("leagueId", 1);
 //			joInput.put("competitionId", 31); // Optional
 //			joInput.put("groupId", 28); // Optional
-//			joInput.put("question", 1); // Optional
+			joInput.put("questionId", 1); // Optional
 			
 			client
 			.post(port, host, "/v1/service/odds/report/odds/correct/percentage/count")

@@ -22,7 +22,7 @@ public class Biz_06_ReportLeagueUsersWithMaximumPoint {
 
         Integer leagueId = message.getInteger("leagueId");
         
-    	DAO_Report.fetchReport(sqlConnection, null, leagueId, null, null, ReportEnum.REPORT_LEAGUE_USERS_WITH_MAXIMUM_POINT.name()).onComplete(result0 -> {
+    	DAO_Report.fetchReport(sqlConnection, null, leagueId, null, null, ReportEnum.REPORT_LEAGUE_USERS_WITH_MAXIMUM_POINT.name(), true).onComplete(result0 -> {
             if (result0.failed()) {
             	logger.error("Unable to complete result0: " + result0.cause());
                 resultHandler.handle(Future.failedFuture(result0.cause()));
@@ -78,7 +78,7 @@ public class Biz_06_ReportLeagueUsersWithMaximumPoint {
 
     private static void fetchReport(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Handler<AsyncResult<JsonObject>> resultHandler) {
     	
-    	DAO_Report.fetchReport(sqlConnection, null, leagueId, null, null, ReportEnum.REPORT_LEAGUE_USERS_WITH_MAXIMUM_POINT.name()).onComplete(result0 -> {
+    	DAO_Report.fetchReport(sqlConnection, null, leagueId, null, null, ReportEnum.REPORT_LEAGUE_USERS_WITH_MAXIMUM_POINT.name(), false).onComplete(result0 -> {
             if (result0.failed()) {
             	logger.error("Unable to complete result0: " + result0.cause());
                 resultHandler.handle(Future.failedFuture(result0.cause()));

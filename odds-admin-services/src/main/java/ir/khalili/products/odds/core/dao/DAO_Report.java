@@ -135,11 +135,15 @@ public class DAO_Report {
 				+ "ID,"
 				+ "COMPETITION_ID,"
 				+ "LEAGUE_ID,"
+				+ "GROUP_ID,"
+				+ "QUESTION_ID,"
 				+ "TYPE,"
 				+ "RESULT,"
 				+ "CREATIONDATE)"
 				+ "values("
 				+ "soppreport.nextval,"
+				+ "?,"
+				+ "?,"
 				+ "?,"
 				+ "?,"
 				+ "?,"
@@ -453,7 +457,7 @@ public class DAO_Report {
     }
     
     
-    public static Future<JsonObject> fetchReport(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Integer groupId, Integer questionId, String type) {
+    public static Future<JsonObject> fetchReport(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Integer groupId, Integer questionId, String type, boolean checkUpTo48HoursAgo) {
         Promise<JsonObject> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(type);
@@ -469,9 +473,14 @@ public class DAO_Report {
         		"    r.result, " + 
         		"    to_char(r.creationdate, 'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date " + 
         		"FROM " + 
-        		"    toppreport r " + 
+        		"    TOPPREPORT r " + 
         		"WHERE " + 
         		"    r.type = ? ");
+        
+        if (checkUpTo48HoursAgo) {
+        	query.append(" AND r.creationdate > sysdate - 2");
+		}
+        
         
         if (competitionId != null) {
         	params.add(competitionId);
@@ -480,7 +489,7 @@ public class DAO_Report {
         
         if (leagueId != null) {
         	params.add(leagueId);
-        	query.append("    AND r.league_id = nvl(?, r.league_id) ");
+        	query.append("    AND r.league_id = ? ");
 		}
         
         if (groupId != null) {
@@ -517,8 +526,8 @@ public class DAO_Report {
         return promise.future();
     }
  
-    public static Future<Long> fetchReportLeagueBlockedAmount(SQLConnection sqlConnection, Integer leagueId) {
-        Promise<Long> promise = Promise.promise();
+    public static Future<JsonObject> fetchReportLeagueBlockedAmount(SQLConnection sqlConnection, Integer leagueId) {
+        Promise<JsonObject> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(leagueId);
         
@@ -529,10 +538,10 @@ public class DAO_Report {
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
                 	logger.error("fetchReportLeagueBlockedAmountNoDataFound");
-                	promise.complete(0L);
+                	promise.complete(new JsonObject().put("BLOCKED_AMOUNT", 0L));
                 } else {
                     logger.trace("fetchReportLeagueBlockedAmountSuccessful");
-                    promise.complete(handler.result().getRows().get(0).getLong("BLOCKED_AMOUNT"));
+                    promise.complete(handler.result().getRows().get(0).getString("BLOCKED_AMOUNT") == null ? new JsonObject().put("BLOCKED_AMOUNT", 0L) : handler.result().getRows().get(0));
                 }
             
             }
@@ -646,17 +655,17 @@ public class DAO_Report {
         
         if (groupId != null) {
         	params.add(groupId);
-        	query.append(" AND od.group_id = ? ");
+        	query.append(" AND o.group_id = ? ");
 		}
         
         if (competitionId != null) {
         	params.add(competitionId);
-        	query.append(" AND od.competition_id=? ");
+        	query.append(" AND o.competition_id=? ");
 		}
         
         if (questionId != null) {
         	params.add(questionId);
-        	query.append(" AND od.question_id =? ");
+        	query.append(" AND o.question_id =? ");
 		}
         
         query.append(" AND cq.competition_id = o.competition_id " + 

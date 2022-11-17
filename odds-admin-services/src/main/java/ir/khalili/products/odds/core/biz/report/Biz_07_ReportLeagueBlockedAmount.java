@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Report;
@@ -22,7 +21,7 @@ public class Biz_07_ReportLeagueBlockedAmount {
 
         Integer leagueId = message.getInteger("leagueId");
         
-    	DAO_Report.fetchReport(sqlConnection, null, leagueId, null, null, ReportEnum.REPORT_LEAGUE_BLOCKED_AMOUNT.name()).onComplete(result0 -> {
+    	DAO_Report.fetchReport(sqlConnection, null, leagueId, null, null, ReportEnum.REPORT_LEAGUE_BLOCKED_AMOUNT.name(), true).onComplete(result0 -> {
             if (result0.failed()) {
             	logger.error("Unable to complete result0: " + result0.cause());
                 resultHandler.handle(Future.failedFuture(result0.cause()));
@@ -59,9 +58,7 @@ public class Biz_07_ReportLeagueBlockedAmount {
             	
 			} else {
 				
-	            JsonObject joReport = result0.result();
-	            JsonArray jaResult = new JsonArray(joReport.getString("RESULT"));
-	            joReport.put("RESULT", jaResult);
+	            JsonObject joReport = new JsonObject(result0.result().getString("RESULT"));
 	            
 	            logger.trace("FETCH_REPORT_LEAGUE_BLOCKED_AMOUNT_RESULT : " + result0.result());
 	            
@@ -78,16 +75,14 @@ public class Biz_07_ReportLeagueBlockedAmount {
 
     private static void fetchReport(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Handler<AsyncResult<JsonObject>> resultHandler) {
     	
-    	DAO_Report.fetchReport(sqlConnection, null, leagueId, null, null, ReportEnum.REPORT_LEAGUE_BLOCKED_AMOUNT.name()).onComplete(result0 -> {
+    	DAO_Report.fetchReport(sqlConnection, null, leagueId, null, null, ReportEnum.REPORT_LEAGUE_BLOCKED_AMOUNT.name(), false).onComplete(result0 -> {
             if (result0.failed()) {
             	logger.error("Unable to complete result0: " + result0.cause());
                 resultHandler.handle(Future.failedFuture(result0.cause()));
                 return;
             }
             
-            JsonObject joReport = result0.result();
-            JsonArray jaResult = new JsonArray(joReport.getString("RESULT"));
-            joReport.put("RESULT", jaResult);
+            JsonObject joReport = new JsonObject(result0.result().getString("RESULT"));
             
             logger.trace("FETCH_REPORT_LEAGUE_BLOCKED_AMOUNT_RESULT : " + result0.result());
             

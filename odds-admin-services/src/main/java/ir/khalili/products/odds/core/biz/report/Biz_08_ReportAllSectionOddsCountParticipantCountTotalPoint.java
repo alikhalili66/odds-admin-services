@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Report;
@@ -25,7 +24,7 @@ public class Biz_08_ReportAllSectionOddsCountParticipantCountTotalPoint {
         Integer competitionId = message.getInteger("competitionId", null);
         Integer questionId = message.getInteger("questionId", null);
         
-    	DAO_Report.fetchReport(sqlConnection, competitionId, leagueId, groupId, questionId, ReportEnum.REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT.name()).onComplete(result0 -> {
+    	DAO_Report.fetchReport(sqlConnection, competitionId, leagueId, groupId, questionId, ReportEnum.REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT.name(), true).onComplete(result0 -> {
             if (result0.failed()) {
             	logger.error("Unable to complete result0: " + result0.cause());
                 resultHandler.handle(Future.failedFuture(result0.cause()));
@@ -62,9 +61,7 @@ public class Biz_08_ReportAllSectionOddsCountParticipantCountTotalPoint {
             	
 			} else {
 				
-	            JsonObject joReport = result0.result();
-	            JsonArray jaResult = new JsonArray(joReport.getString("RESULT"));
-	            joReport.put("RESULT", jaResult);
+				JsonObject joReport = new JsonObject(result0.result().getString("RESULT"));
 	            
 	            logger.trace("FETCH_REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT_RESULT : " + result0.result());
 	            
@@ -81,16 +78,14 @@ public class Biz_08_ReportAllSectionOddsCountParticipantCountTotalPoint {
 
     private static void fetchReport(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Integer groupId, Integer questionId, Handler<AsyncResult<JsonObject>> resultHandler) {
     	
-    	DAO_Report.fetchReport(sqlConnection, competitionId, leagueId, groupId, questionId, ReportEnum.REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT.name()).onComplete(result0 -> {
+    	DAO_Report.fetchReport(sqlConnection, competitionId, leagueId, groupId, questionId, ReportEnum.REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT.name(), false).onComplete(result0 -> {
             if (result0.failed()) {
             	logger.error("Unable to complete result0: " + result0.cause());
                 resultHandler.handle(Future.failedFuture(result0.cause()));
                 return;
             }
             
-            JsonObject joReport = result0.result();
-            JsonArray jaResult = new JsonArray(joReport.getString("RESULT"));
-            joReport.put("RESULT", jaResult);
+            JsonObject joReport = new JsonObject(result0.result().getString("RESULT"));
             
             logger.trace("FETCH_REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT_RESULT : " + result0.result());
             

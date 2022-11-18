@@ -1,11 +1,15 @@
 package ir.khalili.products.odds.core.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.excp.dao.DAOEXCP_Internal;
 
@@ -113,5 +117,667 @@ public class DAO_Report {
         return promise.future();
     }
     
+    public static Future<Void> saveReport(SQLConnection sqlConnection, JsonObject message) {
 
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		
+		params.add(message.getInteger("competitionId"));
+		params.add(message.getInteger("leagueId"));
+		params.add(message.getInteger("groupId"));
+		params.add(message.getInteger("questionId"));
+		params.add(message.getString("type"));
+		params.add(message.getString("result"));
+		
+		sqlConnection.updateWithParams(""
+				+ "INSERT INTO TOPPREPORT("
+				+ "ID,"
+				+ "COMPETITION_ID,"
+				+ "LEAGUE_ID,"
+				+ "GROUP_ID,"
+				+ "QUESTION_ID,"
+				+ "TYPE,"
+				+ "RESULT,"
+				+ "CREATIONDATE)"
+				+ "values("
+				+ "soppreport.nextval,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "sysdate)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("saveReportSuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+
+    public static Future<List<JsonObject>> fetchReportCompetitionWithMaximumOdds(SQLConnection sqlConnection) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        sqlConnection.query(
+        		"SELECT  " + 
+        		"    competition_id,  " + 
+        		"    cnt, " + 
+        		"    (select name from toppteam t where t.id=team1_id) TEAM1_name, " + 
+        		"    (select name from toppteam t where t.id=team2_id) TEAM2_name, " + 
+        		"    (select g.name from toppgroup g where g.id=group_id) GROUP_name " + 
+        		" " + 
+        		"FROM " + 
+        		"    ( " + 
+        		"        SELECT " + 
+        		"            o.competition_id, " + 
+        		"            o.team1_id, " + 
+        		"            o.team2_id, " + 
+        		"            o.group_id, " + 
+        		"            COUNT(*) cnt " + 
+        		"        FROM " + 
+        		"            toppodds o " + 
+        		"        GROUP BY " + 
+        		"            o.competition_id, o.team1_id, o.team2_id, o.group_id " + 
+        		"        ORDER BY " + 
+        		"            cnt DESC " + 
+        		"    ) " + 
+        		"WHERE ROWNUM < 6", handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportCompetitionWithMaximumOddsNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchReportCompetitionWithMaximumOddsSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<List<JsonObject>> fetchReportLeagueUsersWithMaximumPoint(SQLConnection sqlConnection, Integer leagueId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        
+        sqlConnection.queryWithParams("SELECT " + 
+        		"    * " + 
+        		"FROM " + 
+        		"    ( " + 
+        		"        SELECT " + 
+        		"            u.id      user_id, " + 
+        		"            u.name, " + 
+        		"            u.lastname, " + 
+        		"            u.nikename, " + 
+        		"            u.point   total_point " + 
+        		"        FROM " + 
+        		"            toppuser u " + 
+        		"        GROUP BY " + 
+        		"            u.id, " + 
+        		"            u.league_id, " + 
+        		"            u.name, " + 
+        		"            u.lastname, " + 
+        		"            u.nikename, " + 
+        		"            u.point " + 
+        		"        HAVING " + 
+        		"            u.league_id=? " + 
+        		"        ORDER BY " + 
+        		"            u.point DESC " + 
+        		"    ) " + 
+        		"WHERE " + 
+        		"    ROWNUM < 31", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportUsersWithMaximumPointNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchReportUsersWithMaximumPointSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+
+    public static Future<List<JsonObject>> fetchReportQuestionStatisticPerCompetition(SQLConnection sqlConnection, Integer competitionId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        JsonArray params = new JsonArray();
+        params.add(competitionId);
+        
+        sqlConnection.queryWithParams("SELECT " + 
+        		"    o.question_id, " + 
+        		"    sum(o.point) total_point, " + 
+        		"    count(distinct o.user_id) user_count, " + 
+        		"    round ((SELECT COUNT(DISTINCT odd.user_id) FROM toppodds odd,toppcompetitionquestion cq WHERE odd.competition_id = o.competition_id AND odd.question_id = o.question_id AND cq.competition_id = odd.competition_id AND cq.question_id = odd.question_id AND odd.answer = cq.result) / count(distinct o.user_id)*100, 2) correct_answer_percentage, " + 
+        		"    round ((SELECT COUNT(DISTINCT odd.user_id) FROM toppodds odd,toppcompetitionquestion cq WHERE odd.competition_id = o.competition_id AND odd.question_id = o.question_id AND cq.competition_id = odd.competition_id AND cq.question_id = odd.question_id AND odd.answer != cq.result) / count(distinct o.user_id)*100, 2) incorrect_answer_percentage " + 
+        		"FROM " + 
+        		"    toppodds o " + 
+        		"GROUP BY " + 
+        		"    o.question_id, o.competition_id " + 
+        		"HAVING " + 
+        		"    o.competition_id=? " + 
+        		"ORDER BY " + 
+        		"    total_point DESC", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportQuestionStatisticPerCompetitionNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchReportQuestionStatisticPerCompetitionSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<List<JsonObject>> fetchReportOddsCountPerCompetition(SQLConnection sqlConnection, Integer competitionId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(competitionId);
+        
+        sqlConnection.queryWithParams("SELECT " + 
+        		"    o.competition_id, " + 
+        		"    COUNT(DISTINCT o.id) cnt " + 
+        		"FROM " + 
+        		"    toppodds o " + 
+        		"GROUP BY " + 
+        		"    o.competition_id " + 
+        		"HAVING " + 
+        		"    o.competition_id=nvl(?,o.competition_id) " + 
+        		"ORDER BY " + 
+        		"    cnt DESC", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportOddsCountPerCompetitionNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchReportOddsCountPerCompetitionSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+
+    public static Future<List<JsonObject>> fetchReportUsersCountWithOdds(SQLConnection sqlConnection) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        sqlConnection.query("SELECT " + 
+        		"    u.id user_id, " + 
+        		"    u.name, " + 
+        		"    u.lastname, " + 
+        		"    u.nikename, " + 
+        		"    u.point total_point, " + 
+        		"    u.amount total_amount, " + 
+        		"    COUNT(o.user_id) odds_count " + 
+        		"FROM " + 
+        		"    toppuser   u, " + 
+        		"    toppodds   o " + 
+        		"GROUP BY " + 
+        		"    u.id, " + 
+        		"    u.name, " + 
+        		"    u.lastname, " + 
+        		"    u.nikename, " + 
+        		"    u.point, " + 
+        		"    u.amount, " + 
+        		"    o.user_id " + 
+        		"HAVING " + 
+        		"    u.id = o.user_id " + 
+        		"ORDER BY " + 
+        		"    u.point DESC", handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportUsersCountWithOddsNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchReportUsersCountWithOddsSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+    
+    public static Future<List<JsonObject>> fetchUsersWithMaximumOdds(SQLConnection sqlConnection) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        sqlConnection.query("SELECT " + 
+        		"    u.id user_id, " + 
+        		"    u.name, " + 
+        		"    u.lastname, " + 
+        		"    u.nikename, " + 
+        		"    u.point total_point, " + 
+        		"    u.amount total_amount, " + 
+        		"    COUNT(o.user_id) odds_count " + 
+        		"FROM " + 
+        		"    toppuser   u, " + 
+        		"    toppodds   o " + 
+        		"GROUP BY " + 
+        		"    u.id, " + 
+        		"    u.name, " + 
+        		"    u.lastname, " + 
+        		"    u.nikename, " + 
+        		"    u.point, " + 
+        		"    u.amount, " + 
+        		"    o.user_id " + 
+        		"HAVING " + 
+        		"    u.id = o.user_id " + 
+        		"ORDER BY " + 
+        		"    u.point DESC", handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchUsersWithMaximumOddsNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchUsersWithMaximumOddsSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<List<JsonObject>> fetchReportCompetitionsTotalPoint(SQLConnection sqlConnection, Integer competitionId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(competitionId);
+        
+        sqlConnection.queryWithParams(
+        		"SELECT " + 
+        		"    o.competition_id, " + 
+        		"    COUNT(o.point) total_point " + 
+        		"FROM " + 
+        		"    toppodds o " + 
+        		"GROUP BY " + 
+        		"    o.competition_id " + 
+        		"HAVING " + 
+        		"    o.competition_id=nvl(?,o.competition_id) " + 
+        		"ORDER BY " + 
+        		"    total_point DESC", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportCompetitionsTotalPointNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchReportCompetitionsTotalPointSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+    
+    public static Future<JsonObject> fetchReport(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Integer groupId, Integer questionId, String type, boolean checkUpTo48HoursAgo) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(type);
+        
+        StringBuilder query = new StringBuilder();
+        query.append( "SELECT " + 
+        		"    r.id, " + 
+        		"    r.league_id, " +
+        		"    r.group_id, " + 
+        		"    r.competition_id, " + 
+        		"    r.question_id, " + 
+        		"    r.type, " + 
+        		"    r.result, " + 
+        		"    to_char(r.creationdate, 'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date " + 
+        		"FROM " + 
+        		"    TOPPREPORT r " + 
+        		"WHERE " + 
+        		"    r.type = ? ");
+        
+        if (checkUpTo48HoursAgo) {
+        	query.append(" AND r.creationdate > sysdate - 2");
+		}
+        
+        if (competitionId != null) {
+        	params.add(competitionId);
+        	query.append("    AND r.competition_id = nvl(?, r.competition_id) ");
+		} else {
+			query.append("    AND r.competition_id is null ");
+		}
+        
+        if (leagueId != null) {
+        	params.add(leagueId);
+        	query.append("    AND r.league_id = ? ");
+		}
+        
+        if (groupId != null) {
+        	params.add(groupId);
+        	query.append("    AND r.group_id = nvl(?, r.group_id) ");
+		} else {
+			query.append("    AND r.group_id is null ");
+		}
+        
+        if (questionId != null) {
+        	params.add(questionId);
+        	query.append("    AND r.question_id = nvl(?, r.question_id) ");
+		} else {
+			query.append("    AND r.question_id is null ");
+		}
+        
+        query.append("    AND r.dto IS NULL " + 
+        		"ORDER BY " + 
+        		"    r.id DESC " + 
+        		"FETCH FIRST ROW ONLY");
+        
+        sqlConnection.queryWithParams(query.toString(), params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportNoDataFound");
+                	promise.complete(null);
+                } else {
+                    logger.trace("fetchReportSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+ 
+    public static Future<JsonObject> fetchReportLeagueBlockedAmount(SQLConnection sqlConnection, Integer leagueId) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        
+        sqlConnection.queryWithParams("select sum(amount) BLOCKED_AMOUNT from toppuser where league_id=?", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportLeagueBlockedAmountNoDataFound");
+                	promise.complete(new JsonObject().put("BLOCKED_AMOUNT", 0L));
+                } else {
+                    logger.trace("fetchReportLeagueBlockedAmountSuccessful");
+                    promise.complete(handler.result().getRows().get(0).getString("BLOCKED_AMOUNT") == null ? new JsonObject().put("BLOCKED_AMOUNT", 0L) : handler.result().getRows().get(0));
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<JsonObject> fetchReportAllSectionOddsCountParticipantCountTotalPoint(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Integer groupId, Integer questionId) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        
+        StringBuilder query = new StringBuilder();
+        StringBuilder having = new StringBuilder();
+        having.append("having o.league_id =? ");
+        
+        query.append("SELECT " + 
+        		"    count(*) odds_count, " + 
+        		"    count(distinct o.user_id) participant_count, " + 
+        		"    sum(o.point) total_point " + 
+        		"FROM " + 
+        		"    toppodds o " + 
+        		"GROUP BY " + 
+        		"    o.league_id ");
+        
+        if (groupId != null) {
+        	params.add(groupId);
+        	query.append(", o.group_id ");
+        	having.append("and o.group_id=? ");
+		}
+        
+        if (competitionId != null) {
+        	params.add(competitionId);
+        	query.append(", o.competition_id ");
+        	having.append("and o.competition_id=? ");
+		}
+        
+        if (questionId != null) {
+        	params.add(questionId);
+        	query.append(", o.question_id ");
+        	having.append("and o.question_id=? ");
+		}
+        
+        query.append(having);
+        
+        sqlConnection.queryWithParams(query.toString(), params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportAllSectionOddsCountParticipantCountTotalPointNoDataFound");
+                	promise.complete(null);
+                } else {
+                    logger.trace("fetchReportAllSectionOddsCountParticipantCountTotalPointSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+ 
+    public static Future<JsonObject> fetchReportAllSectionCorrectOddsCountAndOddsPercentage(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Integer groupId, Integer questionId) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        
+        StringBuilder query = new StringBuilder();
+        
+        query.append("SELECT " + 
+        		"    correct_answer_count, " + 
+        		"    round(correct_answer_count /( " + 
+        		"        SELECT " + 
+        		"            COUNT(*) correct_answer_count " + 
+        		"        FROM " + 
+        		"            toppodds                  od, toppcompetitionquestion   cq " + 
+        		"        WHERE od.league_id =? ");
+        
+        if (groupId != null) {
+        	params.add(groupId);
+        	query.append(" AND od.group_id = ? ");
+		}
+        
+        if (competitionId != null) {
+        	params.add(competitionId);
+        	query.append(" AND od.competition_id=? ");
+		}
+        
+        if (questionId != null) {
+        	params.add(questionId);
+        	query.append(" AND od.question_id =? ");
+		}
+        
+        params.add(leagueId);
+        
+        query.append("AND cq.competition_id = od.competition_id " + 
+        		"            AND cq.question_id = od.question_id " + 
+        		"    ) * 100, 2) correct_answer_percentage " + 
+        		"FROM " + 
+        		"    ( " + 
+        		"        SELECT " + 
+        		"            COUNT(*) correct_answer_count " + 
+        		"        FROM " + 
+        		"            toppodds                  o, " + 
+        		"            toppcompetitionquestion   cq " + 
+        		"        WHERE " + 
+        		"            o.league_id = ? ");
+        
+        if (groupId != null) {
+        	params.add(groupId);
+        	query.append(" AND o.group_id = ? ");
+		}
+        
+        if (competitionId != null) {
+        	params.add(competitionId);
+        	query.append(" AND o.competition_id=? ");
+		}
+        
+        if (questionId != null) {
+        	params.add(questionId);
+        	query.append(" AND o.question_id =? ");
+		}
+        
+        query.append(" AND cq.competition_id = o.competition_id " + 
+        		"            AND cq.question_id = o.question_id " + 
+        		"            AND o.answer = cq.result " + 
+        		"    ) " + 
+        		"GROUP BY " + 
+        		"    correct_answer_count");
+        
+        sqlConnection.queryWithParams(query.toString(), params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportAllSectionCorrectOddsCountAndOddsPercentageNoDataFound");
+                	promise.complete(null);
+                } else {
+                    logger.trace("fetchReportAllSectionCorrectOddsCountAndOddsPercentageSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+ 
+    public static Future<List<JsonObject>> fetchReportThreeSectionUsersWithMaximumPoint(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Integer groupId, Integer questionId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        params.add(groupId);
+        
+        StringBuilder query = new StringBuilder();
+        
+        query.append("SELECT " + 
+        		"    * " + 
+        		"FROM " + 
+        		"    ( " + 
+        		"        SELECT DISTINCT " + 
+        		"            o.user_id , " + 
+        		"            u.name, " + 
+        		"            u.lastname, " + 
+        		"            u.nikename, " + 
+        		"            SUM(o.rewardpoint) total_point " + 
+        		"        FROM " + 
+        		"            toppodds   o, " + 
+        		"            toppuser   u " + 
+        		"        GROUP BY " + 
+        		"            u.id, " + 
+        		"            u.league_id, " + 
+        		"            u.name, " + 
+        		"            u.lastname, " + 
+        		"            u.nikename, " + 
+        		"            ( o.user_id ), " + 
+        		"            o.rewardpoint, " + 
+        		"            o.league_id, " + 
+        		"            o.group_id ");
+        
+        if (questionId != null) {
+        	query.append(",o.question_id");
+		}
+
+        if (competitionId != null) {
+        	query.append(",o.competition_id ");
+		}
+        
+        query.append(" HAVING o.league_id = ? " + 
+        		"               AND o.group_id =? ");
+        
+        if (competitionId != null) {
+        	params.add(competitionId);
+        	query.append(" AND o.competition_id=? ");
+        }
+        
+        if (questionId != null) {
+        	params.add(questionId);
+        	query.append(" AND o.question_id = ? ");
+		}
+
+        query.append(" AND u.id = o.user_id " + 
+        		"        ORDER BY " + 
+        		"            total_point DESC " + 
+        		"    ) " + 
+        		"WHERE " + 
+        		"    ROWNUM < 31 and total_point is not null");
+        
+        sqlConnection.queryWithParams(query.toString(), params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportUsersWithMaximumPointNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchReportUsersWithMaximumPointSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+    
 }

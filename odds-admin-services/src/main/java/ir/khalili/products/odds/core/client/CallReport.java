@@ -28,8 +28,14 @@ public class CallReport extends AbstractVerticle {
 		WebClient client = WebClient.create(vertx);
 //		reportCompetitorUsersAmount(client);
 //		reportCompetitorUsersCount(client);
-		reportOddsCount(client);
+//		reportOddsCount(client);
 //		reportRegisteredUsersCount(client);
+//		reportLeagueUsersWithMaximumPoint(client);
+//		reportLeagueBlockedAmount(client);
+//		reportAllSectionOddsCountParticipantCountTotalPoint(client);
+//		reportAllSectionCorrectOddsCountAndOddsPercentage(client);
+//		reportThreeSectionUsersWithMaximumPoint(client);
+		
 	}
 
 	public void reportRegisteredUsersCount(WebClient client) {
@@ -155,5 +161,171 @@ public class CallReport extends AbstractVerticle {
 			System.exit(0);
 		}
 	}
+
+	public void reportLeagueUsersWithMaximumPoint(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/league/odds/users/point/maximum")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	public void reportLeagueBlockedAmount(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 123);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/league/blocked/amount")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void reportAllSectionOddsCountParticipantCountTotalPoint(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+//			joInput.put("competitionId", 31); // Optional
+//			joInput.put("groupId", 28); // Optional
+//			joInput.put("questionId", 1); // Optional
+			
+			client
+			.post(port, host, "/v1/service/odds/report/odds/participant/point/count")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void reportAllSectionCorrectOddsCountAndOddsPercentage(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+//			joInput.put("competitionId", 31); // Optional
+//			joInput.put("groupId", 28); // Optional
+//			joInput.put("questionId", 1); // Optional
+			
+			client
+			.post(port, host, "/v1/service/odds/report/odds/correct/percentage/count")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void reportThreeSectionUsersWithMaximumPoint(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			joInput.put("groupId", 28); 
+//			joInput.put("competitionId", 31); // Optional
+//			joInput.put("questionId", 1); // Optional
+			
+			client
+			.post(port, host, "/v1/service/odds/report/odds/users/point/maximum")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+		
 	
 }

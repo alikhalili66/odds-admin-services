@@ -555,6 +555,31 @@ public class DAO_Report {
         return promise.future();
     }
     
+    public static Future<JsonObject> fetchReportLeagueTransactionAmount(SQLConnection sqlConnection, Integer leagueId) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        
+        sqlConnection.queryWithParams("select sum(amount) TRANSACTION_AMOUNT from topptransaction where league_id=? and APPLICATIONCODE in ('operator_charge_service', 'bill_pay_service')", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportLeagueTransactionAmountNoDataFound");
+                	promise.complete(new JsonObject().put("TRANSACTION_AMOUNT", 0L));
+                } else {
+                    logger.trace("fetchReportLeagueTransactionAmountSuccessful");
+                    promise.complete(handler.result().getRows().get(0).getString("TRANSACTION_AMOUNT") == null ? new JsonObject().put("TRANSACTION_AMOUNT", 0L) : handler.result().getRows().get(0));
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+ 
+    
     public static Future<JsonObject> fetchReportAllSectionOddsCountParticipantCountTotalPoint(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Integer groupId, Integer questionId) {
         Promise<JsonObject> promise = Promise.promise();
         JsonArray params = new JsonArray();

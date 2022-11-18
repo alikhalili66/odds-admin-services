@@ -51,7 +51,9 @@ public class Biz_11_ReportLeagueTransactionAmount {
             				resultHandler.handle(Future.failedFuture(result1.cause()));
             				return;
             			}
-            			fetchReport(sqlConnection, null, leagueId, resultHandler);
+
+            			fetchReportLeagueTransactionAmount(sqlConnection, message, resultHandler);
+            	    	
             		});
             		
             	});
@@ -71,30 +73,6 @@ public class Biz_11_ReportLeagueTransactionAmount {
 			}
     	});
 
-    }
-
-    private static void fetchReport(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Handler<AsyncResult<JsonObject>> resultHandler) {
-    	
-    	DAO_Report.fetchReport(sqlConnection, null, leagueId, null, null, ReportEnum.REPORT_LEAGUE_TRANSACTION_AMOUNT.name(), false).onComplete(result0 -> {
-            if (result0.failed()) {
-            	logger.error("Unable to complete result0: " + result0.cause());
-                resultHandler.handle(Future.failedFuture(result0.cause()));
-                return;
-            }
-            
-            JsonObject joReport = new JsonObject(result0.result().getString("RESULT"));
-            
-            logger.trace("FETCH_REPORT_LEAGUE_TRANSACTION_AMOUNT_RESULT : " + result0.result());
-            
-			resultHandler.handle(Future.succeededFuture(
-					new JsonObject()
-					.put("resultCode", 1)
-					.put("resultMessage", "عملیات با موفقیت انجام شد.")
-					.put("info", joReport)
-					));            
-            
-        });
-    	
     }
 
 }

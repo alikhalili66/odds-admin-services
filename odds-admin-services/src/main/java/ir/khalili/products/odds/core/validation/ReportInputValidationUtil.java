@@ -197,7 +197,7 @@ public final class ReportInputValidationUtil {
 	
 	public static void validateUsersWithMaximumPoint(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_LEAGUE_USERS_WITH_MAXIMUM_POINT).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_ODDS_COUNT).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -241,7 +241,7 @@ public final class ReportInputValidationUtil {
 	
 	public static void validateLeagueBlockedAmount(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_LEAGUE_BLOCKED_AMOUNT).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_ODDS_COUNT).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -285,7 +285,7 @@ public final class ReportInputValidationUtil {
 	
 	public static void validateAllSectionOddsCountParticipantCountTotalPoint(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_ODDS_COUNT).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -351,7 +351,7 @@ public final class ReportInputValidationUtil {
 
 	public static void validateAllSectionCorrectOddsCountAndOddsPercentage(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_ALL_SECTION_CORRECT_ODDS_COUNT_AND_ODDS_PERCENTAGE).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_ODDS_COUNT).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));
@@ -482,7 +482,7 @@ public final class ReportInputValidationUtil {
 	
 	public static void validateLeagueTransactionAmount(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_LEAGUE_TRANSACTION_AMOUNT).onComplete(handler -> {
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_ODDS_COUNT).onComplete(handler -> {
 
 			if (handler.failed()) {
 				resultHandler.handle(Future.failedFuture(handler.cause()));

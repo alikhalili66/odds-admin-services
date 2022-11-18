@@ -54,7 +54,9 @@ public class Biz_08_ReportAllSectionOddsCountParticipantCountTotalPoint {
             				resultHandler.handle(Future.failedFuture(result1.cause()));
             				return;
             			}
-            			fetchReport(sqlConnection, competitionId, leagueId, groupId, questionId, resultHandler);
+            			
+            			fetchReportAllSectionOddsCountParticipantCountTotalPoint(sqlConnection, message, resultHandler);
+
             		});
             		
             	});
@@ -74,30 +76,6 @@ public class Biz_08_ReportAllSectionOddsCountParticipantCountTotalPoint {
 			}
     	});
 
-    }
-
-    private static void fetchReport(SQLConnection sqlConnection, Integer competitionId, Integer leagueId, Integer groupId, Integer questionId, Handler<AsyncResult<JsonObject>> resultHandler) {
-    	
-    	DAO_Report.fetchReport(sqlConnection, competitionId, leagueId, groupId, questionId, ReportEnum.REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT.name(), false).onComplete(result0 -> {
-            if (result0.failed()) {
-            	logger.error("Unable to complete result0: " + result0.cause());
-                resultHandler.handle(Future.failedFuture(result0.cause()));
-                return;
-            }
-            
-            JsonObject joReport = new JsonObject(result0.result().getString("RESULT"));
-            
-            logger.trace("FETCH_REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT_RESULT : " + result0.result());
-            
-			resultHandler.handle(Future.succeededFuture(
-					new JsonObject()
-					.put("resultCode", 1)
-					.put("resultMessage", "عملیات با موفقیت انجام شد.")
-					.put("info", joReport)
-					));            
-            
-        });
-    	
     }
 
 }

@@ -1,13 +1,6 @@
 {
 	"port": 9090,
 	"dbConfig": {
-		"username": "ODDS",
-		"password": "OddS#$2022",
-		"host": "94.101.184.27",
-		"serviceName": "opdb",
-		"port": 1521
-	},
-	"localdbConfig": {
 		"username": "sch_test",
 		"password": "Test#2022",
 		"host": "185.213.167.156",

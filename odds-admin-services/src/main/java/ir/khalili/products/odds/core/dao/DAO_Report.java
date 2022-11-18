@@ -625,7 +625,7 @@ public class DAO_Report {
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
                 	logger.error("fetchReportAllSectionOddsCountParticipantCountTotalPointNoDataFound");
-                	promise.complete(null);
+                	promise.complete(new JsonObject().put("ODDS_COUNT", 0).put("PARTICIPANT_COUNT", 0).put("TOTAL_POINT", 0));
                 } else {
                     logger.trace("fetchReportAllSectionOddsCountParticipantCountTotalPointSuccessful");
                     promise.complete(handler.result().getRows().get(0));
@@ -641,69 +641,44 @@ public class DAO_Report {
         Promise<JsonObject> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(leagueId);
+        params.add(groupId);
+        params.add(competitionId);
+        params.add(questionId);
+        params.add(leagueId);
+        params.add(groupId);
+        params.add(competitionId);
+        params.add(questionId);
         
         StringBuilder query = new StringBuilder();
         
-        query.append("SELECT " + 
-        		"    correct_answer_count, " + 
-        		"    round(correct_answer_count /( " + 
-        		"        SELECT " + 
-        		"            COUNT(*) correct_answer_count " + 
-        		"        FROM " + 
-        		"            toppodds                  od, toppcompetitionquestion   cq " + 
-        		"        WHERE od.league_id =? ");
+        query.append(" SELECT  ");
+        query.append(" t1.correct_answer_count, ");
+        query.append(" (case when t2.total_answer_count <> 0 then ROUND(t1.correct_answer_count /t2.total_answer_count* 100, 2) else 0 end) correct_answer_percentage ");
+        query.append(" FROM  ");
         
-        if (groupId != null) {
-        	params.add(groupId);
-        	query.append(" AND od.group_id = ? ");
-		}
+        query.append(" (SELECT COUNT(*) correct_answer_count ");
+        query.append(" FROM toppodds o, toppcompetitionquestion cq ");
+        query.append(" WHERE o.league_id     = ? ");
+        query.append(" AND o.group_id = nvl(?,o.group_id) ");
+        query.append(" AND o.competition_id = nvl(?,o.competition_id) ");
+        query.append(" AND o.question_id = nvl(?,o.question_id) ");
+        query.append(" AND cq.competition_id = o.competition_id ");
+        query.append(" AND cq.question_id    = o.question_id ");
+        query.append(" AND o.answer          = cq.result ");
+        query.append(" ) t1, ");
         
-        if (competitionId != null) {
-        	params.add(competitionId);
-        	query.append(" AND od.competition_id=? ");
-		}
+        	
+        query.append(" (SELECT COUNT(*) total_answer_count ");
+        query.append(" FROM toppodds o, toppcompetitionquestion cq ");
+        query.append(" WHERE o.league_id     = ? ");
+        query.append(" AND o.group_id = nvl(?,o.group_id) ");
+        query.append(" AND o.competition_id = nvl(?,o.competition_id) ");
+        query.append(" AND o.question_id = nvl(?,o.question_id) ");
+        query.append(" AND cq.competition_id = o.competition_id ");
+        query.append(" AND cq.question_id    = o.question_id ");
+        query.append(" ) t2 ");
         
-        if (questionId != null) {
-        	params.add(questionId);
-        	query.append(" AND od.question_id =? ");
-		}
-        
-        params.add(leagueId);
-        
-        query.append("AND cq.competition_id = od.competition_id " + 
-        		"            AND cq.question_id = od.question_id " + 
-        		"    ) * 100, 2) correct_answer_percentage " + 
-        		"FROM " + 
-        		"    ( " + 
-        		"        SELECT " + 
-        		"            COUNT(*) correct_answer_count " + 
-        		"        FROM " + 
-        		"            toppodds                  o, " + 
-        		"            toppcompetitionquestion   cq " + 
-        		"        WHERE " + 
-        		"            o.league_id = ? ");
-        
-        if (groupId != null) {
-        	params.add(groupId);
-        	query.append(" AND o.group_id = ? ");
-		}
-        
-        if (competitionId != null) {
-        	params.add(competitionId);
-        	query.append(" AND o.competition_id=? ");
-		}
-        
-        if (questionId != null) {
-        	params.add(questionId);
-        	query.append(" AND o.question_id =? ");
-		}
-        
-        query.append(" AND cq.competition_id = o.competition_id " + 
-        		"            AND cq.question_id = o.question_id " + 
-        		"            AND o.answer = cq.result " + 
-        		"    ) " + 
-        		"GROUP BY " + 
-        		"    correct_answer_count");
+    	logger.trace(query.toString());
         
         sqlConnection.queryWithParams(query.toString(), params, handler -> {
             if (handler.failed()) {

@@ -39,7 +39,7 @@ public class VRTCL_06_ReportLeagueUsersWithMaximumPoint extends AbstractVerticle
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_06_ReportLeagueUsersWithMaximumPoint.fetchReportUsersWithMaximumPoint(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_06_ReportLeagueUsersWithMaximumPoint.fetchReport(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());

@@ -34,8 +34,8 @@ public class CallReport extends AbstractVerticle {
 //		reportLeagueBlockedAmount(client);
 //		reportAllSectionOddsCountParticipantCountTotalPoint(client);
 //		reportAllSectionCorrectOddsCountAndOddsPercentage(client);
-//		reportThreeSectionUsersWithMaximumPoint(client);
-		
+		reportThreeSectionUsersWithMaximumPoint(client);
+//		reportLeagueTransactionAmount(client);
 	}
 
 	public void reportRegisteredUsersCount(WebClient client) {
@@ -326,6 +326,36 @@ public class CallReport extends AbstractVerticle {
 		}
 	}
 
-		
+	public void reportLeagueTransactionAmount(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/league/transaction/amount")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
 	
 }

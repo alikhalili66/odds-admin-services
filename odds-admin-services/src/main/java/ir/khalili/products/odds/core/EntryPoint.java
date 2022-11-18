@@ -79,6 +79,7 @@ import ir.khalili.products.odds.core.routemanager.report.RtMgr_07_ReportLeagueBl
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_08_ReportAllSectionOddsCountParticipantCountTotalPoint;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_09_ReportAllSectionCorrectOddsCountAndOddsPercentage;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_10_ReportThreeSectionUsersWithMaximumPoint;
+import ir.khalili.products.odds.core.routemanager.report.RtMgr_11_ReportLeagueTransactionAmount;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_01_TeamSave;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_02_TeamUpdate;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_03_TeamDelete;
@@ -156,6 +157,7 @@ import ir.khalili.products.odds.core.verticle.report.VRTCL_07_ReportLeagueBlocke
 import ir.khalili.products.odds.core.verticle.report.VRTCL_08_ReportAllSectionOddsCountParticipantCountTotalPoint;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_09_ReportAllSectionCorrectOddsCountAndOddsPercentage;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_10_ReportThreeSectionUsersWithMaximumPoint;
+import ir.khalili.products.odds.core.verticle.report.VRTCL_11_ReportLeagueTransactionAmount;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_01_TeamSave;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_02_TeamUpdate;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_03_TeamDelete;
@@ -327,6 +329,7 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_08_ReportAllSectionOddsCountParticipantCountTotalPoint.class.getName());
     	vertx.deployVerticle(VRTCL_09_ReportAllSectionCorrectOddsCountAndOddsPercentage.class.getName());
     	vertx.deployVerticle(VRTCL_10_ReportThreeSectionUsersWithMaximumPoint.class.getName());
+    	vertx.deployVerticle(VRTCL_11_ReportLeagueTransactionAmount.class.getName());
     	
     	//TEAM
     	vertx.deployVerticle(VRTCL_01_TeamSave.class.getName());
@@ -468,6 +471,7 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/report/odds/participant/point/count")		.handler(RtMgr_08_ReportAllSectionOddsCountParticipantCountTotalPoint:: handler);
         router.post		("/v1/service/odds/report/odds/correct/percentage/count")		.handler(RtMgr_09_ReportAllSectionCorrectOddsCountAndOddsPercentage:: handler);
         router.post		("/v1/service/odds/report/odds/users/point/maximum")			.handler(RtMgr_10_ReportThreeSectionUsersWithMaximumPoint	:: handler);
+        router.post		("/v1/service/odds/report/league/transaction/amount")			.handler(RtMgr_11_ReportLeagueTransactionAmount				:: handler);
         
     	//TEAM
         router.post		("/v1/service/odds/team/save")									.handler(RtMgr_01_TeamSave									:: handler);

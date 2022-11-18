@@ -30,8 +30,7 @@ public class LiveScoreHelper {
     private static final String secret;
     private static final String competitionId;
     private static final String season;
-
-    private static final String SCORERESULT;
+    private static final String scoreResultUrl;
 
     static {
         JsonObject joLockin = EntryPoint.joConfig.getJsonObject("liveScore");
@@ -40,7 +39,7 @@ public class LiveScoreHelper {
         secret = joLockin.getString("secret");
         competitionId = joLockin.getString("competitionId");
         season = joLockin.getString("season");
-        SCORERESULT = joLockin.getString("score_result");
+        scoreResultUrl = joLockin.getString("scoreResultUrl");
     }
 
     public static Future<JsonObject> liveScore(String matchId) {
@@ -50,8 +49,7 @@ public class LiveScoreHelper {
         vertx.executeBlocking(blockingHandler -> {
 
             try {
-                //TODO competition id
-                HttpGet request = new HttpGet(String.format("%s?match_id=%s&key=%s&secret=%s&competition_id=%s&season=%s", SCORERESULT, matchId, key, secret, competitionId, season));
+                HttpGet request = new HttpGet(String.format("%s?match_id=%s&key=%s&secret=%s", scoreResultUrl, matchId, key, secret));
                 request.setHeader("Content-Type", "application/json");
 
                 HttpResponse response = httpClient.execute(request);

@@ -224,15 +224,21 @@ public final class QuestionInputValidationUtil {
 			final JsonObject joToken = handler.result();
 
 			Integer leagueId;
+			Integer competitionId;
 
-	        try {
+			try {
 	            final JsonObject inputParameters = InputValidationUtil.validate(context);
 
 	            leagueId = inputParameters.getInteger("leagueId");
-	            
+				competitionId = inputParameters.getInteger("competitionId");
+
 	            if (null != leagueId && leagueId < 1) {
 	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
 	            }
+
+				if (null == competitionId || competitionId < 1) {
+					throw new EXCP_RtMgr_Validation(-603, "شناسه مسابقه معتبر نمی باشد");
+				}
 
 	        } catch (EXCP_RtMgr_Validation e) {
 				resultHandler.handle(Future.failedFuture(e));
@@ -246,6 +252,7 @@ public final class QuestionInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			
 			joResult.put("leagueId", leagueId);
+			joResult.put("competitionId", competitionId);
 			joResult.put("userId", joToken.getInteger("id"));
 			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
 			joResult.put("ip", context.request().remoteAddress().host());

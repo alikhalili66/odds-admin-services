@@ -14,7 +14,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,10 +31,10 @@ public class Biz_06_QuestionSaveResult {
         logger.trace("inputMessage:" + message);
 
         final Integer leagueId = message.getInteger("leagueId");
+        final Integer competitionId = message.getInteger("competitionId");
 
         Future<JsonObject> futLeague = DAO_League.fetchValidLeagueById(sqlConnection, leagueId);
         Future<String> futDate = DAO_Config.fetchSysdate(sqlConnection);
-//        Future<List<JsonObject>> futCompetitions = DAO_Competition.fetchCompetitionByLeagueId(sqlConnection, leagueId, futDate.result());
 
         CompositeFuture.join(futLeague, futDate).onComplete(joinHandler -> {
 
@@ -45,49 +44,49 @@ public class Biz_06_QuestionSaveResult {
                 return;
             }
 
-            DAO_Competition.fetchCompetitionByLeagueId(sqlConnection, leagueId, futDate.result()).onComplete(competitionResult -> {
+            DAO_Competition.fetchCompetitionById(sqlConnection, competitionId).onComplete(competitionResult -> {
 
                 if (competitionResult.failed()) {
                     logger.error("Unable to complete joinHandler: " + competitionResult.cause());
                     resultHandler.handle(Future.failedFuture(competitionResult.cause()));
                     return;
                 }
+                JsonObject competition = competitionResult.result();
 
+                LiveScoreHelper.liveScore(competition.getString("IDENTIFIER")).onComplete(liveResult -> {
 
-                for (JsonObject entries : competitionResult.result()) {
-                    LiveScoreHelper.liveScore(entries.getString("IDENTIFIER")).onComplete(liveResult -> {
+                    if (liveResult.failed()) {
+                        logger.error("Unable to complete joinHandler: " + liveResult.cause());
+                        resultHandler.handle(Future.failedFuture(liveResult.cause()));
+                        return;
+                    }
 
-                        if (liveResult.failed()) {
-                            logger.error("Unable to complete joinHandler: " + liveResult.cause());
-                            resultHandler.handle(Future.failedFuture(liveResult.cause()));
+                    JsonObject joUpdOdd = new JsonObject();
+                    joUpdOdd.put("leadgueId", leagueId);
+                    joUpdOdd.put("competitionId", competition.getInteger("ID"));
+                    joUpdOdd.put("competitionID", competition.getInteger("ID"));
+
+                    Map<String, String> liveScoreMap = getLiveScore(liveResult);
+
+                    DAO_Competition.saveQuestionCorrectAnswer(sqlConnection, joUpdOdd, liveScoreMap).onComplete(resultUpd -> {
+
+                        if (resultUpd.failed()) {
+                            logger.error("Unable to complete joinHandler: " + resultUpd.cause());
+                            resultHandler.handle(Future.failedFuture(resultUpd.cause()));
                             return;
                         }
 
-                        JsonObject joUpdOdd = new JsonObject();
-                        joUpdOdd.put("leadgueId", leagueId);
-                        joUpdOdd.put("competitionId", entries.getInteger("ID"));
-                        joUpdOdd.put("competitionID", entries.getInteger("ID"));
+                        logger.trace("record update");
 
-                        Map<String, String> liveScore = getLiveScore(liveResult);
-                        for (String s : liveScore.keySet()) {
-                            joUpdOdd.put("symbol", s);
-                            joUpdOdd.put("answer", liveScore.get(s));
-                            // in this loop get connection close exception ????
-                            DAO_Competition.saveQuestionCorrectAnswer(sqlConnection, joUpdOdd).onComplete(resultUpd ->{
-                               //TODO throws exception ????
-                                logger.trace("record update");
-                            });
-                        }
+                        resultHandler.handle(Future.succeededFuture(
+                                new JsonObject()
+                                        .put("resultCode", 1)
+                                        .put("resultMessage", "عملیات با موفقیت انجام شد.")
+                                        .put("info", new JsonObject())
+                                        .put("date", futDate.result())
+                        ));
                     });
-                }
-
-                resultHandler.handle(Future.succeededFuture(
-                        new JsonObject()
-                                .put("resultCode", 1)
-                                .put("resultMessage", "عملیات با موفقیت انجام شد.")
-                                .put("info", new JsonObject())
-                                .put("date", futDate.result())
-                ));
+                });
             });
         });
     }

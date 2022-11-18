@@ -31,7 +31,7 @@
 		"secret": "JudLXjgQqEYLj8n38hrA7FEt8PBRwK1g",
 		"competitionId": "362",
 		"season": "2022",
-		"score_result": "https://livescore-api.com/api-client/matches/stats.json"
+		"scoreResultUrl": "https://livescore-api.com/api-client/matches/stats.json"
 	},
 	"jwt": {
 		"algorithm": "HS256",

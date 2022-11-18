@@ -64,7 +64,6 @@ public class Biz_06_QuestionSaveResult {
                     JsonObject joUpdOdd = new JsonObject();
                     joUpdOdd.put("leadgueId", leagueId);
                     joUpdOdd.put("competitionId", competition.getInteger("ID"));
-                    joUpdOdd.put("competitionID", competition.getInteger("ID"));
 
                     Map<String, String> liveScoreMap = getLiveScore(liveResult);
 

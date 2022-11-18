@@ -643,7 +643,6 @@ public class DAO_Competition {
                     promise.complete(new JsonObject());
                 } else {
                     logger.trace("fetchCompetitionAll");
-                    resultHandler.result().getRows().get(0).put("IDENTIFIER",172252);
                     promise.complete(resultHandler.result().getRows().get(0));
                 }
             }

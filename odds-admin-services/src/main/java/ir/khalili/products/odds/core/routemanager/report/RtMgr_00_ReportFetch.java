@@ -15,13 +15,13 @@ import ir.khalili.products.odds.core.validation.ReportInputValidationUtil;
 /**
  * @author A.KH
  */
-public class RtMgr_09_ReportAllSectionCorrectOddsCountAndOddsPercentage   {
+public class RtMgr_00_ReportFetch   {
 	
-	private static								Logger 			logger 								= LogManager.getLogger(RtMgr_09_ReportAllSectionCorrectOddsCountAndOddsPercentage.class);
+	private static								Logger 			logger 								= LogManager.getLogger(RtMgr_00_ReportFetch.class);
 	
 	public static void handler(RoutingContext context) {
 		
-		ReportInputValidationUtil.validateAllSectionCorrectOddsCountAndOddsPercentage(context, validateHandler->{
+		ReportInputValidationUtil.validateReportFetch(context, validateHandler->{
 			
 			if(validateHandler.failed()) {
 
@@ -34,7 +34,7 @@ public class RtMgr_09_ReportAllSectionCorrectOddsCountAndOddsPercentage   {
     		
 			}
 			
-			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ALL_SECTION_CORRECT_ODDS_COUNT_AND_ODDS_PERCENTAGE, validateHandler.result(),replyHandler->{
+			context.vertx().eventBus().request(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_FETCH, validateHandler.result(),replyHandler->{
 				
 				if (replyHandler.succeeded()) {
 					logger.trace("jobs done:"+replyHandler.result().body());

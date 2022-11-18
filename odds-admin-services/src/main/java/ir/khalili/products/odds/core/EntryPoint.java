@@ -70,15 +70,11 @@ import ir.khalili.products.odds.core.routemanager.question.RtMgr_02_QuestionUpda
 import ir.khalili.products.odds.core.routemanager.question.RtMgr_03_QuestionDelete;
 import ir.khalili.products.odds.core.routemanager.question.RtMgr_04_QuestionFetchAll;
 import ir.khalili.products.odds.core.routemanager.question.RtMgr_05_QuestionFetchById;
+import ir.khalili.products.odds.core.routemanager.report.RtMgr_00_ReportFetch;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_01_ReportRegisteredUsersCount;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_02_ReportCompetitorUsersCount;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_03_ReportCompetitorUsersAmount;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_04_ReportOddsCount;
-import ir.khalili.products.odds.core.routemanager.report.RtMgr_06_ReportLeagueUsersWithMaximumPoint;
-import ir.khalili.products.odds.core.routemanager.report.RtMgr_07_ReportLeagueBlockedAmount;
-import ir.khalili.products.odds.core.routemanager.report.RtMgr_08_ReportAllSectionOddsCountParticipantCountTotalPoint;
-import ir.khalili.products.odds.core.routemanager.report.RtMgr_09_ReportAllSectionCorrectOddsCountAndOddsPercentage;
-import ir.khalili.products.odds.core.routemanager.report.RtMgr_11_ReportLeagueTransactionAmount;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_01_TeamSave;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_02_TeamUpdate;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_03_TeamDelete;
@@ -146,16 +142,12 @@ import ir.khalili.products.odds.core.verticle.question.VRTCL_02_QuestionUpdate;
 import ir.khalili.products.odds.core.verticle.question.VRTCL_03_QuestionDelete;
 import ir.khalili.products.odds.core.verticle.question.VRTCL_04_QuestionFetchAll;
 import ir.khalili.products.odds.core.verticle.question.VRTCL_05_QuestionFetchById;
+import ir.khalili.products.odds.core.verticle.report.VRTCL_00_ReportFetch;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_01_ReportRegisteredUsersCount;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_02_ReportCompetitorUsersCount;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_03_ReportCompetitorUsersAmount;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_04_ReportOddsCount;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_05_ReportCalculateCompetition;
-import ir.khalili.products.odds.core.verticle.report.VRTCL_06_ReportLeagueUsersWithMaximumPoint;
-import ir.khalili.products.odds.core.verticle.report.VRTCL_07_ReportLeagueBlockedAmount;
-import ir.khalili.products.odds.core.verticle.report.VRTCL_08_ReportAllSectionOddsCountParticipantCountTotalPoint;
-import ir.khalili.products.odds.core.verticle.report.VRTCL_09_ReportAllSectionCorrectOddsCountAndOddsPercentage;
-import ir.khalili.products.odds.core.verticle.report.VRTCL_11_ReportLeagueTransactionAmount;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_01_TeamSave;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_02_TeamUpdate;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_03_TeamDelete;
@@ -322,11 +314,7 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_03_ReportCompetitorUsersAmount.class.getName());
     	vertx.deployVerticle(VRTCL_04_ReportOddsCount.class.getName());
     	vertx.deployVerticle(VRTCL_05_ReportCalculateCompetition.class.getName());
-    	vertx.deployVerticle(VRTCL_06_ReportLeagueUsersWithMaximumPoint.class.getName());
-    	vertx.deployVerticle(VRTCL_07_ReportLeagueBlockedAmount.class.getName());
-    	vertx.deployVerticle(VRTCL_08_ReportAllSectionOddsCountParticipantCountTotalPoint.class.getName());
-    	vertx.deployVerticle(VRTCL_09_ReportAllSectionCorrectOddsCountAndOddsPercentage.class.getName());
-    	vertx.deployVerticle(VRTCL_11_ReportLeagueTransactionAmount.class.getName());
+    	vertx.deployVerticle(VRTCL_00_ReportFetch.class.getName());
     	
     	//TEAM
     	vertx.deployVerticle(VRTCL_01_TeamSave.class.getName());
@@ -463,11 +451,7 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/report/competitor/users/count")				.handler(RtMgr_02_ReportCompetitorUsersCount				:: handler);
         router.post		("/v1/service/odds/report/competitor/users/amount")				.handler(RtMgr_03_ReportCompetitorUsersAmount				:: handler);
         router.post		("/v1/service/odds/report/odds/count")							.handler(RtMgr_04_ReportOddsCount							:: handler);
-        router.post		("/v1/service/odds/report/league/odds/users/point/maximum")		.handler(RtMgr_06_ReportLeagueUsersWithMaximumPoint			:: handler);
-        router.post		("/v1/service/odds/report/league/blocked/amount")				.handler(RtMgr_07_ReportLeagueBlockedAmount					:: handler);
-        router.post		("/v1/service/odds/report/odds/participant/point/count")		.handler(RtMgr_08_ReportAllSectionOddsCountParticipantCountTotalPoint:: handler);
-        router.post		("/v1/service/odds/report/odds/correct/percentage/count")		.handler(RtMgr_09_ReportAllSectionCorrectOddsCountAndOddsPercentage:: handler);
-        router.post		("/v1/service/odds/report/league/transaction/amount")			.handler(RtMgr_11_ReportLeagueTransactionAmount				:: handler);
+        router.post		("/v1/service/odds/report/fetch")								.handler(RtMgr_00_ReportFetch								:: handler);
         
     	//TEAM
         router.post		("/v1/service/odds/team/save")									.handler(RtMgr_01_TeamSave									:: handler);

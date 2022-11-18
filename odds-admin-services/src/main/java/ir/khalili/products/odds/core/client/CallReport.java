@@ -30,11 +30,7 @@ public class CallReport extends AbstractVerticle {
 //		reportCompetitorUsersCount(client);
 //		reportOddsCount(client);
 //		reportRegisteredUsersCount(client);
-//		reportLeagueUsersWithMaximumPoint(client);
-//		reportLeagueBlockedAmount(client);
-//		reportAllSectionOddsCountParticipantCountTotalPoint(client);
-		reportAllSectionCorrectOddsCountAndOddsPercentage(client);
-//		reportLeagueTransactionAmount(client);
+		reportFetch(client);
 	}
 
 	public void reportRegisteredUsersCount(WebClient client) {
@@ -161,103 +157,7 @@ public class CallReport extends AbstractVerticle {
 		}
 	}
 
-	public void reportLeagueUsersWithMaximumPoint(WebClient client) {
-		try {
-			
-			JsonObject joInput = new JsonObject();
-			joInput.put("leagueId", 1);
-			
-			client
-			.post(port, host, "/v1/service/odds/report/league/odds/users/point/maximum")
-			.putHeader("Authorization", CallAuth.token)
-			
-			.sendJson(joInput, ar -> {
-				try {
-					if (ar.succeeded()) {
-						JsonObject response = new JsonObject(ar.result().bodyAsString());
-						System.out.println(Json.encodePrettily(response));
-					} else {
-						System.out.println(ar.cause());
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-
-					System.exit(0);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
-
-	public void reportLeagueBlockedAmount(WebClient client) {
-		try {
-			
-			JsonObject joInput = new JsonObject();
-			joInput.put("leagueId", 123);
-			
-			client
-			.post(port, host, "/v1/service/odds/report/league/blocked/amount")
-			.putHeader("Authorization", CallAuth.token)
-			
-			.sendJson(joInput, ar -> {
-				try {
-					if (ar.succeeded()) {
-						JsonObject response = new JsonObject(ar.result().bodyAsString());
-						System.out.println(Json.encodePrettily(response));
-					} else {
-						System.out.println(ar.cause());
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-
-					System.exit(0);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
-	
-	public void reportAllSectionOddsCountParticipantCountTotalPoint(WebClient client) {
-		try {
-			
-			JsonObject joInput = new JsonObject();
-			joInput.put("leagueId", 1);
-			joInput.put("competitionId", 31); // Optional
-			joInput.put("groupId", 208); // Optional
-//			joInput.put("questionId", 1); // Optional
-			
-			client
-			.post(port, host, "/v1/service/odds/report/odds/participant/point/count")
-			.putHeader("Authorization", CallAuth.token)
-			
-			.sendJson(joInput, ar -> {
-				try {
-					if (ar.succeeded()) {
-						JsonObject response = new JsonObject(ar.result().bodyAsString());
-						System.out.println(Json.encodePrettily(response));
-					} else {
-						System.out.println(ar.cause());
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-
-					System.exit(0);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
-	
-	public void reportAllSectionCorrectOddsCountAndOddsPercentage(WebClient client) {
+	public void reportFetch(WebClient client) {
 		try {
 			
 			JsonObject joInput = new JsonObject();
@@ -267,7 +167,7 @@ public class CallReport extends AbstractVerticle {
 			joInput.put("questionId", 1); // Optional
 			
 			client
-			.post(port, host, "/v1/service/odds/report/odds/correct/percentage/count")
+			.post(port, host, "/v1/service/odds/report/fetch")
 			.putHeader("Authorization", CallAuth.token)
 			
 			.sendJson(joInput, ar -> {
@@ -290,37 +190,5 @@ public class CallReport extends AbstractVerticle {
 			System.exit(0);
 		}
 	}
-	
-	public void reportLeagueTransactionAmount(WebClient client) {
-		try {
-			
-			JsonObject joInput = new JsonObject();
-			joInput.put("leagueId", 1);
-			
-			client
-			.post(port, host, "/v1/service/odds/report/league/transaction/amount")
-			.putHeader("Authorization", CallAuth.token)
-			
-			.sendJson(joInput, ar -> {
-				try {
-					if (ar.succeeded()) {
-						JsonObject response = new JsonObject(ar.result().bodyAsString());
-						System.out.println(Json.encodePrettily(response));
-					} else {
-						System.out.println(ar.cause());
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-				} finally {
-
-					System.exit(0);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
-	
 	
 }

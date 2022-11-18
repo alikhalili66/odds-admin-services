@@ -8,12 +8,12 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.biz.report.Biz_11_ReportLeagueTransactionAmount;
+import ir.khalili.products.odds.core.biz.report.Biz_00_ReportFetch;
 import ir.khalili.products.odds.core.constants.AppConstants;
 import ir.khalili.products.odds.core.utils.Configuration;
 
-public class VRTCL_11_ReportLeagueTransactionAmount extends AbstractVerticle {
-	private Logger logger = LogManager.getLogger(VRTCL_11_ReportLeagueTransactionAmount.class);
+public class VRTCL_00_ReportFetch extends AbstractVerticle {
+	private Logger logger = LogManager.getLogger(VRTCL_00_ReportFetch.class);
 	
 	@Override
     public void start(Promise<Void> startPromise) throws Exception {
@@ -24,9 +24,9 @@ public class VRTCL_11_ReportLeagueTransactionAmount extends AbstractVerticle {
     	try {
     		JDBCClient ircJDBC = JDBCClient.createShared(vertx, Configuration.getDataBaseConfig(),AppConstants.APP_DS_ODDS);
     		
-        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_LEAGUE_TRANSACTION_AMOUNT, message -> {
+        	vertx.eventBus().consumer(AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_FETCH, message -> {
         		
-        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_LEAGUE_TRANSACTION_AMOUNT+" recieved with message:"+((JsonObject)(message.body())));
+        		logger.trace("Event "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_FETCH+" recieved with message:"+((JsonObject)(message.body())));
     				
         		ircJDBC.getConnection(connection -> {
 					
@@ -39,7 +39,7 @@ public class VRTCL_11_ReportLeagueTransactionAmount extends AbstractVerticle {
 		    		
 		    		SQLConnection sqlConnection = connection.result();
 
-					Biz_11_ReportLeagueTransactionAmount.fetchReportLeagueTransactionAmount(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
+					Biz_00_ReportFetch.fetchReport(sqlConnection, (JsonObject)(message.body()), resultHandler -> {
 	
 						if (resultHandler.succeeded()) {
 							logger.trace("AVTCL08,Succeeded:"+resultHandler.result());
@@ -58,7 +58,7 @@ public class VRTCL_11_ReportLeagueTransactionAmount extends AbstractVerticle {
 		    		});
 				});
         	});
-        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_LEAGUE_TRANSACTION_AMOUNT+" ready to reply.");
+        	logger.info("Event Bus Handler "+AppConstants.EVNT_BUS_ADR_SRVCS_ODDS_REPORT_FETCH+" ready to reply.");
         	startPromise.complete();
 		} catch (Exception e) {
 			logger.error("EXCEPTION DETECTED STARTING",e);

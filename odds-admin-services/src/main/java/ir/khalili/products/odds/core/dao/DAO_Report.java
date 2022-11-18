@@ -223,6 +223,7 @@ public class DAO_Report {
         		"            u.name, " + 
         		"            u.lastname, " + 
         		"            u.nikename, " + 
+        		"            u.username, " + 
         		"            u.point   total_point " + 
         		"        FROM " + 
         		"            toppuser u " + 
@@ -232,6 +233,7 @@ public class DAO_Report {
         		"            u.name, " + 
         		"            u.lastname, " + 
         		"            u.nikename, " + 
+        		"            u.username, " + 
         		"            u.point " + 
         		"        HAVING " + 
         		"            u.league_id=? " + 
@@ -717,6 +719,7 @@ public class DAO_Report {
         		"            u.name, " + 
         		"            u.lastname, " + 
         		"            u.nikename, " + 
+        		"            u.username, " + 
         		"            SUM(o.rewardpoint) total_point " + 
         		"        FROM " + 
         		"            toppodds   o, " + 
@@ -727,6 +730,7 @@ public class DAO_Report {
         		"            u.name, " + 
         		"            u.lastname, " + 
         		"            u.nikename, " + 
+        		"            u.username, " + 
         		"            ( o.user_id ), " + 
         		"            o.rewardpoint, " + 
         		"            o.league_id, " + 

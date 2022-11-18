@@ -20,10 +20,10 @@
 		"APIKEY": "8b57ba71636188520483af95ab82dc92166ab8f2b7bcb7cd0e60963409fd2bb64c3f09431073e433590c3c83f836c5230238eb1d5d41513e"
 	},
 	"paypod": {
-		"confirm": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/close",
-		"reject": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/cancel",
-		"check": "https://test.kipaad.ir/8086/megaKipaad/api/app/wallet/transaction/pay/check",
-		"token": "https://test.kipaad.ir/8086/megaKipaad/api/app/user/refreshToken",
+		"confirm": "https://api.kipaad.ir/megaKipaad/api/app/wallet/transaction/close",
+		"reject": "https://api.kipaad.ir/megaKipaad/api/app/wallet/transaction/cancel",
+		"check": "https://api.kipaad.ir/megaKipaad/api/app/wallet/transaction/pay/check",
+		"token": "https://api.kipaad.ir/megaKipaad/api/app/user/refreshToken",
 		"refreshToken": "377206f104a94051aee52f87dbc8c975.XzIwMjIxMQ"
 	},
 	"jwt": {

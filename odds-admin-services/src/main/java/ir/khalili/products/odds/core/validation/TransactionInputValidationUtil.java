@@ -216,7 +216,10 @@ public final class TransactionInputValidationUtil {
 	            userId = inputParameters.getString("userId");
 	            date = inputParameters.getString("date");
 
-	            if (null == applicationCode || applicationCode.isEmpty() || applicationCode.length() > 100) {
+	            if (null == applicationCode || 
+	            		applicationCode.isEmpty() || 
+	            		applicationCode.length() > 100 || 
+	            		!applicationCode.matches("operator_charge_service|bill_pay_service")) {
 	                throw new EXCP_RtMgr_Validation(-603, "کد برنامه صحیح نمی باشد.");
 	            }
 

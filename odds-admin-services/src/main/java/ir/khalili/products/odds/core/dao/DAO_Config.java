@@ -180,7 +180,6 @@ public class DAO_Config {
 		params.add(new JsonArray().add("امتیاز بسته برنزی").add("POINT_BRONZE_PACKAGE").add("10").add("Number").add(leagueId));
 		params.add(new JsonArray().add("امتیاز بسته نقره ای").add("POINT_SILVER_PACKAGE").add("50").add("Number").add(leagueId));
 		params.add(new JsonArray().add("امتیاز بسته طلایی").add("POINT_GOLDEN_PACKAGE").add("100").add("Number").add(leagueId));
-//		params.add(new JsonArray().add("شناسه لیگ فعال در پنل کاربری").add("ACTIVE_LEAGUE_ID").add("1").add("Number").add(leagueId));
 		params.add(new JsonArray().add("محدودیت خرید روزانه").add("LIMITATION_BUY_PACKAGE").add("5000000").add("Number").add(leagueId));
 		params.add(new JsonArray().add("ضریب حداقل").add("MINIMUM_COEFFICIENT").add("2").add("Number").add(leagueId));
 		params.add(new JsonArray().add("امتیاز هر تراکنش").add("POINTS_PER_TRANSACTION").add("10").add("Number").add(leagueId));
@@ -188,10 +187,6 @@ public class DAO_Config {
 		params.add(new JsonArray().add("شناسه بسته برنزی").add("PRODUCT_BRONZE_PACKAGE").add("1").add("Number").add(leagueId));
 		params.add(new JsonArray().add("شناسه بسته نقره ای").add("PRODUCT_SILVER_PACKAGE").add("1").add("Number").add(leagueId));
 		params.add(new JsonArray().add("شناسه بسته طلایی").add("PRODUCT_GOLDEN_PACKAGE").add("1").add("Number").add(leagueId));
-		params.add(new JsonArray().add("محدودیت خرید روزانه").add("LIMITATION_BUY_PACKAGE").add("5000000").add("Number").add(leagueId));
-//		params.add(new JsonArray().add("ضریب حداقل").add("MINIMUM_COEFFICIENT").add("2").add("Number").add(leagueId));
-		params.add(new JsonArray().add("امتیاز هر تراکنش").add("POINTS_PER_TRANSACTION").add("10").add("Number").add(leagueId));
-		params.add(new JsonArray().add("مبلغ هر تراکنش").add("AMOUNT_PER_TRANSACTION").add("50000").add("Number").add(leagueId));
 		params.add(new JsonArray().add("شناسه گروه پیشفرض").add("DEFAULT_GROUP_ID").add("1").add("Number").add(leagueId));
 
 		

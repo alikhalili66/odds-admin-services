@@ -85,7 +85,8 @@ public class Biz_06_ReportLeagueUsersWithMaximumPoint {
 				
 	            JsonObject joReport = new JsonObject();
 	            joReport.put("TOP_USER", new JsonArray(result0.result().getString("RESULT")));
-	            
+	            joReport.put("CREATION_DATE", result0.result().getString("CREATION_DATE"));
+
 	            logger.trace("FETCH_REPORT_USERS_WITH_MAXIMUM_POINT_RESULT : " + joReport);
 	            
 	            promise.complete(joReport);     
@@ -155,7 +156,8 @@ public class Biz_06_ReportLeagueUsersWithMaximumPoint {
 				
 	            JsonObject joReport = new JsonObject();
 	            joReport.put("TOP_USER", new JsonArray(result0.result().getString("RESULT")));
-	            
+	            joReport.put("CREATION_DATE", result0.result().getString("CREATION_DATE"));
+
 	            logger.trace("FETCH_REPORT_USERS_WITH_MAXIMUM_POINT_RESULT : " + joReport);
 	            
 	            promise.complete(joReport);     

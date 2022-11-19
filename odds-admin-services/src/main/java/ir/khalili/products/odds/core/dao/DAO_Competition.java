@@ -3,6 +3,7 @@ package ir.khalili.products.odds.core.dao;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -204,6 +205,7 @@ public class DAO_Competition {
         		+ "c.LOCATION_ID,"
         		+ "c.LEAGUE_ID,"
         		+ "c.RESULT,"
+        		+ "c.IDENTIFIER,"
         		+ "To_Char(c.ACTIVEFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_FROM,"
         		+ "To_Char(c.ACTIVETO, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ACTIVE_TO,"
         		+ "To_Char(c.ODDSFROM, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' ODDS_FROM,"
@@ -626,6 +628,35 @@ public class DAO_Competition {
                 }
             }
         });
+        return promise.future();
+    }
+    
+    public static Future<Void> saveQuestionCorrectAnswer(SQLConnection sqlConnection, int competitionId, int leagueId, Map<String, String> liveScoreMap) {
+
+        Promise<Void> promise = Promise.promise();
+
+        List<JsonArray> params = new ArrayList<>();
+
+        for (Iterator<String> iterator = liveScoreMap.keySet().iterator(); iterator.hasNext(); ) {
+            String symbol = iterator.next();
+            params.add(new JsonArray().add(liveScoreMap.get(symbol)).add(competitionId).add(symbol).add(leagueId));
+        }
+
+        System.out.println(params);
+        
+        sqlConnection.batchWithParams("" + 
+        		" UPDATE toppcompetitionquestion " +
+                " SET result = ? " +
+                " WHERE competition_id = ? AND question_id = (SELECT q.id FROM toppquestion q WHERE q.symbol = ? and q.league_id = ? AND DTO IS NULL AND ROWNUM = 1) ", params, resultHandler -> {
+            if (resultHandler.failed()) {
+                logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+                return;
+            }
+            logger.trace("saveQuestionCorrectAnswer");
+            promise.complete();
+        });
+       
         return promise.future();
     }
     

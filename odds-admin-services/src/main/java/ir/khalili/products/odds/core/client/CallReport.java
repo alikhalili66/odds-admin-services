@@ -166,6 +166,8 @@ public class CallReport extends AbstractVerticle {
 			joInput.put("groupId", 28); // Optional
 			joInput.put("questionId", 1); // Optional
 			
+			System.out.println(joInput);
+			
 			client
 			.post(port, host, "/v1/service/odds/report/fetch")
 			.putHeader("Authorization", CallAuth.token)

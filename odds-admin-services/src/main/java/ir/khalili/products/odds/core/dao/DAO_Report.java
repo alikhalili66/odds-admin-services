@@ -473,7 +473,7 @@ public class DAO_Report {
         		"    r.question_id, " + 
         		"    r.type, " + 
         		"    r.result, " + 
-        		"    to_char(r.creationdate, 'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"') creation_date " + 
+        		"    To_Char(r.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' as creation_date " + 
         		"FROM " + 
         		"    TOPPREPORT r " + 
         		"WHERE " + 

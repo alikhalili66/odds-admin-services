@@ -27,7 +27,7 @@ public class CallCompetition extends AbstractVerticle {
 	public void start() throws Exception {
 
 		WebClient client = WebClient.create(vertx);
-		competitionSave(client);
+//		competitionSave(client);
 //		competitionUpdate(client);
 //		competitionDelete(client);
 //		competitionFetchAll(client);
@@ -39,6 +39,7 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionResultRegister(client);
 //		questionResultRegister(client);
 //		competitionPointCalculation(client);
+		competitionLiveScore(client);
 	}
 
 	public void competitionSave(WebClient client) {
@@ -410,5 +411,31 @@ public class CallCompetition extends AbstractVerticle {
 		}
 	}
 	
+	public void competitionLiveScore(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		joInput.put("competitionId", 23);
+		
+		System.out.println("joInput:" + joInput);
+		try {
+			client.post(port, host, "/v1/service/odds/competition/livescore").putHeader("Authorization", CallAuth.token).sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
 	
 }

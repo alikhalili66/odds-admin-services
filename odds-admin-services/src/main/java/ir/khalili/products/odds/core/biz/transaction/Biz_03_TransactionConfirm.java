@@ -28,16 +28,16 @@ public class Biz_03_TransactionConfirm {
     	
     	final int id = message.getInteger("id");
     	
-    	Future<JsonObject> futTransactionFetchByTransactionId = DAO_Transaction.fetchTransactionById(sqlConnection, id);
+    	Future<JsonObject> futTransaction = DAO_Transaction.fetchTransactionById(sqlConnection, id);
     	
-    	CompositeFuture.all(futTransactionFetchByTransactionId, Helper.createFutureVoid()).onComplete(joinHandler01 -> {
+    	CompositeFuture.all(futTransaction, Helper.createFutureVoid()).onComplete(joinHandler01 -> {
             if (joinHandler01.failed()) {
             	logger.error("Unable to complete joinHandler01: " + joinHandler01.cause());
                 resultHandler.handle(Future.failedFuture(joinHandler01.cause()));
                 return;
             }
             
-            JsonObject joTransaction = futTransactionFetchByTransactionId.result();
+            JsonObject joTransaction = futTransaction.result();
           
             if(!joTransaction.getString("STATUS").equals(TransactionStatus.pending.getStatus())) {
             	logger.error("TRANSACTION_STATUS_FAILED");
@@ -45,15 +45,11 @@ public class Biz_03_TransactionConfirm {
            	 	return;
            }
             
-            Future<String> futTransactionId;
+            final String TRANSACTION_ID = joTransaction.getString("TRANSACTIONID");
             
-            if(null == joTransaction.getString("TRANSACTIONID")) {
-            	futTransactionId = HelperPayPod.checkTransaction(joTransaction.getString("INVOICEID"), joTransaction.getString("USERNAME"));
-            }else {
-            	futTransactionId = Helper.createFuture(joTransaction.getString("TRANSACTIONID"));
-            }
+            Future<String> futCheck = HelperPayPod.checkTransaction(joTransaction.getString("INVOICEID"), joTransaction.getString("USERNAME"));
             
-            futTransactionId.onComplete(joinHandler02->{
+            futCheck.onComplete(joinHandler02->{
             	
             	if (joinHandler02.failed()) {
             		logger.error("Unable to complete joinHandler02: " + joinHandler02.cause());
@@ -62,7 +58,7 @@ public class Biz_03_TransactionConfirm {
                 }
             	
             	Future<JsonObject> futFetchById = DAO_User.fetchById(sqlConnection, joTransaction.getInteger("USER_ID"));
-            	Future<Void> futConfirmTransaction = HelperPayPod.confirmTransaction(joTransaction.getString("USERNAME"), futTransactionId.result());
+            	Future<Void> futConfirmTransaction = HelperPayPod.confirmTransaction(joTransaction.getString("USERNAME"), TRANSACTION_ID);
             	
             	CompositeFuture.all(futFetchById, futConfirmTransaction).onComplete(joinHandler03 -> {
                     if (joinHandler03.failed()) {
@@ -73,11 +69,11 @@ public class Biz_03_TransactionConfirm {
                   
                     JsonObject joUserInfo = new JsonObject()
                     		.put("ID", futFetchById.result().getInteger("ID"))
-                    		.put("AMOUNT", futFetchById.result().getLong("AMOUNT"))
-                    		.put("POINT", futFetchById.result().getInteger("POINT"));
+                    		.put("AMOUNT", joTransaction.getLong("AMOUNT"))
+                    		.put("POINT", joTransaction.getInteger("POINT"));
                     
                     Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, joUserInfo, "B", joTransaction.getString("DESCRIPTION"));
-                    Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, futFetchById.result().getInteger("POINT"), futFetchById.result().getLong("AMOUNT"), futFetchById.result().getInteger("ID"));
+                    Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, joTransaction.getInteger("POINT"), joTransaction.getLong("AMOUNT"), futFetchById.result().getInteger("ID"));
                     Future<Void> futUpdateTransactionStatus = DAO_Transaction.updateTransactionStatus(sqlConnection, id, TransactionStatus.confirm.getStatus());
                     
                 	CompositeFuture.all(futSaveUserPointHistory, futUpdateUserPointAndAmount, futUpdateTransactionStatus).onComplete(joinHandler04 -> {

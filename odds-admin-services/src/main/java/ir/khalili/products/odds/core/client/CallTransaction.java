@@ -28,8 +28,8 @@ public class CallTransaction extends AbstractVerticle {
 		WebClient client = WebClient.create(vertx);
 //		transactionFetchAll(client);
 //		transactionReject(client);
-		transactionConfirm(client);
-//		transactionSave(client);
+//		transactionConfirm(client);
+		transactionSave(client);
 	}
 
 	
@@ -138,11 +138,11 @@ public class CallTransaction extends AbstractVerticle {
 		try {
 			
 			JsonObject joInput = new JsonObject();
-			joInput.put("applicationCode", "qr_purchase");
-			joInput.put("amount", 50002);
-			joInput.put("invoiceId", "175225109");
-			joInput.put("description", "یک دو سه");
-			joInput.put("userId", "d810f731-1bf3-4e4e-8674-4120bdf39ace");
+			joInput.put("applicationCode", "bill_pay_service");
+			joInput.put("amount", 534000);
+			joInput.put("invoiceId", "180025734");
+			joInput.put("description", " پرداخت قبض تلفن ثابت با شناسه قبض : 916285521143 و شناسه پرداخت : 53411329");
+			joInput.put("userId", "19b93e68-9e2e-48f3-b4ba-63d2bcdac13d");
 			joInput.put("date", "2022/11/12 13:25:46");
 	        
 			System.out.println(joInput);

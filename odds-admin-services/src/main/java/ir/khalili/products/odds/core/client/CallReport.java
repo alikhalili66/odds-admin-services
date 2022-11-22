@@ -13,7 +13,7 @@ public class CallReport extends AbstractVerticle {
 
 	private static final int port = 9090;
 	private static final String host  ="127.0.0.1";
-//	private static final String host  ="185.213.167.156";
+//	private static final String host  ="37.32.25.54";
 	
 	public static void main(String[] args) {
 
@@ -30,7 +30,10 @@ public class CallReport extends AbstractVerticle {
 //		reportCompetitorUsersCount(client);
 //		reportOddsCount(client);
 //		reportRegisteredUsersCount(client);
-		reportFetch(client);
+//		reportFetch(client);
+//		reportCalculateCompetition(client);
+		dailyLottery(client);
+		
 	}
 
 	public void reportRegisteredUsersCount(WebClient client) {
@@ -162,14 +165,81 @@ public class CallReport extends AbstractVerticle {
 			
 			JsonObject joInput = new JsonObject();
 			joInput.put("leagueId", 1);
-			joInput.put("competitionId", 31); // Optional
-			joInput.put("groupId", 28); // Optional
-			joInput.put("questionId", 1); // Optional
+			joInput.put("groupId", 1); // Optional
+			joInput.put("competitionId", 54); // Optional
+			joInput.put("questionId", 62); // Optional
 			
 			System.out.println(joInput);
 			
 			client
 			.post(port, host, "/v1/service/odds/report/fetch")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void reportCalculateCompetition(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("competitionId", 2); // Optional
+			
+			System.out.println(joInput);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/calculate/competition")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void dailyLottery(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			joInput.put("competitionDate", "Tue Nov 22 2022 14:55:00 GMT+0330"); // Optional
+			
+			System.out.println(joInput);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/daily/lottery")
 			.putHeader("Authorization", CallAuth.token)
 			
 			.sendJson(joInput, ar -> {

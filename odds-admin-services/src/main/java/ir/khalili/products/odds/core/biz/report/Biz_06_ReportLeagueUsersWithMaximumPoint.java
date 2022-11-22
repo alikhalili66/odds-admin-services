@@ -1,5 +1,7 @@
 package ir.khalili.products.odds.core.biz.report;
 
+import java.util.Date;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -36,6 +38,8 @@ public class Biz_06_ReportLeagueUsersWithMaximumPoint {
         logger.trace("inputMessage:" + message);
 
         Integer leagueId = message.getInteger("leagueId");
+        
+        long timer01 = new Date().getTime();
         
     	DAO_Report.fetchReport(sqlConnection, null, leagueId, null, null, ReportEnum.REPORT_LEAGUE_USERS_WITH_MAXIMUM_POINT.name(), true).onComplete(result0 -> {
             if (result0.failed()) {
@@ -75,6 +79,8 @@ public class Biz_06_ReportLeagueUsersWithMaximumPoint {
                 				return;
                 			}
             				promise.complete(handler.result());
+            				
+            				logger.trace("UsersWithMaximumPoint_timer01 : " + (new Date().getTime() - timer01));
             			});
             			
             		});
@@ -89,7 +95,9 @@ public class Biz_06_ReportLeagueUsersWithMaximumPoint {
 
 	            logger.trace("FETCH_REPORT_USERS_WITH_MAXIMUM_POINT_RESULT : " + joReport);
 	            
-	            promise.complete(joReport);     
+	            promise.complete(joReport);   
+	            
+	            logger.trace("UsersWithMaximumPoint_timer01 : " + (new Date().getTime() - timer01));
 			}
     	});
 
@@ -103,6 +111,8 @@ public class Biz_06_ReportLeagueUsersWithMaximumPoint {
     	
         logger.trace("inputMessage:" + message);
 
+        long timer01 = new Date().getTime();
+        
         Integer leagueId = message.getInteger("leagueId");
         Integer groupId = message.getInteger("groupId");
         Integer competitionId = message.getInteger("competitionId", null);
@@ -146,6 +156,9 @@ public class Biz_06_ReportLeagueUsersWithMaximumPoint {
                 				return;
                 			}
             				promise.complete(handler.result());
+            				
+            				logger.trace("ThreeSectionUsersWithMaximumPoint_timer01 : " + (new Date().getTime() - timer01));
+            				
             			});
             	    	
             		});
@@ -161,6 +174,9 @@ public class Biz_06_ReportLeagueUsersWithMaximumPoint {
 	            logger.trace("FETCH_REPORT_USERS_WITH_MAXIMUM_POINT_RESULT : " + joReport);
 	            
 	            promise.complete(joReport);     
+	            
+	            logger.trace("ThreeSectionUsersWithMaximumPoint_timer01 : " + (new Date().getTime() - timer01));
+	            
 			}
     	});
 

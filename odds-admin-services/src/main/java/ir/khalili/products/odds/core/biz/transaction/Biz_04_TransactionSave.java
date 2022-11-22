@@ -15,6 +15,7 @@ import ir.khalili.products.odds.core.dao.DAO_Config;
 import ir.khalili.products.odds.core.dao.DAO_League;
 import ir.khalili.products.odds.core.dao.DAO_Transaction;
 import ir.khalili.products.odds.core.dao.DAO_User;
+import ir.khalili.products.odds.core.excp.dao.DAOEXCP_Internal;
 
 public class Biz_04_TransactionSave {
 
@@ -56,28 +57,91 @@ public class Biz_04_TransactionSave {
         		
     			logger.trace("AMOUNT_PER_TRANSACTION:" + futAmount.result().getString("VALUE") + ",POINTS_PER_TRANSACTION:"+ futPoint.result().getString("VALUE"));
 
+    			
         		
         		int minAmount = Integer.parseInt(futAmount.result().getString("VALUE"));
         		int point = (amount/ minAmount) * Integer.parseInt(futPoint.result().getString("VALUE"));
-        		
-        		Future<Integer> futTransaction = DAO_Transaction.saveTransaction(sqlConnection, point, amount, futUser.result().getInteger("ID"), applicationCode, invoiceId, description, date);
-        		
-        		Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futUser.result().getInteger("ID")).put("AMOUNT", amount).put("POINT", point), "T", description);
-        		Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, point, 0l, futUser.result().getInteger("ID"));
-        		
-        		CompositeFuture.all(futTransaction , futSaveUserPointHistory, futUpdateUserPointAndAmount).onComplete(joinHandler04 -> {
-        			
-        			if (joinHandler04.failed()) {
-        				resultHandler.handle(Future.failedFuture(joinHandler04.cause()));
-        				return;
-        			}
-        			logger.trace("TRANSACTION_CONFIRM_DONE");
-        			resultHandler.handle(Future.succeededFuture(
+
+        		if(minAmount > amount) {
+                	logger.error("INALID_AMOUNT:" + amount);
+                	resultHandler.handle(Future.succeededFuture(
         					new JsonObject()
         					.put("resultCode", 1)
         					.put("resultMessage", "عملیات با موفقیت انجام شد.")
         					));
-        		});
+               	 	return;
+               
+        		}
+        		
+    			sqlConnection.setAutoCommit(false, autoCommitHandler -> {
+
+    				if (autoCommitHandler.failed()) {
+    					logger.error("Unable to setAutoCommit set to false" + autoCommitHandler.cause());
+    					resultHandler.handle(Future.failedFuture(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید.")));
+    					return;
+    				}
+
+    				Future<Integer> futTransaction = DAO_Transaction.saveTransaction(sqlConnection, point, amount, futUser.result().getInteger("ID"), applicationCode, invoiceId, description, date);
+            		Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futUser.result().getInteger("ID")).put("AMOUNT", amount).put("POINT", point), "T", description);
+            		Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, point, 0l, futUser.result().getInteger("ID"));
+            		
+            		CompositeFuture.all(futTransaction , futSaveUserPointHistory, futUpdateUserPointAndAmount).onComplete(joinHandler04 -> {
+            			
+            			if (joinHandler04.failed()) {
+            				sqlConnection.rollback(rollBackHandler -> {
+    							if (rollBackHandler.failed()) {
+    								logger.error("RollBackFailed", rollBackHandler.cause());
+    							}
+            				});
+            				resultHandler.handle(Future.failedFuture(joinHandler04.cause()));
+            				return;
+            			}
+            			
+            			sqlConnection.commit(commitHandler -> {
+							if (commitHandler.failed()) {
+
+								logger.error("Unable to get accessQueryResult:", commitHandler.cause());
+
+								sqlConnection.rollback(rollBackHandler -> {
+									if (rollBackHandler.failed()) {
+										logger.error("RollBackFailed", rollBackHandler.cause());
+									}
+								});
+
+								resultHandler.handle(Future.failedFuture(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید.")));
+								return;
+							} 
+
+							logger.trace("TRANSACTION_CONFIRM_DONE");
+	            			resultHandler.handle(Future.succeededFuture(
+	            					new JsonObject()
+	            					.put("resultCode", 1)
+	            					.put("resultMessage", "عملیات با موفقیت انجام شد.")
+	            					));
+
+						});
+            			
+            		});
+    				
+    			});
+        		
+//        		Future<Integer> futTransaction = DAO_Transaction.saveTransaction(sqlConnection, point, amount, futUser.result().getInteger("ID"), applicationCode, invoiceId, description, date);
+//        		Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futUser.result().getInteger("ID")).put("AMOUNT", amount).put("POINT", point), "T", description);
+//        		Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, point, 0l, futUser.result().getInteger("ID"));
+//        		
+//        		CompositeFuture.all(futTransaction , futSaveUserPointHistory, futUpdateUserPointAndAmount).onComplete(joinHandler04 -> {
+//        			
+//        			if (joinHandler04.failed()) {
+//        				resultHandler.handle(Future.failedFuture(joinHandler04.cause()));
+//        				return;
+//        			}
+//        			logger.trace("TRANSACTION_CONFIRM_DONE");
+//        			resultHandler.handle(Future.succeededFuture(
+//        					new JsonObject()
+//        					.put("resultCode", 1)
+//        					.put("resultMessage", "عملیات با موفقیت انجام شد.")
+//        					));
+//        		});
         		
         	});
         });

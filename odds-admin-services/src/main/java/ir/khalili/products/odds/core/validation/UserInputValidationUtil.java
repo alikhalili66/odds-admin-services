@@ -32,6 +32,7 @@ public final class UserInputValidationUtil {
 			final JsonObject joToken = handler.result();
 			Integer leagueId;
 			String username = null; // optional
+			String nikename = null; // optional
 			String nationalNumber = null; // optional
 			Long cellphone = null; // optional
 			Integer startIndex = null;
@@ -42,6 +43,7 @@ public final class UserInputValidationUtil {
 
 	            leagueId = inputParameters.getInteger("leagueId");
 	            username = inputParameters.getString("username");
+	            nikename = inputParameters.getString("nickname");
 	            nationalNumber = inputParameters.getString("nationalNumber");
 	            cellphone = inputParameters.getLong("cellphone");
 				startIndex = inputParameters.getInteger("startIndex");
@@ -79,6 +81,7 @@ public final class UserInputValidationUtil {
 			final JsonObject joResult = new JsonObject();
 			joResult.put("leagueId", leagueId);
 			joResult.put("username", username);
+			joResult.put("nikename", nikename);
 			joResult.put("nationalNumber", nationalNumber);
 			joResult.put("cellphone", cellphone);
 			joResult.put("startIndex", startIndex);

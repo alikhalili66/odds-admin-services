@@ -22,9 +22,9 @@ public class DAO_User {
         JsonArray params = new JsonArray();
         params.add(message.getInteger("leagueId"));
         params.add(message.getString("username"));
+        params.add(message.getString("nikename"));
 
-        
-        sqlConnection.queryWithParams("SELECT count(*) CNT FROM toppuser u where u.league_Id = ? and u.username = nvl(?, u.username) ",params,  handler -> {
+        sqlConnection.queryWithParams("SELECT count(*) CNT FROM toppuser u where u.league_Id = ? and u.username = nvl(?, u.username)  and u.NIKENAME = nvl(?, u.NIKENAME)",params,  handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -49,6 +49,7 @@ public class DAO_User {
         JsonArray params = new JsonArray();
         params.add(message.getInteger("leagueId"));
         params.add(message.getString("username"));
+        params.add(message.getString("nikename"));
         params.add(message.getInteger("startIndex"));
         params.add(message.getInteger("endIndex"));
         
@@ -63,7 +64,7 @@ public class DAO_User {
         		+ "u.AMOUNT,"
         		+ "To_Char(u.creationdate, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date, "
         		+ "row_number() over (ORDER BY u.id desc) line_number"
-        		+ "  FROM toppuser u where u.league_Id = ? and u.username = nvl(?, u.username)) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
+        		+ "  FROM toppuser u where u.league_Id = ? and u.username = nvl(?, u.username) and u.NIKENAME = nvl(?, u.NIKENAME)) WHERE line_number BETWEEN ? AND ?",params,  handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

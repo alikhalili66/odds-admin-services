@@ -1,6 +1,7 @@
 package ir.khalili.products.odds.core.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.LogManager;
@@ -480,7 +481,7 @@ public class DAO_Report {
         		"    r.type = ? ");
         
         if (checkUpTo48HoursAgo) {
-        	query.append(" AND r.creationdate > sysdate - 2");
+        	query.append(" AND r.creationdate > sysdate - 1");
 		}
         
         if (competitionId != null) {
@@ -707,62 +708,17 @@ public class DAO_Report {
         JsonArray params = new JsonArray();
         params.add(leagueId);
         params.add(groupId);
+        params.add(competitionId);
+        params.add(questionId);
         
         StringBuilder query = new StringBuilder();
         
-        query.append("SELECT " + 
-        		"    * " + 
-        		"FROM " + 
-        		"    ( " + 
-        		"        SELECT DISTINCT " + 
-        		"            o.user_id , " + 
-        		"            u.name, " + 
-        		"            u.lastname, " + 
-        		"            u.nikename, " + 
-        		"            u.username, " + 
-        		"            SUM(o.rewardpoint) total_point " + 
-        		"        FROM " + 
-        		"            toppodds   o, " + 
-        		"            toppuser   u " + 
-        		"        GROUP BY " + 
-        		"            u.id, " + 
-        		"            u.league_id, " + 
-        		"            u.name, " + 
-        		"            u.lastname, " + 
-        		"            u.nikename, " + 
-        		"            u.username, " + 
-        		"            ( o.user_id ), " + 
-        		"            o.rewardpoint, " + 
-        		"            o.league_id, " + 
-        		"            o.group_id ");
-        
-        if (questionId != null) {
-        	query.append(",o.question_id");
-		}
-
-        if (competitionId != null) {
-        	query.append(",o.competition_id ");
-		}
-        
-        query.append(" HAVING o.league_id = ? " + 
-        		"               AND o.group_id =? ");
-        
-        if (competitionId != null) {
-        	params.add(competitionId);
-        	query.append(" AND o.competition_id=? ");
-        }
-        
-        if (questionId != null) {
-        	params.add(questionId);
-        	query.append(" AND o.question_id = ? ");
-		}
-
-        query.append(" AND u.id = o.user_id " + 
-        		"        ORDER BY " + 
-        		"            total_point DESC " + 
-        		"    ) " + 
-        		"WHERE " + 
-        		"    ROWNUM < 31 and total_point is not null");
+        query.append("SELECT u.id user_id,u.name,u.lastname,u.nikename,u.username,total_point FROM ( " +
+        		" SELECT  u.id , nvl(SUM(o.rewardpoint),0) total_point " +
+        		" FROM toppodds o, toppuser u " +
+        		" where o.league_id = ? AND o.group_id =? AND o.competition_id=nvl(?,o.competition_id)  AND o.question_id=nvl(?,o.question_id) and o.USER_ID = u.ID " +
+        		" GROUP BY u.id " +
+        		" ORDER BY total_point DESC) t, toppuser u  WHERE u.id = t.id and ROWNUM < 31 ")  ;
         
         sqlConnection.queryWithParams(query.toString(), params, handler -> {
             if (handler.failed()) {
@@ -783,5 +739,74 @@ public class DAO_Report {
         return promise.future();
     }
     
+    public static Future<List<JsonObject>> fetchReportTodayLotteryCompetition(SQLConnection sqlConnection, int leagueId, String competitionDate) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        long timer01 = new Date().getTime();
+        
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        params.add(competitionDate);
+        
+        String query = ""
+        		+ " select USERNAME from "
+        		+ " (SELECT  DISTINCT USER_ID,COMPETITION_ID FROM TOPPODDS where COMPETITION_ID in (select c.id from TOPPCOMPETITION c where c.LEAGUE_ID = ? and trunc(c.COMPETITIONDATE) = trunc(TO_DATE(?, 'Dy Mon DD YYYY')) and dto is null)) t, toppuser u "
+        		+ " where t.USER_ID=u.id " ;
+        
+        sqlConnection.queryWithParams(query, params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportDailyLotteryCompetitionNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchReportDailyLotteryCompetitionSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+                logger.info("LotteryCompetition_timer01 : " + (new Date().getTime() - timer01));
+                
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<List<JsonObject>> fetchReportTodayLotteryQuestion1(SQLConnection sqlConnection, int leagueId, String competitionDate) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        long timer01 = new Date().getTime();
+        
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        params.add(competitionDate);
+        
+        String query = ""
+        		+ " select USERNAME from "
+        		+ " (SELECT  DISTINCT USER_ID,COMPETITION_ID FROM TOPPODDS where COMPETITION_ID in (select c.id from TOPPCOMPETITION c where c.LEAGUE_ID = ? and trunc(c.COMPETITIONDATE) = trunc(TO_DATE(?, 'Dy Mon DD YYYY')) and dto is null ) and QUESTION_ID = 28 and TOPPODDS.CORRECTANSWER =TOPPODDS.ANSWER) t, toppuser u "
+        		+ " where t.USER_ID=u.id ";
+        
+        sqlConnection.queryWithParams(query, params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportDailyLotteryCompetitionNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchReportDailyLotteryCompetitionSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+                logger.info("LotteryQuestion1_timer01 : " + (new Date().getTime() - timer01));
+                
+            }
+        });
+
+        return promise.future();
+    }
     
 }

@@ -43,8 +43,6 @@ public class DAO_Transaction {
                     params.add(description);
                     params.add(date);
                     
-                    System.out.println(params);
-
                     sqlConnection.updateWithParams("INSERT INTO TOPPTRANSACTION (" +
                             "    ID," +
                             "    POINT," +
@@ -59,7 +57,14 @@ public class DAO_Transaction {
                             ") VALUES (?,?,?,?,?,?,?,?,?,TO_Date(?,'YYYY/MM/DD HH24:MI:SS'))", params, resultHandler -> {
                         if (resultHandler.failed()) {
                             logger.error("Unable to get accessQueryResult:", resultHandler.cause());
-                            promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+                            
+                            if(resultHandler.cause().getMessage().toUpperCase().contains("UN_TRANSACTION_INVOICEID")) {
+            					logger.error("UN_GROUP_NAME_UNIQUE_CONSTRAINT");
+            					promise.fail(new DAOEXCP_Internal(-100, "INVOICEID تکراری است."));
+            				}else {
+            					promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            				}
+                            
                             return;
                         }
                         logger.trace("saveUserHistoryPointByAppTransaction");

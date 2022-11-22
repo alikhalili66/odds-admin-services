@@ -1,5 +1,7 @@
 package ir.khalili.products.odds.core.biz.report;
 
+import java.util.Date;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -24,6 +26,8 @@ public class Biz_09_ReportAllSectionCorrectOddsCountAndOddsPercentage {
         Integer groupId = message.getInteger("groupId", null);
         Integer competitionId = message.getInteger("competitionId", null);
         Integer questionId = message.getInteger("questionId", null);
+        
+        long timer01 = new Date().getTime();
         
     	DAO_Report.fetchReport(sqlConnection, competitionId, leagueId, groupId, questionId, ReportEnum.REPORT_ALL_SECTION_CORRECT_ODDS_COUNT_AND_ODDS_PERCENTAGE.name(), true).onComplete(result0 -> {
             if (result0.failed()) {
@@ -63,6 +67,9 @@ public class Biz_09_ReportAllSectionCorrectOddsCountAndOddsPercentage {
                 				return;
                 			}
             				promise.complete(handler.result());
+            				
+            				logger.trace("OddsCountAndOddsPercentage_timer01 : " + (new Date().getTime() - timer01));
+            				
             			});
             	    	
             		});
@@ -75,7 +82,9 @@ public class Biz_09_ReportAllSectionCorrectOddsCountAndOddsPercentage {
 	            
 	            logger.trace("FETCH_REPORT_ALL_SECTION_CORRECT_ODDS_COUNT_AND_ODDS_PERCENTAGE_RESULT : " + result0.result());
 	            
-	            promise.complete(joReport);     
+	            promise.complete(joReport);    
+	            
+	            logger.trace("OddsCountAndOddsPercentage_timer01 : " + (new Date().getTime() - timer01));
 			}
     	});
     	

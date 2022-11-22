@@ -1,5 +1,7 @@
 package ir.khalili.products.odds.core.biz.report;
 
+import java.util.Date;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -24,6 +26,8 @@ public class Biz_08_ReportAllSectionOddsCountParticipantCountTotalPoint {
         Integer groupId = message.getInteger("groupId", null);
         Integer competitionId = message.getInteger("competitionId", null);
         Integer questionId = message.getInteger("questionId", null);
+        
+        long timer01 = new Date().getTime();
         
     	DAO_Report.fetchReport(sqlConnection, competitionId, leagueId, groupId, questionId, ReportEnum.REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT.name(), true).onComplete(result0 -> {
             if (result0.failed()) {
@@ -63,6 +67,8 @@ public class Biz_08_ReportAllSectionOddsCountParticipantCountTotalPoint {
                 				return;
                 			}
             				promise.complete(handler.result());
+            				
+            				logger.trace("OddsCountParticipant_timer01 : " + (new Date().getTime() - timer01));
             			});
 
             		});
@@ -75,7 +81,9 @@ public class Biz_08_ReportAllSectionOddsCountParticipantCountTotalPoint {
 	            
 	            logger.trace("FETCH_REPORT_ALL_SECTION_ODDS_COUNT_PARTICIPANT_COUNT_TOTAL_POINT_RESULT : " + result0.result());
 	            
-	            promise.complete(joReport);     
+	            promise.complete(joReport);  
+	            
+	            logger.trace("OddsCountParticipant_timer01 : " + (new Date().getTime() - timer01));
 			}
     	});
     	

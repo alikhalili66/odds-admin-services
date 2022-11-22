@@ -91,7 +91,8 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_ODDS_COUNT					= "nas.eb.core.srvc.report.odds.count";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_CALCULATE_COMPETITION		= "nas.eb.core.srvc.report.calculate.competition";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_FETCH 						= "nas.eb.core.srvc.report.fetch";
-	
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_DAILY_LOTTERY				= "nas.eb.core.srvc.report.daily.lottory";
+
 	/***********************LOCATION*********************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_LOCATION_SAVE						= "nas.eb.core.srvc.location.save";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_LOCATION_UPDATE						= "nas.eb.core.srvc.location.update";

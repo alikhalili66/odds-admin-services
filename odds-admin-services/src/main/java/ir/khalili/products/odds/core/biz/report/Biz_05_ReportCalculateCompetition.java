@@ -1,5 +1,6 @@
 package ir.khalili.products.odds.core.biz.report;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,9 @@ public class Biz_05_ReportCalculateCompetition {
         Future<List<JsonObject>> futOddsCount = DAO_Odds.fetchOddsCount(sqlConnection, competitionId);
         Future<Void> futDelete = DAO_CompetitionReport.deleteCompetitionReport(sqlConnection, competitionId);
         
+        NumberFormat nf= NumberFormat.getInstance();
+		nf.setMaximumFractionDigits(2);
+		
         CompositeFuture.join(futCompetition, futQuestion, futOdds, futOddsCount, futDelete).onComplete(joinHandler01->{
         	
             if (joinHandler01.failed()) {
@@ -61,9 +65,10 @@ public class Biz_05_ReportCalculateCompetition {
 					if(joOdds.getInteger("QUESTION_ID").intValue() == joQuestion.getInteger("ID").intValue()) {
 						if(joResult.size() < 4) {
 							
-//							System.out.println("QID: " + joOdds.getInteger("QUESTION_ID").intValue() + ", COUNT: " + joOdds.getInteger("COUNT") + ", totalCount:" + totalCount + ", Result:" + joOdds.getInteger("COUNT") * 100 / totalCount);
+							float t = joOdds.getInteger("COUNT") * 100 / (float)totalCount;
+							logger.trace("QID: " + joOdds.getInteger("QUESTION_ID").intValue() + ", COUNT: " + joOdds.getInteger("COUNT") + ", totalCount:" + totalCount + ", Result:" + Float.parseFloat(nf.format(t)));
 							
-							joResult.put(joOdds.getString("ANSWER"), joOdds.getInteger("COUNT") * 100 / totalCount);
+							joResult.put(joOdds.getString("ANSWER"), Float.parseFloat(nf.format(t)));
 						}
 					}
 				}

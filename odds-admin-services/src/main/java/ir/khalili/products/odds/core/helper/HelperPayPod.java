@@ -79,8 +79,8 @@ public class HelperPayPod {
 				sbResult.append(line);
 			}
 
-			System.out.println("getToken:" + sbResult.toString());
-
+			logger.trace("tokenOutput:" + sbResult.toString());
+			
 			JsonObject joResponse = new JsonObject(sbResult.toString());
 
             if (!joResponse.getBoolean("hasError") && joResponse.getJsonObject("data") != null && !joResponse.getJsonObject("data").isEmpty()) {
@@ -110,6 +110,8 @@ public class HelperPayPod {
     			joInput.put("transactionId", transactionId);
     			joInput.put("purchaseUserName", username);  
 
+    			logger.trace("confirmInput:" + joInput.toString());
+    			
     			HttpPost request = new HttpPost(confirmURL);
     			request.setHeader("token", getToken());
     			request.setHeader("Content-Type", "application/json");
@@ -124,8 +126,8 @@ public class HelperPayPod {
     				sbResult.append(line);
     			}
 
-    			System.out.println("confirm:"+sbResult.toString());
-
+    			logger.trace("confirmOutput:" + sbResult.toString());
+    			
     			JsonObject joResponse = new JsonObject(sbResult.toString());
 
                 if (!joResponse.getBoolean("hasError") && joResponse.getJsonObject("data") != null && !joResponse.getJsonObject("data").isEmpty()) {
@@ -167,7 +169,7 @@ public class HelperPayPod {
     			joInput.put("transactionId", transactionId);
     			joInput.put("purchaseUserName", username);  
     			
-    			System.out.println("reject:" + joInput);
+    			logger.trace("rejectInput:" + joInput);
     			
     			HttpPost request = new HttpPost(rejectURL);
     			request.setHeader("token", getToken());
@@ -183,8 +185,8 @@ public class HelperPayPod {
     				sbResult.append(line);
     			}
 
-    			System.out.println(sbResult.toString());
-
+    			logger.trace("rejectOutput: " + sbResult.toString());
+    			
     			JsonObject joResponse = new JsonObject(sbResult.toString());
 
                 if (!joResponse.getBoolean("hasError") && joResponse.getJsonObject("data") != null && !joResponse.getJsonObject("data").isEmpty()) {
@@ -225,6 +227,7 @@ public class HelperPayPod {
     			joInput.put("userName", "09104083004");
     			joInput.put("purchaseUserName", username);  
     			
+    			logger.trace("checkInput:" + joInput.toString());
     			
     			HttpPost request = new HttpPost(checkURL);
     			request.setHeader("token", getToken());
@@ -240,16 +243,20 @@ public class HelperPayPod {
     				sbResult.append(line);
     			}
 
-    			System.out.println("check:" + sbResult.toString());
+    			logger.trace("checkOutput:" + sbResult.toString());
 
     			JsonObject joResponse = new JsonObject(sbResult.toString());
 
-                if (!joResponse.getBoolean("hasError") && joResponse.getJsonObject("data") != null && !joResponse.getJsonObject("data").isEmpty()) {
+                if (	!joResponse.getBoolean("hasError") && 
+                		joResponse.getJsonObject("data") != null && 
+                		!joResponse.getJsonObject("data").isEmpty() &&
+                		joResponse.getJsonObject("data").getString("state", "").equals("SUCCESS")
+                		) {
                     
                     blockingHandler.complete(joResponse.getJsonObject("data").toString());
                 } else {
                     logger.error(joResponse);
-                    String causeMessage = joResponse.getBoolean("hasError") ? joResponse.getString("message") : " در خروجی سرویس دریافت توکن مشکلی به وجود امده است !";
+                    String causeMessage = joResponse.getBoolean("hasError") ? joResponse.getString("message") : "تراکنش مورد نظر در وضعیت SUCCESS نمی باشد.";
                     blockingHandler.fail(new BIZEXCP_PayPod(-110, causeMessage));
                 }
                 

@@ -191,13 +191,13 @@ public final class TransactionInputValidationUtil {
 	
 	public static void validateTransactionSave(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
 
-		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_TRANSACTION_FETCH_ALL).onComplete(handler -> {
-
-			if (handler.failed()) {
-				resultHandler.handle(Future.failedFuture(handler.cause()));
-				return;
-			}
-			
+//		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_TRANSACTION_FETCH_ALL).onComplete(handler -> {
+//
+//			if (handler.failed()) {
+//				resultHandler.handle(Future.failedFuture(handler.cause()));
+//				return;
+//			}
+//			
 //			final JsonObject joToken = handler.result();
 			
 	        String applicationCode;
@@ -269,7 +269,7 @@ public final class TransactionInputValidationUtil {
 			resultHandler.handle(Future.succeededFuture(joResult));
 
 			
-		});
+//		});
 	
     }
 }

@@ -45,22 +45,16 @@ public class Biz_02_TransactionReject {
                 return;
             }
             
-            Future<String> futTransactionId;
-            
-            if(null == joTransaction.getString("TRANSACTIONID")) {
-            	futTransactionId = HelperPayPod.checkTransaction(joTransaction.getString("INVOICEID"), joTransaction.getString("USERNAME"));
-            }else {
-            	futTransactionId = Helper.createFuture(joTransaction.getString("TRANSACTIONID"));
-            }
-            
-            futTransactionId.onComplete(joinHandler02->{
+            Future<String> futCheck = HelperPayPod.checkTransaction(joTransaction.getString("INVOICEID"), joTransaction.getString("USERNAME"));
+
+            futCheck.onComplete(joinHandler02->{
             	if (joinHandler02.failed()) {
             		logger.error("Unable to complete joinHandler02: " + joinHandler02.cause());
                     resultHandler.handle(Future.failedFuture(joinHandler02.cause()));
                     return;
                 }
             	
-            	HelperPayPod.rejectTransaction(joTransaction.getString("USERNAME"), futTransactionId.result()).onComplete(joinHandler03 -> {
+            	HelperPayPod.rejectTransaction(joTransaction.getString("USERNAME"), joTransaction.getString("USERNAME")).onComplete(joinHandler03 -> {
                    
             		if (joinHandler03.failed()) {
             			logger.error("Unable to complete joinHandler03: " + joinHandler03.cause());

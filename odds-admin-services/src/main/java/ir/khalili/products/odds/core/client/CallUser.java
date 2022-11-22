@@ -25,9 +25,9 @@ public class CallUser extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-//		userFetchAll(client);
+		userFetchAll(client);
 //		userFetchById(client);
-		userFetchOdds(client);
+//		userFetchOdds(client);
 //		userFetchQuestionAnswer(client);
 //		userFetchPointHistory(client);
 	}
@@ -36,8 +36,8 @@ public class CallUser extends AbstractVerticle {
 	public void userFetchAll(WebClient client) {
 		JsonObject joInput = new JsonObject();
 		joInput.put("leagueId", 1); 
-		joInput.put("username", "09124083504"); // optional
-//		joInput.put("cellphone", 9124083504L); // optional
+//		joInput.put("username", "09124083504"); // optional
+		joInput.put("nikename", "محمود دوست محمدی"); // optional
 		joInput.put("startIndex", 1);
 		joInput.put("endIndex", 10);
 		

@@ -1,5 +1,7 @@
 package ir.khalili.products.odds.core.biz.report;
 
+import java.util.Date;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -21,6 +23,8 @@ public class Biz_10_ReportLeagueTransactionAmount {
         logger.trace("inputMessage:" + message);
 
         Integer leagueId = message.getInteger("leagueId");
+        
+        long timer01 = new Date().getTime();
         
     	DAO_Report.fetchReport(sqlConnection, null, leagueId, null, null, ReportEnum.REPORT_LEAGUE_TRANSACTION_AMOUNT.name(), true).onComplete(result0 -> {
             if (result0.failed()) {
@@ -60,6 +64,8 @@ public class Biz_10_ReportLeagueTransactionAmount {
                 				return;
                 			}
             				promise.complete(handler.result());
+            				
+            				logger.trace("TransactionAmount_timer01 : " + (new Date().getTime() - timer01));
             			});
             	    	
             		});
@@ -72,7 +78,9 @@ public class Biz_10_ReportLeagueTransactionAmount {
 	            
 	            logger.trace("FETCH_REPORT_LEAGUE_TRANSACTION_AMOUNT_RESULT : " + result0.result());
 	            
-	            promise.complete(joReport);     
+	            promise.complete(joReport);  
+	            
+	            logger.trace("TransactionAmount_timer01 : " + (new Date().getTime() - timer01));
 			}
     	});
     	

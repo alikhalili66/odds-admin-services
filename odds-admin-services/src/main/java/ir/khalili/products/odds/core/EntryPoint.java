@@ -76,6 +76,8 @@ import ir.khalili.products.odds.core.routemanager.report.RtMgr_01_ReportRegister
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_02_ReportCompetitorUsersCount;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_03_ReportCompetitorUsersAmount;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_04_ReportOddsCount;
+import ir.khalili.products.odds.core.routemanager.report.RtMgr_05_ReportCalculateCompetition;
+import ir.khalili.products.odds.core.routemanager.report.RtMgr_11_ReportDailyLottery;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_01_TeamSave;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_02_TeamUpdate;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_03_TeamDelete;
@@ -150,6 +152,7 @@ import ir.khalili.products.odds.core.verticle.report.VRTCL_02_ReportCompetitorUs
 import ir.khalili.products.odds.core.verticle.report.VRTCL_03_ReportCompetitorUsersAmount;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_04_ReportOddsCount;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_05_ReportCalculateCompetition;
+import ir.khalili.products.odds.core.verticle.report.VRTCL_11_ReportDailyLottery;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_01_TeamSave;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_02_TeamUpdate;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_03_TeamDelete;
@@ -177,7 +180,8 @@ public class EntryPoint extends AbstractVerticle {
     private static Logger logger = LogManager.getLogger(EntryPoint.class);
     private static Router router;
     private static int port;
-
+    public static final int MAX_TIMEOUT = 60000;
+    
     public static void main(String[] args) {
 
         logger.info("STARTING ......");
@@ -313,13 +317,14 @@ public class EntryPoint extends AbstractVerticle {
     	
     	
     	//REPORT
+    	vertx.deployVerticle(VRTCL_00_ReportFetch.class.getName());
     	vertx.deployVerticle(VRTCL_01_ReportRegisteredUsersCount.class.getName());
     	vertx.deployVerticle(VRTCL_02_ReportCompetitorUsersCount.class.getName());
     	vertx.deployVerticle(VRTCL_03_ReportCompetitorUsersAmount.class.getName());
     	vertx.deployVerticle(VRTCL_04_ReportOddsCount.class.getName());
     	vertx.deployVerticle(VRTCL_05_ReportCalculateCompetition.class.getName());
-    	vertx.deployVerticle(VRTCL_00_ReportFetch.class.getName());
-    	
+    	vertx.deployVerticle(VRTCL_11_ReportDailyLottery.class.getName());
+
     	//TEAM
     	vertx.deployVerticle(VRTCL_01_TeamSave.class.getName());
     	vertx.deployVerticle(VRTCL_02_TeamUpdate.class.getName());
@@ -375,7 +380,6 @@ public class EntryPoint extends AbstractVerticle {
         router.route().handler(StaticHandler.create());
         router.route().handler(corsHandler);
         router.route().handler(ResponseTimeHandler.create());
-
         /*********************************************************/
         /*******************RouteManager**************************/
         /*********************************************************/
@@ -453,12 +457,14 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/question/id/fetch")							.handler(RtMgr_05_QuestionFetchById							:: handler);
 
         //REPORT
+        router.post		("/v1/service/odds/report/fetch")								.handler(RtMgr_00_ReportFetch								:: handler);
         router.post		("/v1/service/odds/report/registered/users/count")				.handler(RtMgr_01_ReportRegisteredUsersCount				:: handler);
         router.post		("/v1/service/odds/report/competitor/users/count")				.handler(RtMgr_02_ReportCompetitorUsersCount				:: handler);
         router.post		("/v1/service/odds/report/competitor/users/amount")				.handler(RtMgr_03_ReportCompetitorUsersAmount				:: handler);
         router.post		("/v1/service/odds/report/odds/count")							.handler(RtMgr_04_ReportOddsCount							:: handler);
-        router.post		("/v1/service/odds/report/fetch")								.handler(RtMgr_00_ReportFetch								:: handler);
-        
+        router.post		("/v1/service/odds/report/calculate/competition")				.handler(RtMgr_05_ReportCalculateCompetition				:: handler);
+        router.post		("/v1/service/odds/report/daily/lottery")						.handler(RtMgr_11_ReportDailyLottery						:: handler);
+
     	//TEAM
         router.post		("/v1/service/odds/team/save")									.handler(RtMgr_01_TeamSave									:: handler);
         router.post		("/v1/service/odds/team/update")								.handler(RtMgr_02_TeamUpdate								:: handler);

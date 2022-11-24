@@ -324,4 +324,130 @@ public class DAO_Team {
         return promise.future();
     }
       
+
+    public static Future<Void> saveTeamHistory(SQLConnection sqlConnection, JsonObject joTeam, String historyType, String historyDescription, Integer historyById) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(joTeam.getInteger("ID"));
+		params.add(joTeam.getString("NAME"));
+		params.add(joTeam.getString("SYMBOL"));
+		params.add(historyType);
+		params.add(historyDescription);
+		params.add(historyById);
+		
+		sqlConnection.updateWithParams(""
+				+ "insert into tOPPTeamHistory("
+				+ "ID,"
+				+ "TEAM_ID,"
+				+ "NAME,"
+				+ "SYMBOL,"
+				+ "HISTORYTYPE,"
+				+ "HISTORYDESCRIPTION,"
+				+ "HISTORYBY_ID,"
+				+ "HISTORYDATE)"
+				+ "values("
+				+ "soppteamhistory.nextval,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "sysdate)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("SaveTeamHistorySuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+    
+    public static Future<Void> saveTeamMemberHistory(SQLConnection sqlConnection, JsonObject joTeamMember, String historyType, String historyDescription, Integer historyById) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(joTeamMember.getInteger("ID"));
+		params.add(joTeamMember.getString("NAME"));
+		params.add(joTeamMember.getInteger("COUNT"));
+		params.add(joTeamMember.getString("POSITION"));
+		params.add(historyType);
+		params.add(historyDescription);
+		params.add(historyById);
+		
+		sqlConnection.updateWithParams(""
+				+ "insert into tOPPTeamMemberHistory("
+				+ "ID,"
+				+ "TEAMMEMBER_ID,"
+				+ "NAME,"
+				+ "COUNT,"
+				+ "POSITION,"
+				+ "HISTORYTYPE,"
+				+ "HISTORYDESCRIPTION,"
+				+ "HISTORYBY_ID,"
+				+ "HISTORYDATE)"
+				+ "values("
+				+ "soppteammemberhistory.nextval,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "sysdate)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("SaveTeamMemberHistorySuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+
+    public static Future<JsonObject> fetchTeamMemberById(SQLConnection sqlConnection, Integer teamMemberId) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(teamMemberId);
+        
+        sqlConnection.queryWithParams("SELECT "
+        		+ "t.ID,"
+        		+ "t.TEAM_ID,"
+        		+ "t.NAME,"
+        		+ "t.COUNT,"
+        		+ "t.POSITION,"
+        		+ "To_Char(t.CREATIONDATE, 'Dy Mon DD YYYY HH24:MI:SS')|| ' GMT+0330' creation_date"
+        		+ "  FROM TOPPTEAMMEMBER t WHERE t.ID=? and t.DTO is null", params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchTeamMemberByIdNoDataFound");
+                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                } else {
+                    logger.trace("fetchTeamMemberByIdSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+            }
+        });
+
+        return promise.future();
+    }
+    
+
 }

@@ -500,5 +500,52 @@ public class DAO_Location {
 		
 		return promise.future();
 	}
+ 
+
+    public static Future<Void> saveHistory(SQLConnection sqlConnection, JsonObject joLocation, String historyType, String historyDescription, Integer historyById) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(joLocation.getInteger("ID"));
+		params.add(joLocation.getString("NAME"));
+		params.add(joLocation.getString("DESCRIPTION"));
+		params.add(historyType);
+		params.add(historyDescription);
+		params.add(historyById);
+		
+		sqlConnection.updateWithParams(""
+				+ "insert into tOPPLocationHistory("
+				+ "ID,"
+				+ "LOCATION_ID,"
+				+ "NAME,"
+				+ "DESCRIPTION,"
+				+ "HISTORYTYPE,"
+				+ "HISTORYDESCRIPTION,"
+				+ "HISTORYBY_ID,"
+				+ "HISTORYDATE)"
+				+ "values("
+				+ "sopplocationhistory.nextval,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "sysdate)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("SaveLocationHistorySuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+
     
 }

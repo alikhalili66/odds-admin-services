@@ -233,4 +233,48 @@ public class DAO_Config {
         return promise.future();
     }
     
+
+    public static Future<Void> saveHistory(SQLConnection sqlConnection, JsonObject joConfig, String historyType, String historyDescription, Integer historyById) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(joConfig.getInteger("ID"));
+		params.add(joConfig.getString("VALUE"));
+		params.add(historyType);
+		params.add(historyDescription);
+		params.add(historyById);
+		
+		sqlConnection.updateWithParams(""
+				+ "insert into tOPPConfigHistory("
+				+ "ID,"
+				+ "CONFIG_ID,"
+				+ "VALUE,"
+				+ "HISTORYTYPE,"
+				+ "HISTORYDESCRIPTION,"
+				+ "HISTORYBY_ID,"
+				+ "HISTORYDATE)"
+				+ "values("
+				+ "soppconfighistory.nextval,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "sysdate)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("SaveConfigHistorySuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+
 }

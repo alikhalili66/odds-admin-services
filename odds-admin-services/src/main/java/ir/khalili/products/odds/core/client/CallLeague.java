@@ -26,9 +26,9 @@ public class CallLeague extends AbstractVerticle {
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 //		leagueSave(client);
-//		leagueUpdate(client);
+		leagueUpdate(client);
 //		leagueDelete(client);
-		leagueFetchAll(client);
+//		leagueFetchAll(client);
 //		leagueFetchById(client);
 	}
 

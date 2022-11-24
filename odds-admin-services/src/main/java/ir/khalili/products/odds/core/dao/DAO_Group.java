@@ -262,4 +262,53 @@ public class DAO_Group {
     
     }
         
+
+    public static Future<Void> saveHistory(SQLConnection sqlConnection, JsonObject joGroup, String historyType, String historyDescription, Integer historyById) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(joGroup.getInteger("ID"));
+		params.add(joGroup.getString("NAME"));
+		params.add(joGroup.getString("ACTIVE_FROM"));
+		params.add(joGroup.getString("ACTIVE_TO"));
+		params.add(historyType);
+		params.add(historyDescription);
+		params.add(historyById);
+		
+		sqlConnection.updateWithParams(""
+				+ "insert into tOPPGroupHistory("
+				+ "ID,"
+				+ "GROUP_ID,"
+				+ "NAME,"
+				+ "ACTIVEFROM,"
+				+ "ACTIVETO,"
+				+ "HISTORYTYPE,"
+				+ "HISTORYDESCRIPTION,"
+				+ "HISTORYBY_ID,"
+				+ "HISTORYDATE)"
+				+ "values("
+				+ "soppgrouphistory.nextval,"
+				+ "?,"
+				+ "?,"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "sysdate)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("SaveGroupHistorySuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+
 }

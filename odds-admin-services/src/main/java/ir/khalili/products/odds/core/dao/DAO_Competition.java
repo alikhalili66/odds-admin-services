@@ -671,11 +671,11 @@ public class DAO_Competition {
 		params.add(joCompetition.getInteger("TEAM2_ID"));
 		params.add(joCompetition.getInteger("GROUP_ID"));
 		params.add(joCompetition.getInteger("LOCATION_ID"));
-		params.add(joCompetition.getString("COMPETITIONDATE"));
-		params.add(joCompetition.getString("ACTIVE_FROM"));
-		params.add(joCompetition.getString("ACTIVE_TO"));
-		params.add(joCompetition.getString("ODDS_FROM"));
-		params.add(joCompetition.getString("ODDS_TO"));
+		params.add(joCompetition.getString("COMPETITION_DATE").split("GMT")[0]);
+		params.add(joCompetition.getString("ACTIVE_FROM").split("GMT")[0]);
+		params.add(joCompetition.getString("ACTIVE_TO").split("GMT")[0]);
+		params.add(joCompetition.getString("ODDS_FROM").split("GMT")[0]);
+		params.add(joCompetition.getString("ODDS_TO").split("GMT")[0]);
 		params.add(joCompetition.getString("RESULT"));
 		params.add(historyType);
 		params.add(historyDescription);

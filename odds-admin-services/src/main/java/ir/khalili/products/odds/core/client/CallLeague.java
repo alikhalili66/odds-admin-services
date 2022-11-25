@@ -77,10 +77,10 @@ public class CallLeague extends AbstractVerticle {
 		joInput.put("name", "لیگ برترر");
 		joInput.put("symbol", "Bartar");
 		joInput.put("image", "path");
-		joInput.put("activeFrom", "2022/10/01");
-		joInput.put("activeTo", "2022/10/10");
-		joInput.put("oddsFrom", "2022/10/10");
-		joInput.put("oddsTo", "2022/10/10");
+		joInput.put("activeFrom", "Wed Oct 05 2022 11:00:01 GMT+0330");
+		joInput.put("activeTo", "Mon Jan 23 2023 11:00:01 GMT+0330");
+		joInput.put("oddsFrom", "Mon Oct 10 2022 00:00:00 GMT+0330");
+		joInput.put("oddsTo", "Mon Oct 10 2022 00:00:00 GMT+0330");
 		
 		System.out.println("joInput:" + joInput);
 

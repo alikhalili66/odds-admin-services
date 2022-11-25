@@ -29,10 +29,10 @@ public class CallTeam extends AbstractVerticle {
 //		teamUpdate(client);
 //		teamDelete(client);
 //		teamFetchAll(client);
-		teamFetchById(client);
+//		teamFetchById(client);
 //		teamImageUpdate(client);
 //		teamMemberSave(client);
-//		teamMemberUpdate(client);
+		teamMemberUpdate(client);
 //		teamMemberDelete(client);
 //		teamMemberFetchById(client);
 	}

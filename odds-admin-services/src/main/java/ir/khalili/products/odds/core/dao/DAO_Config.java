@@ -261,7 +261,6 @@ public class DAO_Config {
 				+ "?,"
 				+ "?,"
 				+ "?,"
-				+ "?,"
 				+ "sysdate)", params, resultHandler->{
 			if(resultHandler.failed()) {
 				logger.error("Unable to get accessQueryResult:", resultHandler.cause());

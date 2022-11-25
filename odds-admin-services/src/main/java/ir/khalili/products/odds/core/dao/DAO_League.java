@@ -217,7 +217,7 @@ public class DAO_League {
                 	logger.error("fetchLeagueByIdNoDataFound");
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
-                    logger.trace("fetchAllLeagueByIdSuccessful");
+                    logger.trace("fetchAllLeagueByIdSuccessful::RESULT: " + handler.result().getRows().get(0));
                     promise.complete(handler.result().getRows().get(0));
                 }
             
@@ -263,15 +263,14 @@ public class DAO_League {
     public static Future<Void> saveHistory(SQLConnection sqlConnection, JsonObject joLeague, String historyType, String historyDescription, Integer historyById) {
 
 		Promise<Void> promise = Promise.promise();
-		
 		JsonArray params = new JsonArray();
 		params.add(joLeague.getInteger("ID"));
 		params.add(joLeague.getString("NAME"));
 		params.add(joLeague.getString("SYMBOL"));
-		params.add(joLeague.getString("ACTIVE_FROM"));
-		params.add(joLeague.getString("ACTIVE_TO"));
-		params.add(joLeague.getString("ODDS_FROM"));
-		params.add(joLeague.getString("ODDS_TO"));
+		params.add(joLeague.getString("ACTIVE_FROM").split("GMT")[0]);
+		params.add(joLeague.getString("ACTIVE_TO").split("GMT")[0]);
+		params.add(joLeague.getString("ODDS_FROM").split("GMT")[0]);
+		params.add(joLeague.getString("ODDS_TO").split("GMT")[0]);
 		params.add(historyType);
 		params.add(historyDescription);
 		params.add(historyById);

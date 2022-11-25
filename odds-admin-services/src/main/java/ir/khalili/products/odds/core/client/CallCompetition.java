@@ -28,7 +28,7 @@ public class CallCompetition extends AbstractVerticle {
 
 		WebClient client = WebClient.create(vertx);
 //		competitionSave(client);
-//		competitionUpdate(client);
+		competitionUpdate(client);
 //		competitionDelete(client);
 //		competitionFetchAll(client);
 //		competitionFetchById(client);
@@ -38,7 +38,7 @@ public class CallCompetition extends AbstractVerticle {
 //		competitionQuestionFetch(client);
 //		competitionResultRegister(client);
 //		questionResultRegister(client);
-		competitionPointCalculation(client);
+//		competitionPointCalculation(client);
 //		competitionLiveScore(client);
 	}
 
@@ -88,11 +88,11 @@ public class CallCompetition extends AbstractVerticle {
 		joInput.put("teamId2",2);
 		joInput.put("groupId",1);
 		joInput.put("locationId",1);
-		joInput.put("activeFrom", "2022-09-30T10:10:10Z");
-		joInput.put("activeTo", "2022-09-30T10:10:10Z");
-		joInput.put("oddsFrom", "2022-09-30T10:10:10Z");
-		joInput.put("oddsTo", "2022-09-30T10:10:10Z");
-		joInput.put("competitionDate", "2022-09-30T10:10:10Z");
+		joInput.put("activeFrom", "Wed Oct 05 2022 11:00:01 GMT+0330");
+		joInput.put("activeTo", "Mon Jan 23 2023 11:00:01 GMT+0330");
+		joInput.put("oddsFrom", "Mon Oct 10 2022 00:00:00 GMT+0330");
+		joInput.put("oddsTo", "Mon Oct 10 2022 00:00:00 GMT+0330");
+		joInput.put("competitionDate", "Fri Sep 30 2022 20:45:41 GMT+0330");
 		
 		System.out.println("joInput:" + joInput);
 		

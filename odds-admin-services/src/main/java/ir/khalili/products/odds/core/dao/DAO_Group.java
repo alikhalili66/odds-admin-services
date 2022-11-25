@@ -270,8 +270,8 @@ public class DAO_Group {
 		JsonArray params = new JsonArray();
 		params.add(joGroup.getInteger("ID"));
 		params.add(joGroup.getString("NAME"));
-		params.add(joGroup.getString("ACTIVE_FROM"));
-		params.add(joGroup.getString("ACTIVE_TO"));
+		params.add(joGroup.getString("ACTIVE_FROM").split("GMT")[0]);
+		params.add(joGroup.getString("ACTIVE_TO").split("GMT")[0]);
 		params.add(historyType);
 		params.add(historyDescription);
 		params.add(historyById);

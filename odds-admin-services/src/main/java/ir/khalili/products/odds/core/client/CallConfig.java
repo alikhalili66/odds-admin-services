@@ -25,13 +25,13 @@ public class CallConfig extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-		leagueUpdate(client);
-//		leagueFetchAll(client);
-//		leagueFetchById(client);
-//		leagueFetchBySymbol(client);
+		configUpdate(client);
+//		configFetchAll(client);
+//		configFetchById(client);
+//		configFetchBySymbol(client);
 	}
 
-	public void leagueUpdate(WebClient client) {
+	public void configUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
 		joInput.put("configId", 1);
@@ -64,7 +64,7 @@ public class CallConfig extends AbstractVerticle {
 		}
 	}
 
-	public void leagueFetchAll(WebClient client) {
+	public void configFetchAll(WebClient client) {
 
 		try {
 			
@@ -95,7 +95,7 @@ public class CallConfig extends AbstractVerticle {
 		}
 	}
 
-	public void leagueFetchById(WebClient client) {
+	public void configFetchById(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
 		joInput.put("configId", 1);
@@ -127,7 +127,7 @@ public class CallConfig extends AbstractVerticle {
 		}
 	}
 
-	public void leagueFetchBySymbol(WebClient client) {
+	public void configFetchBySymbol(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
 		joInput.put("symbol", "S");

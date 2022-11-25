@@ -197,7 +197,7 @@ public class DAO_Question {
 		JsonArray params = new JsonArray();
 		params.add(joQuestion.getInteger("ID"));
 		params.add(joQuestion.getString("QUESTION"));
-		params.add(joQuestion.getInteger("SYMBOL"));
+		params.add(joQuestion.getString("SYMBOL"));
 		params.add(joQuestion.getString("TYPE"));
 		params.add(joQuestion.getLong("MINPOINT"));
 		params.add(historyType);

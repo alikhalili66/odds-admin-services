@@ -248,7 +248,7 @@ public class DAO_League {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "لیگ معتبر نمی باشد."));
+                    promise.fail(new DAOEXCP_Internal(-201, "تورنومنت فعال موجود نمی باشد."));
                 } else {
                     logger.trace("fetchAllLeagueByIdSuccessful");
                     promise.complete(handler.result().getRows().get(0));

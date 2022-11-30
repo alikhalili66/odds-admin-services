@@ -481,7 +481,7 @@ public class DAO_Report {
         		"    r.type = ? ");
         
         if (checkUpTo48HoursAgo) {
-        	query.append(" AND r.creationdate > sysdate - 1");
+        	query.append(" AND r.creationdate > sysdate - 8/24 ");
 		}
         
         if (competitionId != null) {
@@ -563,7 +563,7 @@ public class DAO_Report {
         JsonArray params = new JsonArray();
         params.add(leagueId);
         
-        sqlConnection.queryWithParams("select sum(amount) TRANSACTION_AMOUNT from topptransaction where league_id=? and APPLICATIONCODE in ('operator_charge_service', 'bill_pay_service')", params, handler -> {
+        sqlConnection.queryWithParams("select nvl(sum(amount),0) TRANSACTION_AMOUNT from topptransaction where league_id=? and APPLICATIONCODE in ('operator_charge_service', 'bill_pay_service')", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
@@ -573,7 +573,7 @@ public class DAO_Report {
                 	promise.complete(new JsonObject().put("TRANSACTION_AMOUNT", 0L));
                 } else {
                     logger.trace("fetchReportLeagueTransactionAmountSuccessful");
-                    promise.complete(handler.result().getRows().get(0).getString("TRANSACTION_AMOUNT") == null ? new JsonObject().put("TRANSACTION_AMOUNT", 0L) : handler.result().getRows().get(0));
+                    promise.complete(handler.result().getRows().get(0));
                 }
             
             }
@@ -785,7 +785,7 @@ public class DAO_Report {
         
         String query = ""
         		+ " select USERNAME from "
-        		+ " (SELECT  DISTINCT USER_ID,COMPETITION_ID FROM TOPPODDS where COMPETITION_ID in (select c.id from TOPPCOMPETITION c where c.LEAGUE_ID = ? and trunc(c.COMPETITIONDATE) = trunc(TO_DATE(?, 'Dy Mon DD YYYY')) and dto is null ) and QUESTION_ID = 28 and TOPPODDS.CORRECTANSWER =TOPPODDS.ANSWER) t, toppuser u "
+        		+ " (SELECT  DISTINCT USER_ID,COMPETITION_ID FROM TOPPODDS o where COMPETITION_ID in (select c.id from TOPPCOMPETITION c where c.LEAGUE_ID = ? and trunc(c.COMPETITIONDATE) = trunc(TO_DATE(?, 'Dy Mon DD YYYY')) and dto is null ) and QUESTION_ID in (SELECT cq.QUESTION_ID FROM TOPPCOMPETITIONQUESTION cq where cq.COMPETITION_ID = o.COMPETITION_ID and  NORDER = 1) and o.CORRECTANSWER =o.ANSWER) t, toppuser u "
         		+ " where t.USER_ID=u.id ";
         
         sqlConnection.queryWithParams(query, params, handler -> {
@@ -809,4 +809,194 @@ public class DAO_Report {
         return promise.future();
     }
     
+    public static Future<List<JsonObject>> fetchReportUsername(SQLConnection sqlConnection, int leagueId) {
+        Promise<List<JsonObject>> promise = Promise.promise();
+        
+        long timer01 = new Date().getTime();
+        
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        
+        String query = " select USERNAME from toppuser where LEAGUE_ID = ? ";
+        
+        sqlConnection.queryWithParams(query, params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportUsernameNoDataFound");
+                	promise.complete(new ArrayList<>());
+                } else {
+                    logger.trace("fetchReportUsernameSuccessful");
+                    promise.complete(handler.result().getRows());
+                }
+            
+                logger.info("LotteryQuestion1_timer01 : " + (new Date().getTime() - timer01));
+                
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<JsonObject> fetchReportRegisterUserCount1(SQLConnection sqlConnection, int leagueId, String competitionDate) {
+        Promise<JsonObject> promise = Promise.promise();
+        
+        long timer01 = new Date().getTime();
+        
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        params.add(competitionDate);
+        
+        String query = "SELECT count(1) count FROM toppuser where LEAGUE_ID = ? and trunc(CREATIONDATE) = trunc(TO_DATE(?, 'Dy Mon DD YYYY')) ";
+        
+        sqlConnection.queryWithParams(query, params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportDailyLotteryCompetitionNoDataFound");
+                	promise.complete(new JsonObject());
+                } else {
+                    logger.trace("fetchReportDailyLotteryCompetitionSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+                logger.info("LotteryCompetition_timer01 : " + (new Date().getTime() - timer01));
+                
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<JsonObject> fetchReportOddsCount2(SQLConnection sqlConnection, int leagueId, String competitionDate) {
+        Promise<JsonObject> promise = Promise.promise();
+        
+        long timer01 = new Date().getTime();
+        
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        params.add(competitionDate);
+        
+        String query = "SELECT count(1) count FROM TOPPODDS where LEAGUE_ID = ? and trunc(CREATIONDATE) = trunc(TO_DATE(?, 'Dy Mon DD YYYY')) ";
+        
+        sqlConnection.queryWithParams(query, params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportDailyLotteryCompetitionNoDataFound");
+                	promise.complete(new JsonObject());
+                } else {
+                    logger.trace("fetchReportDailyLotteryCompetitionSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+                logger.info("LotteryCompetition_timer01 : " + (new Date().getTime() - timer01));
+                
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<JsonObject> fetchReportBillCount3(SQLConnection sqlConnection, int leagueId, String competitionDate) {
+        Promise<JsonObject> promise = Promise.promise();
+        
+        long timer01 = new Date().getTime();
+        
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        params.add(competitionDate);
+        
+        String query = "SELECT count(1) count, sum(amount) amount, sum(point) point FROM TOPPTRANSACTION where LEAGUE_ID = ? and APPLICATIONCODE is not null and trunc(CREATIONDATE) = trunc(TO_DATE(?, 'Dy Mon DD YYYY')) ";
+        
+        sqlConnection.queryWithParams(query, params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportDailyLotteryCompetitionNoDataFound");
+                	promise.complete(new JsonObject());
+                } else {
+                    logger.trace("fetchReportDailyLotteryCompetitionSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+                logger.info("LotteryCompetition_timer01 : " + (new Date().getTime() - timer01));
+                
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<JsonObject> fetchReportOddsUniqueUserCount4(SQLConnection sqlConnection, int leagueId, String competitionDate) {
+        Promise<JsonObject> promise = Promise.promise();
+        
+        long timer01 = new Date().getTime();
+        
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        params.add(competitionDate);
+        
+        String query = "SELECT count(DISTINCT USER_ID) count FROM TOPPODDS where LEAGUE_ID = ? and trunc(CREATIONDATE) = trunc(TO_DATE(?, 'Dy Mon DD YYYY')) ";
+        
+        sqlConnection.queryWithParams(query, params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportDailyLotteryCompetitionNoDataFound");
+                	promise.complete(new JsonObject());
+                } else {
+                    logger.trace("fetchReportDailyLotteryCompetitionSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+                logger.info("LotteryCompetition_timer01 : " + (new Date().getTime() - timer01));
+                
+            }
+        });
+
+        return promise.future();
+    }
+    
+    public static Future<JsonObject> fetchReportInvestCount5(SQLConnection sqlConnection, int leagueId, String competitionDate) {
+        Promise<JsonObject> promise = Promise.promise();
+        
+        long timer01 = new Date().getTime();
+        
+        JsonArray params = new JsonArray();
+        params.add(leagueId);
+        params.add(competitionDate);
+        
+        String query = "SELECT count(1) count, sum(amount) amount, sum(point) point FROM TOPPTRANSACTION where LEAGUE_ID = ? and APPLICATIONCODE is null and trunc(CREATIONDATE) = trunc(TO_DATE(?, 'Dy Mon DD YYYY')) ";
+        
+        sqlConnection.queryWithParams(query, params, handler -> {
+            if (handler.failed()) {
+            	logger.error("Unable to get accessQueryResult:", handler.cause());
+                promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+            } else {
+                if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
+                	logger.error("fetchReportDailyLotteryCompetitionNoDataFound");
+                	promise.complete(new JsonObject());
+                } else {
+                    logger.trace("fetchReportDailyLotteryCompetitionSuccessful");
+                    promise.complete(handler.result().getRows().get(0));
+                }
+            
+                logger.info("LotteryCompetition_timer01 : " + (new Date().getTime() - timer01));
+                
+            }
+        });
+
+        return promise.future();
+    }
 }

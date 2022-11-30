@@ -49,8 +49,12 @@ public class Biz_01_ConfigUpdate {
                     return;
                 }
         		
+        		logger.trace("LEAGUE_INFO : " + leagueHandler.result());
+        		
     			if(joConfig.getString("TYPE").equals("File")) {
                     message.put("value", ClientMinIO.saveFile(leagueHandler.result().getString("SYMBOL"), joConfig.getString("SYMBOL"), message.getString("value")));
+    			} else if(joConfig.getString("TYPE").equals("IMAGE")) {
+                    message.put("value", ClientMinIO.saveImage(leagueHandler.result().getString("SYMBOL"), joConfig.getString("SYMBOL"), message.getString("value")));
     			}
     			
     	        DAO_Config.update(sqlConnection, configId, message.getString("value")).onComplete(updateHandler -> {

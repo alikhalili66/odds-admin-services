@@ -216,15 +216,12 @@ public final class TransactionInputValidationUtil {
 	            userId = inputParameters.getString("userId");
 	            date = inputParameters.getString("date");
 
-	            if (null == applicationCode || 
-	            		applicationCode.isEmpty() || 
-	            		applicationCode.length() > 100 || 
-	            		!applicationCode.matches("operator_charge_service|bill_pay_service")) {
-	                throw new EXCP_RtMgr_Validation(-603, "کد برنامه صحیح نمی باشد.");
+			if (null == applicationCode || applicationCode.isEmpty() || applicationCode.length() > 100) {
+	                throw new EXCP_RtMgr_Validation(-601, "کد برنامه معتبر نمی باشد.");
 	            }
 
 	            if (null == amount || amount < 1 || amount > 999999999) {
-	                throw new EXCP_RtMgr_Validation(-603, "مبلغ معتبر نمی باشد");
+	                throw new EXCP_RtMgr_Validation(-602, "مبلغ معتبر نمی باشد");
 	            }
 
 	            if (null == description || description.isEmpty() || description.length() > 200) {
@@ -250,7 +247,7 @@ public final class TransactionInputValidationUtil {
 				return;
 			} catch (Exception e) {
 				logger.error("INPUT TYPE VALIDATION FAILED.", e);
-				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید.")));
 				return;
 			}
 

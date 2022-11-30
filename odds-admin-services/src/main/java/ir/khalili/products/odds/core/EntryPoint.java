@@ -78,6 +78,8 @@ import ir.khalili.products.odds.core.routemanager.report.RtMgr_03_ReportCompetit
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_04_ReportOddsCount;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_05_ReportCalculateCompetition;
 import ir.khalili.products.odds.core.routemanager.report.RtMgr_11_ReportDailyLottery;
+import ir.khalili.products.odds.core.routemanager.report.RtMgr_12_ReportTotalUsername;
+import ir.khalili.products.odds.core.routemanager.report.RtMgr_13_ReportDailyOdds;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_01_TeamSave;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_02_TeamUpdate;
 import ir.khalili.products.odds.core.routemanager.team.RtMgr_03_TeamDelete;
@@ -97,6 +99,7 @@ import ir.khalili.products.odds.core.routemanager.user.RtMgr_02_UserFetchById;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_03_UserFetchOdds;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_04_UserFetchQuestionAnswer;
 import ir.khalili.products.odds.core.routemanager.user.RtMgr_05_UserFetchPointHistory;
+import ir.khalili.products.odds.core.routemanager.user.RtMgr_06_UserEditNikeName;
 import ir.khalili.products.odds.core.verticle.auth.VRTCL_01_AuthLogin;
 import ir.khalili.products.odds.core.verticle.auth.VRTCL_02_AuthOTP;
 import ir.khalili.products.odds.core.verticle.competition.VRTCL_01_CompetitionSave;
@@ -153,6 +156,8 @@ import ir.khalili.products.odds.core.verticle.report.VRTCL_03_ReportCompetitorUs
 import ir.khalili.products.odds.core.verticle.report.VRTCL_04_ReportOddsCount;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_05_ReportCalculateCompetition;
 import ir.khalili.products.odds.core.verticle.report.VRTCL_11_ReportDailyLottery;
+import ir.khalili.products.odds.core.verticle.report.VRTCL_12_ReportTotalUsername;
+import ir.khalili.products.odds.core.verticle.report.VRTCL_13_ReportDailyOdds;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_01_TeamSave;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_02_TeamUpdate;
 import ir.khalili.products.odds.core.verticle.team.VRTCL_03_TeamDelete;
@@ -172,6 +177,7 @@ import ir.khalili.products.odds.core.verticle.user.VRTCL_02_UserFetchById;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_03_UserFetchOdds;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_04_UserFetchQuestionAnswer;
 import ir.khalili.products.odds.core.verticle.user.VRTCL_05_UserFetchPointHistory;
+import ir.khalili.products.odds.core.verticle.user.VRTCL_06_UserEditNikeName;
 
 public class EntryPoint extends AbstractVerticle {
 
@@ -324,6 +330,8 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_04_ReportOddsCount.class.getName());
     	vertx.deployVerticle(VRTCL_05_ReportCalculateCompetition.class.getName());
     	vertx.deployVerticle(VRTCL_11_ReportDailyLottery.class.getName());
+    	vertx.deployVerticle(VRTCL_12_ReportTotalUsername.class.getName());
+    	vertx.deployVerticle(VRTCL_13_ReportDailyOdds.class.getName());
 
     	//TEAM
     	vertx.deployVerticle(VRTCL_01_TeamSave.class.getName());
@@ -344,7 +352,8 @@ public class EntryPoint extends AbstractVerticle {
     	vertx.deployVerticle(VRTCL_03_UserFetchOdds.class.getName());
     	vertx.deployVerticle(VRTCL_04_UserFetchQuestionAnswer.class.getName());
     	vertx.deployVerticle(VRTCL_05_UserFetchPointHistory.class.getName());
-
+    	vertx.deployVerticle(VRTCL_06_UserEditNikeName.class.getName());
+    	
 		//TRANSACTION
     	vertx.deployVerticle(VRTCL_01_TransactionFetchAll.class.getName());
     	vertx.deployVerticle(VRTCL_02_TransactionReject.class.getName());
@@ -464,6 +473,8 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/report/odds/count")							.handler(RtMgr_04_ReportOddsCount							:: handler);
         router.post		("/v1/service/odds/report/calculate/competition")				.handler(RtMgr_05_ReportCalculateCompetition				:: handler);
         router.post		("/v1/service/odds/report/daily/lottery")						.handler(RtMgr_11_ReportDailyLottery						:: handler);
+        router.post		("/v1/service/odds/report/total/username")						.handler(RtMgr_12_ReportTotalUsername						:: handler);
+        router.post		("/v1/service/odds/report/daily/odds")							.handler(RtMgr_13_ReportDailyOdds							:: handler);
 
     	//TEAM
         router.post		("/v1/service/odds/team/save")									.handler(RtMgr_01_TeamSave									:: handler);
@@ -483,6 +494,7 @@ public class EntryPoint extends AbstractVerticle {
         router.post		("/v1/service/odds/user/fetch/odds")							.handler(RtMgr_03_UserFetchOdds								:: handler);
         router.post		("/v1/service/odds/user/fetch/question")						.handler(RtMgr_04_UserFetchQuestionAnswer					:: handler);
         router.post		("/v1/service/odds/user/fetch/history")							.handler(RtMgr_05_UserFetchPointHistory						:: handler);
+        router.post		("/v1/service/odds/user/nikename/edit")							.handler(RtMgr_06_UserEditNikeName							:: handler);
 
 		//TRANSACTION
         router.post		("/v1/service/odds/transaction/all/fetch")						.handler(RtMgr_01_TransactionFetchAll						:: handler);

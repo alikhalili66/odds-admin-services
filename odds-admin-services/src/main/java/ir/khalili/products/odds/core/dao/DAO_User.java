@@ -394,7 +394,7 @@ public class DAO_User {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == resultHandler.result() || null == resultHandler.result().getRows() || resultHandler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "کاربر مورد نظر موجود نمی باشد."));
+                    promise.fail(new DAOEXCP_Internal(-401, "کاربر مورد نظر موجود نمی باشد."));
                 } else {
                     logger.trace("fetchUserByUGID01");
                     promise.complete(resultHandler.result().getRows().get(0));
@@ -432,6 +432,48 @@ public class DAO_User {
 			
 		});
 		
+		return promise.future();
+	}
+    
+    public static Future<JsonObject> updateNikeName(SQLConnection sqlConnection, Integer id, String nikeName) {
+        Promise<JsonObject> promise = Promise.promise();
+        JsonArray params = new JsonArray();
+        params.add(nikeName);
+        params.add(id);
+        
+        sqlConnection.updateWithParams("update toppUser set NIKENAME=? WHERE id=?", params, handler -> {
+			if(handler.failed()) {
+				logger.error("Unable to get accessQueryResult:", handler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("deleteFolderByIdSuccessful");
+			promise.complete();
+			
+		});
+		return promise.future();
+    }
+    
+    public static Future<Void> updateUserPointAndAmount(SQLConnection sqlConnection, Integer point, Long amount, Integer userId) {
+
+		Promise<Void> promise = Promise.promise();
+		JsonArray params = new JsonArray();
+		
+		params.add(point);
+		params.add(point);
+		params.add(amount);
+		params.add(userId);
+		
+		sqlConnection.updateWithParams("UPDATE toppuser u SET u.point = (u.point + ?), u.lastChangePoint = ?, u.amount=(u.amount + ?) WHERE u.id =?", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			logger.trace("updateUserPointAndAmountSuccessful");
+			promise.complete();
+		});
 		return promise.future();
 	}
     

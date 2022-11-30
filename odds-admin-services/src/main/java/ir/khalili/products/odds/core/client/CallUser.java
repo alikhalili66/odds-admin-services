@@ -25,11 +25,12 @@ public class CallUser extends AbstractVerticle {
 	@Override
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
-		userFetchAll(client);
+//		userFetchAll(client);
 //		userFetchById(client);
 //		userFetchOdds(client);
 //		userFetchQuestionAnswer(client);
 //		userFetchPointHistory(client);
+		editNikename(client);
 	}
 
 
@@ -187,4 +188,34 @@ public class CallUser extends AbstractVerticle {
 		}
 	}
 
+	public void editNikename(WebClient client) {
+		JsonObject joInput = new JsonObject();
+		joInput.put("id", 145);
+		joInput.put("nikename", "علی خلیلی");
+		
+		try {
+			client.post(port, host, "/v1/service/odds/user/nikename/edit")
+			
+			.putHeader("Authorization", CallAuth.token)
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
 }

@@ -17,7 +17,7 @@ public class DAO_Transaction {
 
     private static final Logger logger = LogManager.getLogger(DAO_Transaction.class);
     
-    public static Future<Integer> saveTransaction(SQLConnection sqlConnection, int point, int amount, int userId, String applicationCode, String invoiceId, String description, String date) {
+    public static Future<Integer> saveTransaction(SQLConnection sqlConnection, int leagueId, int point, int amount, int userId, String applicationCode, String invoiceId, String description, String date) {
 
         Promise<Integer> promise = Promise.promise();
 
@@ -33,6 +33,7 @@ public class DAO_Transaction {
                     
                     JsonArray params = new JsonArray();
                     params.add(seqtHandler.result().getRows().get(0).getInteger("ID"));
+                    params.add(leagueId);
                     params.add(point);
                     params.add(amount);
                     params.add("P");
@@ -45,6 +46,7 @@ public class DAO_Transaction {
                     
                     sqlConnection.updateWithParams("INSERT INTO TOPPTRANSACTION (" +
                             "    ID," +
+                            "    LEAGUE_ID," +
                             "    POINT," +
                             "    AMOUNT," +
                             "    TYPE," +
@@ -54,13 +56,13 @@ public class DAO_Transaction {
                             "    INVOICEID," +
                             "    DESCRIPTION," +
                             "    CREATIONDATE" +
-                            ") VALUES (?,?,?,?,?,?,?,?,?,TO_Date(?,'YYYY/MM/DD HH24:MI:SS'))", params, resultHandler -> {
+                            ") VALUES (?,?,?,?,?,?,?,?,?,?,TO_Date(?,'YYYY/MM/DD HH24:MI:SS'))", params, resultHandler -> {
                         if (resultHandler.failed()) {
                             logger.error("Unable to get accessQueryResult:", resultHandler.cause());
                             
                             if(resultHandler.cause().getMessage().toUpperCase().contains("UN_TRANSACTION_INVOICEID")) {
             					logger.error("UN_GROUP_NAME_UNIQUE_CONSTRAINT");
-            					promise.fail(new DAOEXCP_Internal(-100, "INVOICEID تکراری است."));
+            					promise.fail(new DAOEXCP_Internal(-301, "INVOICEID تکراری است."));
             				}else {
             					promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             				}

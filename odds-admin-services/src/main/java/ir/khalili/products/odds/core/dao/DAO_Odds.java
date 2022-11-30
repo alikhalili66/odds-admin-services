@@ -23,7 +23,7 @@ public class DAO_Odds {
         JsonArray params = new JsonArray();
         params.add(competitionId);
 
-        sqlConnection.queryWithParams("SELECT QUESTION_ID, ANSWER, count(1) as count FROM tOPPOdds where competition_Id = ? group by QUESTION_ID, ANSWER  order by QUESTION_ID", params, handler -> {
+        sqlConnection.queryWithParams("SELECT QUESTION_ID, ANSWER, count(1) as count FROM tOPPOdds where competition_Id = ? group by QUESTION_ID, ANSWER  order by QUESTION_ID, count desc", params, handler -> {
             if (handler.failed()) {
             	logger.error("Unable to get accessQueryResult:", handler.cause());
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));

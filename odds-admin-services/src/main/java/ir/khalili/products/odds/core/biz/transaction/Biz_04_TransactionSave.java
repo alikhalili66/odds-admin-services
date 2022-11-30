@@ -10,7 +10,6 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
-import ir.khalili.products.odds.core.dao.DAO_Competition;
 import ir.khalili.products.odds.core.dao.DAO_Config;
 import ir.khalili.products.odds.core.dao.DAO_League;
 import ir.khalili.products.odds.core.dao.DAO_Transaction;
@@ -31,6 +30,17 @@ public class Biz_04_TransactionSave {
         final String description = message.getString("description");
         final String UGID = message.getString("userId");
         final String date = message.getString("date");
+        
+        if (!applicationCode.matches("operator_charge_service|bill_pay_service")) {
+        	logger.error("INALID_APPLICATIONCODE:" + applicationCode);
+        	resultHandler.handle(Future.succeededFuture(
+					new JsonObject()
+					.put("resultCode", 1)
+					.put("resultMessage", "عملیات با موفقیت انجام شد.")
+					));
+       	 	return;
+       
+		}
         
         DAO_Config.fetchActiveLeague(sqlConnection).onComplete(leagueHandler->{
         	
@@ -81,9 +91,9 @@ public class Biz_04_TransactionSave {
     					return;
     				}
 
-    				Future<Integer> futTransaction = DAO_Transaction.saveTransaction(sqlConnection, point, amount, futUser.result().getInteger("ID"), applicationCode, invoiceId, description, date);
+    				Future<Integer> futTransaction = DAO_Transaction.saveTransaction(sqlConnection, leagueId, point, amount, futUser.result().getInteger("ID"), applicationCode, invoiceId, description, date);
             		Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, new JsonObject().put("ID", futUser.result().getInteger("ID")).put("AMOUNT", amount).put("POINT", point), "T", description);
-            		Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, point, 0l, futUser.result().getInteger("ID"));
+            		Future<Void> futUpdateUserPointAndAmount = DAO_User.updateUserPointAndAmount(sqlConnection, point, 0l, futUser.result().getInteger("ID"));
             		
             		CompositeFuture.all(futTransaction , futSaveUserPointHistory, futUpdateUserPointAndAmount).onComplete(joinHandler04 -> {
             			

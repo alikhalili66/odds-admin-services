@@ -355,4 +355,99 @@ public final class ReportInputValidationUtil {
 
     }
 	
+	public static void validateReportTotalUsername(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_ODDS_COUNT).onComplete(handler -> {
+
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+			
+			final JsonObject joToken = handler.result();
+
+			Integer leagueId;
+			
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            leagueId = inputParameters.getInteger("leagueId");
+	            
+	            if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
+	            
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+
+			final JsonObject joResult = new JsonObject();
+			joResult.put("leagueId", leagueId);
+			
+			joResult.put("userId", joToken.getInteger("id"));
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
+
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+		});
+
+    }
+	
+	public static void validateReportDialyOdds(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_REPORT_ODDS_COUNT).onComplete(handler -> {
+
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+			
+			final JsonObject joToken = handler.result();
+
+			Integer leagueId;
+			String competitionDate;
+			
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            leagueId = inputParameters.getInteger("leagueId");
+	            competitionDate = inputParameters.getString("competitionDate");
+	            
+	            if (null == leagueId || leagueId < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه لیگ معتبر نمی باشد");
+	            }
+	            
+	            if (null == competitionDate || competitionDate.isEmpty()) {
+	                throw new EXCP_RtMgr_Validation(-603, "تاریخ رقابت معتبر نمی باشد");
+	            }
+	            
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+
+			final JsonObject joResult = new JsonObject();
+			joResult.put("leagueId", leagueId);
+			joResult.put("competitionDate", competitionDate.split(" :")[0].substring(0, 15));
+			
+			joResult.put("userId", joToken.getInteger("id"));
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
+
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+		});
+
+    }
+	
 }

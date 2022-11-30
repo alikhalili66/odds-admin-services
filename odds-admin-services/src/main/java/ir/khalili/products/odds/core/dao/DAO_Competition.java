@@ -564,6 +564,7 @@ public class DAO_Competition {
 			params.add(new JsonArray()
 					.add(joUser.getInteger("REWARD_POINT"))
 					.add(competitionId)
+					.add(joUser.getInteger("REWARD_POINT"))
 					.add(joUser.getInteger("USER_ID"))
 					);
 		});
@@ -571,7 +572,7 @@ public class DAO_Competition {
 		sqlConnection.batchWithParams(""
 				+ ""
 				+ " UPDATE TOPPUSER u " 
-				+ " SET u.POINT = u.POINT + ? - NVL( (SELECT uph.POINT FROM TOPPUSERPOINTHISTORY uph  WHERE uph.USER_ID = u.id AND uph.COMPETITION_ID = ?  ORDER BY uph.ID DESC  FETCH FIRST ROW ONLY ),0) " 
+				+ " SET u.POINT = u.POINT + ? - NVL( (SELECT uph.POINT FROM TOPPUSERPOINTHISTORY uph  WHERE uph.USER_ID = u.id AND uph.COMPETITION_ID = ?  ORDER BY uph.ID DESC  FETCH FIRST ROW ONLY ),0), lastChangePoint= ? " 
 				+ " WHERE u.id = ?"
 				+ "", params, resultHandler->{
 			if(resultHandler.failed()) {
@@ -585,27 +586,6 @@ public class DAO_Competition {
 			
 		});
 		
-		return promise.future();
-	}
-    
-    public static Future<Void> updateUserPointAndAmount(SQLConnection sqlConnection, Integer point, Long amount, Integer userId) {
-
-		Promise<Void> promise = Promise.promise();
-		JsonArray params = new JsonArray();
-		
-		params.add(point);
-		params.add(amount);
-		params.add(userId);
-		
-		sqlConnection.updateWithParams("UPDATE toppuser u SET u.point = (u.point + ?), u.amount=(u.amount + ?) WHERE u.id =?", params, resultHandler->{
-			if(resultHandler.failed()) {
-				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
-				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
-				return;
-			}
-			logger.trace("updateUserPointAndAmountSuccessful");
-			promise.complete();
-		});
 		return promise.future();
 	}
     

@@ -301,4 +301,55 @@ public final class UserInputValidationUtil {
 
     }
 	
+	public static void validateUserNikeName(RoutingContext context, Handler<AsyncResult<JsonObject>> resultHandler) {
+
+		InputValidationUtil.validateToken(context, AccessLockIn.ODDS_USER_EDIT_NIKENAME).onComplete(handler -> {
+
+			if (handler.failed()) {
+				resultHandler.handle(Future.failedFuture(handler.cause()));
+				return;
+			}
+
+			final JsonObject joToken = handler.result();
+			
+			Integer id;
+			String nikename = null;
+			
+	        try {
+	            final JsonObject inputParameters = InputValidationUtil.validate(context);
+
+	            id = inputParameters.getInteger("id");
+	            nikename = inputParameters.getString("nikename");
+	            
+	            if (null == id || id < 1) {
+	                throw new EXCP_RtMgr_Validation(-603, "شناسه کاربر معتبر نمی باشد");
+	            }
+
+				if (nikename== null || nikename.isEmpty() || nikename.length() > 50) {
+					throw new EXCP_RtMgr_Validation(-602, "نام صحیح نمی باشد.");
+				}
+				
+	        } catch (EXCP_RtMgr_Validation e) {
+				resultHandler.handle(Future.failedFuture(e));
+				return;
+			} catch (Exception e) {
+				logger.error("INPUT TYPE VALIDATION FAILED.", e);
+				resultHandler.handle(Future.failedFuture(new EXCP_RtMgr_Validation(-499, "نوع داده اقلام ارسال شده معتبر نیست. به سند راهنما رجوع کنید ")));
+				return;
+			}
+
+			final JsonObject joResult = new JsonObject();
+			joResult.put("id", id);
+			joResult.put("nikename", nikename);
+			
+			joResult.put("userId", joToken.getInteger("id"));
+			joResult.put("clientInfo", context.request().getHeader("User-Agent"));
+			joResult.put("ip", context.request().remoteAddress().host());
+
+			resultHandler.handle(Future.succeededFuture(joResult));
+
+		});
+
+    }
+	
 }

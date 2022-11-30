@@ -32,8 +32,9 @@ public class CallReport extends AbstractVerticle {
 //		reportRegisteredUsersCount(client);
 //		reportFetch(client);
 //		reportCalculateCompetition(client);
-		dailyLottery(client);
-		
+//		dailyLottery(client);
+//		totalUsername(client);
+		dailyOdds(client);
 	}
 
 	public void reportRegisteredUsersCount(WebClient client) {
@@ -240,6 +241,73 @@ public class CallReport extends AbstractVerticle {
 			
 			client
 			.post(port, host, "/v1/service/odds/report/daily/lottery")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void totalUsername(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			
+			System.out.println(joInput);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/total/username")
+			.putHeader("Authorization", CallAuth.token)
+			
+			.sendJson(joInput, ar -> {
+				try {
+					if (ar.succeeded()) {
+						JsonObject response = new JsonObject(ar.result().bodyAsString());
+						System.out.println(Json.encodePrettily(response));
+					} else {
+						System.out.println(ar.cause());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					System.exit(0);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	public void dailyOdds(WebClient client) {
+		try {
+			
+			JsonObject joInput = new JsonObject();
+			joInput.put("leagueId", 1);
+			joInput.put("competitionDate", "Tue Nov 22 2022 14:55:00 GMT+0330"); // Optional
+			
+			System.out.println(joInput);
+			
+			client
+			.post(port, host, "/v1/service/odds/report/daily/odds")
 			.putHeader("Authorization", CallAuth.token)
 			
 			.sendJson(joInput, ar -> {

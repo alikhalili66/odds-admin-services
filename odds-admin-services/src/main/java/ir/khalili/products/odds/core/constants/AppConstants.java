@@ -77,7 +77,8 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_ODDS_FETCH						= "nas.eb.core.srvc.user.odds.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_QUESTION_FETCH					= "nas.eb.core.srvc.user.question.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_HISTORY_FETCH					= "nas.eb.core.srvc.user.history.fetch";
-	
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_USER_EDIT_NIKENAME					= "nas.eb.core.srvc.user.edit.nikename";
+
 	/***********************CONFIG****************************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_CONFIG_UPDATE						= "nas.eb.core.srvc.config.update";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_CONFIG_ALL_FETCH					= "nas.eb.core.srvc.config.all.fetch";
@@ -92,7 +93,9 @@ public class AppConstants{
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_CALCULATE_COMPETITION		= "nas.eb.core.srvc.report.calculate.competition";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_FETCH 						= "nas.eb.core.srvc.report.fetch";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_DAILY_LOTTERY				= "nas.eb.core.srvc.report.daily.lottory";
-
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_TOTAL_USERNAME				= "nas.eb.core.srvc.report.total.username";
+	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_REPORT_DAILY_ODDS					= "nas.eb.core.srvc.report.daily.odds";
+	
 	/***********************LOCATION*********************/
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_LOCATION_SAVE						= "nas.eb.core.srvc.location.save";
 	public static final String 		EVNT_BUS_ADR_SRVCS_ODDS_LOCATION_UPDATE						= "nas.eb.core.srvc.location.update";

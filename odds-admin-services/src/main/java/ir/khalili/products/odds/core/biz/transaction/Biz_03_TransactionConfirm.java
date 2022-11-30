@@ -11,7 +11,6 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.biz.excp.BIZEXCP_Transaction;
-import ir.khalili.products.odds.core.dao.DAO_Competition;
 import ir.khalili.products.odds.core.dao.DAO_Transaction;
 import ir.khalili.products.odds.core.dao.DAO_User;
 import ir.khalili.products.odds.core.enums.TransactionStatus;
@@ -73,7 +72,7 @@ public class Biz_03_TransactionConfirm {
                     		.put("POINT", joTransaction.getInteger("POINT"));
                     
                     Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(sqlConnection, joUserInfo, "B", joTransaction.getString("DESCRIPTION"));
-                    Future<Void> futUpdateUserPointAndAmount = DAO_Competition.updateUserPointAndAmount(sqlConnection, joTransaction.getInteger("POINT"), joTransaction.getLong("AMOUNT"), futFetchById.result().getInteger("ID"));
+                    Future<Void> futUpdateUserPointAndAmount = DAO_User.updateUserPointAndAmount(sqlConnection, joTransaction.getInteger("POINT"), joTransaction.getLong("AMOUNT"), futFetchById.result().getInteger("ID"));
                     Future<Void> futUpdateTransactionStatus = DAO_Transaction.updateTransactionStatus(sqlConnection, id, TransactionStatus.confirm.getStatus());
                     
                 	CompositeFuture.all(futSaveUserPointHistory, futUpdateUserPointAndAmount, futUpdateTransactionStatus).onComplete(joinHandler04 -> {

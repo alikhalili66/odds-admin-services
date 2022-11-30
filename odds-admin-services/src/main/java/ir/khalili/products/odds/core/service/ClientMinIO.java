@@ -160,4 +160,36 @@ public class ClientMinIO {
 		return result;
 	}
 	
+	public static String saveImage(String league, String symbol, String base64Data) {
+
+		String result = null;
+		
+		try {
+			if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket("odds").build())) {
+				minioClient.makeBucket(MakeBucketArgs.builder().bucket("odds").build());
+			}
+
+			byte[] bI = Base64.getDecoder().decode(base64Data.getBytes());
+
+			Date date = new Date();
+			
+			try(InputStream fis = new ByteArrayInputStream(bI)){
+				minioClient.putObject(PutObjectArgs
+						.builder()
+						.bucket("odds")
+						.object(league + "/file/" + symbol + "_" + date.getTime() + ".jpg")
+						.stream(fis, bI.length, -1)
+						.contentType("image/png")
+						.build());
+			}
+
+			result = "https://io.paypod.linuxservice.ir/odds/" + league + "/file/" + symbol + "_" + date.getTime() + ".jpg";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 }

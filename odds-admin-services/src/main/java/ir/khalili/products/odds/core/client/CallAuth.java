@@ -12,10 +12,10 @@ import io.vertx.ext.web.client.WebClient;
 public class CallAuth extends AbstractVerticle {
 
 	private static final int port = 9090;
-//	private static final String host  ="127.0.0.1";
-	private static final String host  ="37.32.25.54";
+	private static final String host  ="127.0.0.1";
+//	private static final String host  ="37.32.25.54";
 	
-	public static String token = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI2LCJleHAiOjE2NjkxNDE0OTUsImlwIjoiMTcyLjE4LjAuMSIsInByb2plY3RJZCI6MjEsInR5cGUiOiJBIiwiaXNDaGFuZ2VQYXNzIjpmYWxzZSwiaWF0IjoxNjY5MDU1MDk1fQ.ygssEgs6KfJOyi3GqBwvR-rV2X940n_Rhg1cDV_LyWE";
+	public static String token = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI2LCJleHAiOjE2Njk3ODU4NTIsImlwIjoiMi4xNzguMjUyLjExNSIsInByb2plY3RJZCI6MjEsInR5cGUiOiJBIiwiaXNDaGFuZ2VQYXNzIjpmYWxzZSwiaWF0IjoxNjY5Njk5NDUyfQ.3nJdmMn5OJVGEPn4IurJyMwtQobf5mAOhzCLAUzu2qs";
 
 	public static void main(String[] args) {
 
@@ -45,14 +45,14 @@ public class CallAuth extends AbstractVerticle {
 		
 		JsonObject joOTP= new JsonObject();
 		joOTP.put("cellphone", 9124083504l);
-		joOTP.put("code", 440835);
+		joOTP.put("code", 952466);
 		
 		System.out.println("joCheckAccess:" + joOTP);
 		try {
 //			client.post(port, host, "/v1/service/odds/auth/agent").sendJson(joAgent, ar -> {
 //			client.post(port, host, "/v1/service/odds/auth/customer").sendJson(joCustomer, ar -> {
-//			client.post(port, host, "/v1/service/odds/auth/login").sendJson(joLogin, ar -> {
-			client.post(port, host, "/v1/service/odds/auth/otp").sendJson(joOTP, ar -> {
+			client.post(port, host, "/v1/service/odds/auth/login").sendJson(joLogin, ar -> {
+//			client.post(port, host, "/v1/service/odds/auth/otp").sendJson(joOTP, ar -> {
 				try {
 					if (ar.succeeded()) {
 						JsonObject response = new JsonObject(ar.result().bodyAsString());

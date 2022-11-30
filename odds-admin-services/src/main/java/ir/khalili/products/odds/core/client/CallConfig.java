@@ -34,8 +34,8 @@ public class CallConfig extends AbstractVerticle {
 	public void leagueUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("configId", 1);
-		joInput.put("value", "امتیازهاا از بین نمی روند");
+		joInput.put("configId", 139);
+		joInput.put("value", "iVBORw0KGgoAAAANSUhEUgAAACoAAAArCAYAAAAOnxr+AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAADSSURBVFhH7dcxDsIwEERR5/4ngXA/SBVwgbSsv7xYkwARW7zO8vwmgZRyua3eNPeV83VfJ1DmZfUozsLLX9Qzgp8JpZBIhvZQSCRDeygkss/rqZ4RZGijnhFkaKOe2difh+7g0KFfl6Ee/CyPmECGKjK0US9WvPvCl9H4iAz1aHxEhno0PiJDPRof8bFQVYZuYX78lXvKUI8ekAjFWTikopAIxVk4pKKQCMVZOKSikAjFWTikopAIxVk4pKKQCMVZOKSikAGH+RTJ0Ea9WNCGLusdZ4yVSRll4+4AAAAASUVORK5CYII=");
 		
 		System.out.println("joInput:" + joInput);
 

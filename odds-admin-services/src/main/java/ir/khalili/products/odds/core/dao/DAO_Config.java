@@ -154,7 +154,7 @@ public class DAO_Config {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "کانفیگ مورد نظر یافت نشد"));
+                    promise.fail(new DAOEXCP_Internal(-501, "کانفیگ مورد نظر یافت نشد"));
                 } else {
                     logger.trace("fetchAllConfigBySymbolSuccessful");
                     promise.complete(handler.result().getRows().get(0));
@@ -171,7 +171,8 @@ public class DAO_Config {
 		Promise<Void> promise = Promise.promise();
 		
 		List<JsonArray> params = new ArrayList<>();
-		params.add(new JsonArray().add("قوانین و مقررات").add("TERMS_CONDITIONS").add("/app/odds/config/S_1665312994399.txt").add("File").add(leagueId));
+		params.add(new JsonArray().add("قوانین و مقررات").add("TERMS_CONDITIONS").add("").add("File").add(leagueId));
+		params.add(new JsonArray().add("تصویر قوانین و مقررات").add("IMAGE_TERMS_CONDITIONS").add("").add("IMAGE").add(leagueId));
 		params.add(new JsonArray().add("امتیاز هدیه اولیه").add("PRIMARY_GIFT_POINTS").add("100").add("Number").add(leagueId));
 		params.add(new JsonArray().add("حداقل امتیاز هر سوال").add("MINIMUM_SCORE_QUESTION").add("10").add("Number").add(leagueId));
 		params.add(new JsonArray().add("مبلغ بسته برنزی").add("AMOUNT_BRONZE_PACKAGE").add("200000").add("Number").add(leagueId));
@@ -188,7 +189,6 @@ public class DAO_Config {
 		params.add(new JsonArray().add("شناسه بسته نقره ای").add("PRODUCT_SILVER_PACKAGE").add("1").add("Number").add(leagueId));
 		params.add(new JsonArray().add("شناسه بسته طلایی").add("PRODUCT_GOLDEN_PACKAGE").add("1").add("Number").add(leagueId));
 		params.add(new JsonArray().add("شناسه گروه پیشفرض").add("DEFAULT_GROUP_ID").add("1").add("Number").add(leagueId));
-
 		
 		sqlConnection.batchWithParams("insert into toppconfig (ID,NAME,SYMBOL,VALUE,TYPE,LEAGUE_ID) values(soppconfig.nextval,?,?,?,?,?)" , params, resultHandler->{
 			if(resultHandler.failed()) {
@@ -221,7 +221,7 @@ public class DAO_Config {
                 promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
             } else {
                 if (null == handler.result() || null == handler.result().getRows() || handler.result().getRows().isEmpty()) {
-                    promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
+                    promise.fail(new DAOEXCP_Internal(-201, "تورنومنت فعال موجود نمی باشد."));
                 } else {
                     logger.trace("fetchAllConfigBySymbolSuccessful");
                     promise.complete(Integer.parseInt(handler.result().getRows().get(0).getString("VALUE")));

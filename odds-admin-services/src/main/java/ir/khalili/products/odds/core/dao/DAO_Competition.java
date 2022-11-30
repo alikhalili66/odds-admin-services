@@ -640,4 +640,76 @@ public class DAO_Competition {
         return promise.future();
     }
     
+
+    public static Future<Void> saveHistory(SQLConnection sqlConnection, JsonObject joCompetition, String historyType, String historyDescription, Integer historyById) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(joCompetition.getInteger("ID"));
+		params.add(joCompetition.getInteger("TEAM1_ID"));
+		params.add(joCompetition.getInteger("TEAM2_ID"));
+		params.add(joCompetition.getInteger("GROUP_ID"));
+		params.add(joCompetition.getInteger("LOCATION_ID"));
+		params.add(joCompetition.getString("COMPETITION_DATE").split("GMT")[0]);
+		params.add(joCompetition.getString("ACTIVE_FROM").split("GMT")[0]);
+		params.add(joCompetition.getString("ACTIVE_TO").split("GMT")[0]);
+		params.add(joCompetition.getString("ODDS_FROM").split("GMT")[0]);
+		params.add(joCompetition.getString("ODDS_TO").split("GMT")[0]);
+		params.add(joCompetition.getString("RESULT"));
+		params.add(historyType);
+		params.add(historyDescription);
+		params.add(historyById);
+		
+		sqlConnection.updateWithParams(""
+				+ "insert into tOPPCompetitionHistory("
+				+ "ID,"
+				+ "COMPETITION_ID,"
+				+ "TEAM1_ID,"
+				+ "TEAM2_ID,"
+				+ "GROUP_ID,"
+				+ "LOCATION_ID,"
+				+ "COMPETITIONDATE,"
+				+ "ACTIVEFROM,"
+				+ "ACTIVETO,"
+				+ "ODDSFROM,"
+				+ "ODDSTO,"
+				+ "RESULT,"
+				+ "HISTORYTYPE,"
+				+ "HISTORYDESCRIPTION,"
+				+ "HISTORYBY_ID,"
+				+ "HISTORYDATE)"
+				+ "values("
+				+ "soppcompetitionhistory.nextval,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "sysdate)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("SaveCompetitionHistorySuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+
+
+    
 }

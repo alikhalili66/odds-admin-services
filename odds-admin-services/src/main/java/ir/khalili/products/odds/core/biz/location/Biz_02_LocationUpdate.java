@@ -4,6 +4,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -11,6 +12,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_League;
 import ir.khalili.products.odds.core.dao.DAO_Location;
+import ir.khalili.products.odds.core.enums.HistoryEnum;
 import ir.khalili.products.odds.core.service.ClientMinIO;
 
 public class Biz_02_LocationUpdate {
@@ -29,9 +31,9 @@ public class Biz_02_LocationUpdate {
         		return;
         	}
         	
-        	JsonObject joTeam = locationHandler.result();
+        	JsonObject joLocation = locationHandler.result();
         	
-        	DAO_League.fetchById(sqlConnection, joTeam.getInteger("LEAGUE_ID")).onComplete(leagueHandler->{
+        	DAO_League.fetchById(sqlConnection, joLocation.getInteger("LEAGUE_ID")).onComplete(leagueHandler->{
         		
         		if (leagueHandler.failed()) {
                 	logger.error("Unable to complete leagueHandler: " + leagueHandler.cause());
@@ -49,7 +51,10 @@ public class Biz_02_LocationUpdate {
             		
             		message.put("image", minIOHandler.result());
             		
-            		DAO_Location.update(sqlConnection, message).onComplete(handler -> {
+                    Future<Void> futUpdateLocation = DAO_Location.update(sqlConnection, message);
+                    Future<Void> futSaveLocationHistory = DAO_Location.saveHistory(sqlConnection, joLocation,HistoryEnum.UPDATE.getSymbol()," ", message.getInteger("userId"));
+                    
+                    CompositeFuture.all(futUpdateLocation, futSaveLocationHistory).onComplete(handler -> {
             			if (handler.failed()) {
             				logger.error("Unable to complete handler: " + handler.cause());
             				resultHandler.handle(Future.failedFuture(handler.cause()));

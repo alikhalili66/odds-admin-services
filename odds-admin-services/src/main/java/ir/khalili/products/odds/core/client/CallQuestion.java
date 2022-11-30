@@ -26,9 +26,9 @@ public class CallQuestion extends AbstractVerticle{
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 //		questionSave(client);
-//		questionUpdate(client);
+		questionUpdate(client);
 //		questionDelete(client);
-		questionFetchAll(client);
+//		questionFetchAll(client);
 //		questionFetchById(client);
 	}
 

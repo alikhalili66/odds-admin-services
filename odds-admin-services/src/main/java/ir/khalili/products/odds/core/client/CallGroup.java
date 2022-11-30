@@ -27,13 +27,13 @@ public class CallGroup extends AbstractVerticle {
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 //		groupSave(client);
-//		groupUpdate(client);
+		groupUpdate(client);
 //		groupDelete(client);
 //		groupFetchAll(client);
 //		groupFetchById(client);
 //		groupTeamAssign(client);
 //		groupTeamUnAssign(client);
-		groupTeamFetch(client);
+//		groupTeamFetch(client);
 //		groupCompetitionFetch(client);
 	}
 
@@ -75,11 +75,11 @@ public class CallGroup extends AbstractVerticle {
 	public void groupUpdate(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("groupId", 1);
+		joInput.put("groupId", 27);
 		joInput.put("leagueId", 1);
 		joInput.put("name", "گروه ث");
-		joInput.put("activeFrom", "2022/10/01");
-		joInput.put("activeTo", "2022/10/10");
+		joInput.put("activeFrom", "Wed Oct 05 2022 11:00:01 GMT+0330");
+		joInput.put("activeTo", "Mon Jan 23 2023 11:00:01 GMT+0330");
 		System.out.println("joInput:" + joInput);
 
 		try {

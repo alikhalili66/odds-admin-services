@@ -217,7 +217,7 @@ public class DAO_League {
                 	logger.error("fetchLeagueByIdNoDataFound");
                     promise.fail(new DAOEXCP_Internal(-100, "داده ای یافت نشد"));
                 } else {
-                    logger.trace("fetchAllLeagueByIdSuccessful");
+                    logger.trace("fetchAllLeagueByIdSuccessful::RESULT: " + handler.result().getRows().get(0));
                     promise.complete(handler.result().getRows().get(0));
                 }
             
@@ -259,5 +259,62 @@ public class DAO_League {
 
         return promise.future();
     }
+    
+    public static Future<Void> saveHistory(SQLConnection sqlConnection, JsonObject joLeague, String historyType, String historyDescription, Integer historyById) {
+
+		Promise<Void> promise = Promise.promise();
+		JsonArray params = new JsonArray();
+		params.add(joLeague.getInteger("ID"));
+		params.add(joLeague.getString("NAME"));
+		params.add(joLeague.getString("SYMBOL"));
+		params.add(joLeague.getString("ACTIVE_FROM").split("GMT")[0]);
+		params.add(joLeague.getString("ACTIVE_TO").split("GMT")[0]);
+		params.add(joLeague.getString("ODDS_FROM").split("GMT")[0]);
+		params.add(joLeague.getString("ODDS_TO").split("GMT")[0]);
+		params.add(historyType);
+		params.add(historyDescription);
+		params.add(historyById);
+		
+		sqlConnection.updateWithParams(""
+				+ "insert into tOPPLeagueHistory("
+				+ "ID,"
+				+ "LEAGUE_ID,"
+				+ "NAME,"
+				+ "SYMBOL,"
+				+ "ACTIVEFROM,"
+				+ "ACTIVETO,"
+				+ "ODDSFROM,"
+				+ "ODDSTO,"
+				+ "HISTORYTYPE,"
+				+ "HISTORYDESCRIPTION,"
+				+ "HISTORYBY_ID,"
+				+ "HISTORYDATE)"
+				+ "values("
+				+ "soppleaguehistory.nextval,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "TO_DATE(?, 'Dy Mon DD YYYY HH24:MI:SS'),"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "sysdate)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("SaveLeagueHistorySuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+
     
 }

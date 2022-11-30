@@ -4,12 +4,14 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_Config;
 import ir.khalili.products.odds.core.dao.DAO_League;
+import ir.khalili.products.odds.core.enums.HistoryEnum;
 import ir.khalili.products.odds.core.service.ClientMinIO;
 import ir.khalili.products.odds.core.utils.Helper;
 
@@ -57,7 +59,10 @@ public class Biz_01_ConfigUpdate {
                     message.put("value", ClientMinIO.saveImage(leagueHandler.result().getString("SYMBOL"), joConfig.getString("SYMBOL"), message.getString("value")));
     			}
     			
-    	        DAO_Config.update(sqlConnection, configId, message.getString("value")).onComplete(updateHandler -> {
+                Future<Void> futUpdateConfig = DAO_Config.update(sqlConnection, configId, message.getString("value"));
+				Future<Void> futSaveConfigHistory = DAO_Config.saveHistory(sqlConnection, joConfig, HistoryEnum.UPDATE.getSymbol(), " ", message.getInteger("userId"));
+                
+                CompositeFuture.all(futUpdateConfig, futSaveConfigHistory).onComplete(updateHandler -> {
     	            if (updateHandler.failed()) {
     	            	logger.error("Unable to complete handler: " + updateHandler.cause());
     	                resultHandler.handle(Future.failedFuture(updateHandler.cause()));

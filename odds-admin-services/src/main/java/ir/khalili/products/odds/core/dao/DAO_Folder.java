@@ -235,4 +235,46 @@ public class DAO_Folder {
         return promise.future();
     }
             
+    public static Future<Void> saveHistory(SQLConnection sqlConnection, Integer folderId, String name, String historyType, String historyDescription, Integer historyById) {
+
+		Promise<Void> promise = Promise.promise();
+		
+		JsonArray params = new JsonArray();
+		params.add(folderId);
+		params.add(name);
+		params.add(historyType);
+		params.add(historyDescription);
+		params.add(historyById);
+		
+		sqlConnection.updateWithParams(""
+				+ "insert into toppfolderhistory("
+				+ "ID,"
+				+ "FOLDER_ID,"
+				+ "NAME,"
+				+ "HISTORYTYPE,"
+				+ "HISTORYDESCRIPTION,"
+				+ "HISTORYBY_ID,"
+				+ "HISTORYDATE)"
+				+ "values("
+				+ "soppfolderhistory.nextval,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "?,"
+				+ "sysdate)", params, resultHandler->{
+			if(resultHandler.failed()) {
+				logger.error("Unable to get accessQueryResult:", resultHandler.cause());
+				promise.fail(new DAOEXCP_Internal(-100, "خطای داخلی. با راهبر سامانه تماس بگیرید."));
+				return;
+			}
+			
+			logger.trace("SaveFolderHistorySuccessful");
+			promise.complete();
+			
+		});
+		
+		return promise.future();
+	}
+
 }

@@ -4,6 +4,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -11,6 +12,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_League;
 import ir.khalili.products.odds.core.dao.DAO_Team;
+import ir.khalili.products.odds.core.enums.HistoryEnum;
 import ir.khalili.products.odds.core.service.ClientMinIO;
 
 public class Biz_06_TeamImageUpdate {
@@ -47,8 +49,12 @@ public class Biz_06_TeamImageUpdate {
             		}
             		
             		message.put("image", minIOHandler.result());
+            		joTeam.put("IMAGE", minIOHandler.result());
             		
-            		DAO_Team.updateImage(sqlConnection, message).onComplete(handler -> {
+                    Future<Void> futUpdateTeamImage = DAO_Team.updateImage(sqlConnection, message);
+                    Future<Void> futSaveTeamHistory = DAO_Team.saveTeamHistory(sqlConnection,joTeam,HistoryEnum.UPDATE.getSymbol()," ", message.getInteger("userId"));
+                    
+                    CompositeFuture.all(futUpdateTeamImage, futSaveTeamHistory).onComplete(handler -> {
             			if (handler.failed()) {
             				logger.error("Unable to complete handler: " + handler.cause());
             				resultHandler.handle(Future.failedFuture(handler.cause()));

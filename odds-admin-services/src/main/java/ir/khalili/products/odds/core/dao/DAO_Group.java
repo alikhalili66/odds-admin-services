@@ -104,8 +104,8 @@ public class DAO_Group {
 		return promise.future();
 	}
     
-    public static Future<JsonObject> delete(SQLConnection sqlConnection, Integer groupId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<Void> delete(SQLConnection sqlConnection, Integer groupId) {
+        Promise<Void> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(groupId);
         

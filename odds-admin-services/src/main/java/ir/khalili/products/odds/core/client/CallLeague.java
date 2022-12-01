@@ -26,8 +26,8 @@ public class CallLeague extends AbstractVerticle {
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 //		leagueSave(client);
-		leagueUpdate(client);
-//		leagueDelete(client);
+//		leagueUpdate(client);
+		leagueDelete(client);
 //		leagueFetchAll(client);
 //		leagueFetchById(client);
 	}
@@ -112,7 +112,7 @@ public class CallLeague extends AbstractVerticle {
 	public void leagueDelete(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("leagueId", 1);
+		joInput.put("leagueId", 15);
 		System.out.println("joInput:" + joInput);
 
 		try {

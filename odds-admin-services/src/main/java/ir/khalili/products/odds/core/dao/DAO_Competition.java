@@ -125,8 +125,8 @@ public class DAO_Competition {
 		return promise.future();
 	}
     
-    public static Future<JsonObject> delete(SQLConnection sqlConnection, Integer competitionId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<Void> delete(SQLConnection sqlConnection, Integer competitionId) {
+        Promise<Void> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(competitionId);
         

@@ -4,11 +4,13 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_User;
+import ir.khalili.products.odds.core.enums.HistoryEnum;
 
 public class Biz_06_UserEditNikeName {
 
@@ -28,7 +30,16 @@ public class Biz_06_UserEditNikeName {
 				return;
 			}
 
-			DAO_User.updateNikeName(sqlConnection, id, nikename).onComplete(updateHandler->{
+			JsonObject joUserInfo = result.result();
+			
+			Future<JsonObject> futUpdateNikeName = DAO_User.updateNikeName(sqlConnection, id, nikename); 
+			Future<Void> futSaveUserPointHistory = DAO_User.saveUserPointHistory(
+					sqlConnection,
+					joUserInfo,
+					HistoryEnum.UPDATE.getSymbol(),
+					new JsonObject().put("nikeName", joUserInfo.getString("NIKENAME")).toString());
+			
+			CompositeFuture.all(futUpdateNikeName, futSaveUserPointHistory).onComplete(updateHandler->{
 				
 				if (updateHandler.failed()) {
 					logger.error("Unable to complete updateHandler: " + updateHandler.cause());
@@ -36,18 +47,15 @@ public class Biz_06_UserEditNikeName {
 					return;
 				}
 				
-				logger.trace("USER_FETCH_BY_ID_RESULT : " + result.result());
+				logger.trace("USER_EDIT_NIKE_NAME_SUCCESSFUL");
 
 				resultHandler.handle(Future.succeededFuture(
 						new JsonObject()
 						.put("resultCode", 1)
 						.put("resultMessage", "عملیات با موفقیت انجام شد.")
 						));
-				
 			});
-
 		});
-
     }
 
 }

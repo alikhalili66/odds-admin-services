@@ -27,12 +27,12 @@ public class CallGroup extends AbstractVerticle {
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 //		groupSave(client);
-		groupUpdate(client);
+//		groupUpdate(client);
 //		groupDelete(client);
 //		groupFetchAll(client);
 //		groupFetchById(client);
 //		groupTeamAssign(client);
-//		groupTeamUnAssign(client);
+		groupTeamUnAssign(client);
 //		groupTeamFetch(client);
 //		groupCompetitionFetch(client);
 	}
@@ -110,7 +110,7 @@ public class CallGroup extends AbstractVerticle {
 	public void groupDelete(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("groupId", 1);
+		joInput.put("groupId", 32);
 		System.out.println("joInput:" + joInput);
 
 		try {
@@ -205,13 +205,13 @@ public class CallGroup extends AbstractVerticle {
 	public void groupTeamAssign(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("groupId", 1);
-		joInput.put("teamId", 1);
+		joInput.put("groupId", 29);
+		joInput.put("teamId", 57);
 		
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/odds/group/assign/team")
+			client.post(port, host, "/v1/service/odds/group/team/assign")
 					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {
@@ -238,13 +238,13 @@ public class CallGroup extends AbstractVerticle {
 	public void groupTeamUnAssign(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("groupId", 1);
-		joInput.put("teamId", 1);
+		joInput.put("groupId", 29);
+		joInput.put("teamId", 57);
 		
 		System.out.println("joInput:" + joInput);
 
 		try {
-			client.post(port, host, "/v1/service/odds/group/unassign/team")
+			client.post(port, host, "/v1/service/odds/group/team/unassign")
 					
 					.putHeader("Authorization", CallAuth.token)
 					.sendJson(joInput, ar -> {

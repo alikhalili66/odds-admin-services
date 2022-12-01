@@ -26,8 +26,8 @@ public class CallQuestion extends AbstractVerticle{
 	public void start() throws Exception {
 		WebClient client = WebClient.create(vertx);
 //		questionSave(client);
-		questionUpdate(client);
-//		questionDelete(client);
+//		questionUpdate(client);
+		questionDelete(client);
 //		questionFetchAll(client);
 //		questionFetchById(client);
 	}
@@ -107,7 +107,7 @@ public class CallQuestion extends AbstractVerticle{
 	public void questionDelete(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("questionId", 4);
+		joInput.put("questionId", 23);
 		System.out.println("joInput:" + joInput);
 
 		try {

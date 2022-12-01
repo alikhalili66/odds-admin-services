@@ -213,8 +213,8 @@ public class DAO_Team {
 		return promise.future();
     }
     
-    public static Future<JsonObject> deleteMember(SQLConnection sqlConnection, Integer memberId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<Void> deleteMember(SQLConnection sqlConnection, Integer memberId) {
+        Promise<Void> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(memberId);
         

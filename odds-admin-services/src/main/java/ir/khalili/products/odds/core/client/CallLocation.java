@@ -27,8 +27,8 @@ public class CallLocation extends AbstractVerticle {
 
 		WebClient client = WebClient.create(vertx);
 //		locationSave(client);
-		locationUpdate(client);
-//		locationDelete(client);
+//		locationUpdate(client);
+		locationDelete(client);
 //		locationFetchAll(client);
 //		competitionLocationAssign(client);
 	}
@@ -98,7 +98,7 @@ public class CallLocation extends AbstractVerticle {
 	
 	public void locationDelete(WebClient client) {
 		JsonObject joInput = new JsonObject();
-		joInput.put("locationId", 1);
+		joInput.put("locationId", 11);
 		
 		System.out.println("joInput:" + joInput);
 		try {

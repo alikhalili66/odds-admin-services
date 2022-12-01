@@ -30,10 +30,10 @@ public class CallTeam extends AbstractVerticle {
 //		teamDelete(client);
 //		teamFetchAll(client);
 //		teamFetchById(client);
-		teamImageUpdate(client);
+//		teamImageUpdate(client);
 //		teamMemberSave(client);
 //		teamMemberUpdate(client);
-//		teamMemberDelete(client);
+		teamMemberDelete(client);
 //		teamMemberFetchById(client);
 	}
 
@@ -309,7 +309,7 @@ public class CallTeam extends AbstractVerticle {
 	public void teamMemberDelete(WebClient client) {
 
 		JsonObject joInput = new JsonObject();
-		joInput.put("memberId", 1);
+		joInput.put("memberId", 96);
 		System.out.println("joInput:" + joInput);
 
 		try {

@@ -91,8 +91,8 @@ public class DAO_Location {
 		return promise.future();
 	}
     
-    public static Future<JsonObject> delete(SQLConnection sqlConnection, Integer locationId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<Void> delete(SQLConnection sqlConnection, Integer locationId) {
+        Promise<Void> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(locationId);
         

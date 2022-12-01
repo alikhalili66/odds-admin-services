@@ -4,11 +4,13 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 import ir.khalili.products.odds.core.dao.DAO_League;
+import ir.khalili.products.odds.core.enums.HistoryEnum;
 
 public class Biz_03_LeagueDelete {
 
@@ -20,23 +22,34 @@ public class Biz_03_LeagueDelete {
 
         final Integer leagueId = message.getInteger("leagueId");
 
-        DAO_League.delete(sqlConnection, leagueId).onComplete(result -> {
-            if (result.failed()) {
-            	logger.error("Unable to complete result: " + result.cause());
-                resultHandler.handle(Future.failedFuture(result.cause()));
+        DAO_League.fetchById(sqlConnection, leagueId).onComplete(handler0 -> {
+            if (handler0.failed()) {
+            	logger.error("Unable to complete handler0: " + handler0.cause());
+                resultHandler.handle(Future.failedFuture(handler0.cause()));
                 return;
             }
             
-            logger.trace("LEAGUE_DELETE_SUCCESSFULL.");
+            JsonObject joLeague = handler0.result();
             
-			resultHandler.handle(Future.succeededFuture(
-					new JsonObject()
-					.put("resultCode", 1)
-					.put("resultMessage", "عملیات با موفقیت انجام شد.")
-					));
-
+            Future<Void> futDeleteLeague = DAO_League.delete(sqlConnection, leagueId);
+            Future<Void> futSaveLeagueHistory = DAO_League.saveHistory(sqlConnection,joLeague,HistoryEnum.DELETE.getSymbol()," ", message.getInteger("userId"));
+            
+            CompositeFuture.all(futDeleteLeague, futSaveLeagueHistory).onComplete(handler -> {
+            	if (handler.failed()) {
+            		logger.error("Unable to complete handler: " + handler.cause());
+            		resultHandler.handle(Future.failedFuture(handler.cause()));
+            		return;
+            	}
+            	logger.trace("LEAGUE_DELETE_SUCCESSFULL.");
+            	
+            	resultHandler.handle(Future.succeededFuture(
+            			new JsonObject()
+            			.put("resultCode", 1)
+            			.put("resultMessage", "عملیات با موفقیت انجام شد.")
+            			));
+            	
+            });
         });
-
     }
 
 }

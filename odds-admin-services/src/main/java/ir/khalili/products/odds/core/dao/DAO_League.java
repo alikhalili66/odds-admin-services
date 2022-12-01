@@ -142,8 +142,8 @@ public class DAO_League {
 		return promise.future();
 	}
     
-    public static Future<JsonObject> delete(SQLConnection sqlConnection, Integer leagueId) {
-        Promise<JsonObject> promise = Promise.promise();
+    public static Future<Void> delete(SQLConnection sqlConnection, Integer leagueId) {
+        Promise<Void> promise = Promise.promise();
         JsonArray params = new JsonArray();
         params.add(leagueId);
         
